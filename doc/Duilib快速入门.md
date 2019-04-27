@@ -11,7 +11,7 @@
 #define WIN32_LEAN_AND_MEAN	
 #define _CRT_SECURE_NO_DEPRECATE
 
-#include <windows.h>
+#include <windows.h>编写界面xml
 #include <objbase.h>
 
 #include "..\DuiLib\UIlib.h"
@@ -150,6 +150,7 @@ CFrameWindowWnd:: HandleMessage为:
 
 
 ## 2. 编写界面xml
+
 为了使用xml进行界面布局，需要把前面的Duilib程序框架中的HandleMessage稍微改动一下：
 
 ```cpp
@@ -163,7 +164,7 @@ CFrameWindowWnd:: HandleMessage为:
             m_pm.AttachDialog(pRoot);
             m_pm.AddNotifier(this);
             return 0;
-}
+        }
         else if( uMsg == WM_DESTROY ) {
             ::PostQuitMessage(0);
         }
@@ -247,8 +248,8 @@ public:
                 if( pAccountEdit ) pAccountEdit->SetText(msg.pSender->GetText());
             }
         }
+    }
 }
-		}
 ```
 
 - 使用代理机制处理事件
@@ -257,22 +258,23 @@ public:
 class CLoginFrameWnd : public CWindowWnd, public INotifyUI
 {
 public:
-			// ……
-			bool OnAlphaChanged(void* param) {
-        	TNotifyUI* pMsg = (TNotifyUI*)param;
-        	if( pMsg->sType == _T("valuechanged") ) {
+    // ……
+    bool OnAlphaChanged(void* param) 
+    {
+        TNotifyUI* pMsg = (TNotifyUI*)param;
+        if( pMsg->sType == _T("valuechanged") ) {
             m_pm.SetTransparent((static_cast<CSliderUI*>(pMsg->pSender))->GetValue());
-        		}
-        		return true;
-}
-
-			void OnPrepare() 
-    		{
-        		CSliderUI* pSilder = static_cast<CSliderUI*>(m_pm.FindControl(_T("alpha_controlor")));
-        		if( pSilder ) pSilder->OnNotify += MakeDelegate(this, &CFrameWindowWnd::OnAlphaChanged);
+        }
+        return true;
     }
-	
-		}
+
+    void OnPrepare() 
+    {
+        CSliderUI* pSilder = static_cast<CSliderUI*>(m_pm.FindControl(_T("alpha_controlor")));
+        if( pSilder ) 
+            pSilder->OnNotify += MakeDelegate(this, &CFrameWindowWnd::OnAlphaChanged);
+    }
+}
 ```
 
 OnPrepare函数需要在控件创建完成之后调用。
@@ -293,24 +295,6 @@ Duilib的表现力丰富很大程度上得益于贴图描述的简单强大。Du
 - `fade`属性是设置图片绘制的透明度
 - `hole`属性是指定scale9绘制时要不要绘制中间部分
 - `xtiled`属性设置成true就是指定图片在x轴不要拉伸而是平铺，`ytiled`属性设置成`true`就是指定图片在 y 轴不要拉伸而是平铺：
-
-## 4. 贴图描述
-
-Duilib的表现力丰富很大程度上得益于贴图描述的简单强大。Duilib的贴图描述分为简单模式和复杂模式两种。
-
-简单模式使用文件名做为贴图描述内容，在这种方式下，此图片将会以拉伸方式铺满控件。
-
-复杂模式使用带属性的字符串表示贴图方式，既支持从文件中加载图片，也可以从资源中加载，具体如下：
-
-- 如果是从文件加载，设置file属性，如file='XXX.png'，不要写res和restype属性
-- 如果从资源加载，设置res和restype属性，不要设置file属性
-- dest属性的作用是指定图片绘制在控件的一部分上面（绘制目标位置）
-- source属性的作用是指定使用图片的一部分
-- corner属性是指图片安装scale9方式绘制
-- mask属性是给不支持alpha通道的图片格式（如bmp）指定透明色
-- fade属性是设置图片绘制的透明度
-- hole属性是指定scale9绘制时要不要绘制中间部分
-- xtiled属性设置成true就是指定图片在x轴不要拉伸而是平铺，ytiled属性设置成true就是指定图片在y轴不要拉伸而是平铺：
 
 
 ## 5. 类html文本描述
