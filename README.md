@@ -4,7 +4,7 @@ Duilib是一个Windows下免费开源的DirectUI界面库，由于简约易扩�
 
 欢迎为Duilib提供功能改进、代码修补、bug反馈、使用文档和献计献策，让我们一起把Duilib做的更好！当然也欢迎你对duilib项目进行捐助（可以使用支付宝或微信扫码）。
 
-文档参见[doc/README.md](doc/README.md)
+指导文档参见 [这里](doc/Duilib快速入门.md)
 
 # Todo：
 1、完善属性设置和保存
