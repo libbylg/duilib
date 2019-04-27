@@ -1,7 +1,8 @@
 #ifndef __UIMARKUP_H__
 #define __UIMARKUP_H__
 
-#pragma once
+#include "UIlib.h"
+
 
 namespace DuiLib {
 

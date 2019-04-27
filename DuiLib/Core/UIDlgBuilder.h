@@ -1,7 +1,11 @@
 #ifndef __UIDLGBUILDER_H__
 #define __UIDLGBUILDER_H__
 
-#pragma once
+#include "UIMarkup.h"
+
+class CMarkupNode;
+class CMarkup;
+class CControlUI;
 
 namespace DuiLib {
 
@@ -12,14 +16,13 @@ public:
 };
 
 
+
 class DUILIB_API CDialogBuilder
 {
 public:
     CDialogBuilder();
-    CControlUI* Create(STRINGorID xml, LPCTSTR type = NULL, IDialogBuilderCallback* pCallback = NULL,
-        CPaintManagerUI* pManager = NULL, CControlUI* pParent = NULL);
-    CControlUI* Create(IDialogBuilderCallback* pCallback = NULL, CPaintManagerUI* pManager = NULL,
-        CControlUI* pParent = NULL);
+    CControlUI* Create(STRINGorID xml, LPCTSTR type = NULL, IDialogBuilderCallback* pCallback = NULL, CPaintManagerUI* pManager = NULL, CControlUI* pParent = NULL);
+    CControlUI* Create(IDialogBuilderCallback* pCallback = NULL, CPaintManagerUI* pManager = NULL, CControlUI* pParent = NULL);
 
     CMarkup* GetMarkup();
 

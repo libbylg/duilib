@@ -1,6 +1,7 @@
 #ifndef __UIRENDER_H__
 #define __UIRENDER_H__
 
+#include "UIlib.h"
 #pragma once
 
 namespace DuiLib {

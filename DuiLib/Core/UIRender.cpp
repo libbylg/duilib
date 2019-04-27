@@ -1,5 +1,9 @@
 #include "StdAfx.h"
 
+#include "UIRender.h"
+
+#include "UIDefine.h"
+
 ///////////////////////////////////////////////////////////////////////////////////////
 DECLARE_HANDLE(HZIP);	// An HZIP identifies a zip file that has been opened
 typedef DWORD ZRESULT;
