@@ -3,7 +3,7 @@
 
 #include "Core/UIControl.h"
 
-namespace DuiLib
+namespace DUILIB
 {
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -50,7 +50,7 @@ namespace DuiLib
         bool RemoveAt(int iIndex, bool bDoNotDestroy = false);
         void RemoveAll();
 
-        void DoEvent(TEventUI& event);
+        void DoEvent(struct TEVENT_UI& event);
         void SetVisible(bool bVisible = true);
         void SetInternVisible(bool bVisible = true);
         void SetMouseEnabled(bool bEnable = true);
@@ -131,6 +131,6 @@ namespace DuiLib
         CScrollBarUI* m_pHorizontalScrollBar;
     };
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UICONTAINER_H__

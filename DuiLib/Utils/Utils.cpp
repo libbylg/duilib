@@ -1,7 +1,7 @@
 #include "Utils/Utils.h"
 
 
-namespace DuiLib
+namespace DUILIB
 {
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -1011,4 +1011,4 @@ namespace DuiLib
 		::SetCursor(m_hOrigCursor);
 	}
 
-} // namespace DuiLib
+} // namespace DUILIB

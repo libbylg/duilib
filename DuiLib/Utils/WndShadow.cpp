@@ -53,7 +53,7 @@
 #define ULW_ALPHA 0x00000002
 #endif
 
-using namespace DuiLib;
+using namespace DUILIB;
 CWndShadow::pfnUpdateLayeredWindow CWndShadow::s_UpdateLayeredWindow = NULL;
 
 const TCHAR *strWndClassName = _T("DuiShadowWnd");

@@ -1,6 +1,6 @@
 #include "Core/UIContainer.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -1153,4 +1153,4 @@ namespace DuiLib
 		return pSubControl;
 	}
 
-} // namespace DuiLib
+} // namespace DUILIB

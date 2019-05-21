@@ -1,9 +1,9 @@
 #ifndef __UTILS_H__
 #define __UTILS_H__
 
-#include "UIlib.h"
+#include "DUILIB.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -280,6 +280,6 @@ namespace DuiLib
 		}
 	};
 
-}// namespace DuiLib
+}// namespace DUILIB
 
 #endif // __UTILS_H__

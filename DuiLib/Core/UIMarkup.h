@@ -1,10 +1,10 @@
 #ifndef __UIMARKUP_H__
 #define __UIMARKUP_H__
 
-#include "UIlib.h"
+#include "DUILIB.h"
 
 
-namespace DuiLib {
+namespace DUILIB {
 
 enum
 {
@@ -115,6 +115,6 @@ private:
     CMarkup* m_pOwner;
 };
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UIMARKUP_H__

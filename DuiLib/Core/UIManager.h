@@ -1,9 +1,10 @@
 #ifndef __UIMANAGER_H__
 #define __UIMANAGER_H__
 
-#pragma once
+#include "Core/UIDefine.h"
 
-namespace DuiLib {
+namespace DUILIB 
+{
 /////////////////////////////////////////////////////////////////////////////////////
 //
 
@@ -83,7 +84,7 @@ typedef enum EVENTTYPE_UI
 /////////////////////////////////////////////////////////////////////////////////////
 //
 
-typedef struct DUILIB_API tagTFontInfo
+struct DUILIB_API TFONTINFO_UI
 {
     HFONT hFont;
     CDuiString sFontName;
@@ -92,9 +93,9 @@ typedef struct DUILIB_API tagTFontInfo
     bool bUnderline;
     bool bItalic;
     TEXTMETRIC tm;
-} TFontInfo;
+};
 
-typedef struct DUILIB_API tagTImageInfo
+struct DUILIB_API TIMAGEINFO_UI
 {
     HBITMAP hBitmap;
     LPBYTE pBits;
@@ -105,17 +106,17 @@ typedef struct DUILIB_API tagTImageInfo
     bool bUseHSL;
     CDuiString sResType;
     DWORD dwMask;
-} TImageInfo;
+};
 
-typedef struct DUILIB_API tagTDrawInfo
+struct DUILIB_API TDRAWINFO_UI
 {
-	tagTDrawInfo();
-	tagTDrawInfo(LPCTSTR lpsz);
+    TDRAWINFO_UI();
+    TDRAWINFO_UI(LPCTSTR lpsz);
 	void Clear();
 	CDuiString sDrawString;
     CDuiString sImageName;
 	bool bLoaded;
-	const TImageInfo* pImageInfo;
+	const TIMAGEINFO_UI* pImageInfo;
 	RECT rcDestOffset;
 	RECT rcBmpPart;
 	RECT rcScale9;
@@ -123,33 +124,33 @@ typedef struct DUILIB_API tagTDrawInfo
 	bool bHole;
 	bool bTiledX;
 	bool bTiledY;
-} TDrawInfo;
+} TDRAWINFO_UI;
 
-typedef struct DUILIB_API tagTPercentInfo
+struct DUILIB_API TPERCENTINFO_UI
 {
 	double left;
 	double top;
 	double right;
 	double bottom;
-} TPercentInfo;
+} ;
 
-typedef struct DUILIB_API tagTResInfo
+struct DUILIB_API TRESINFO_UI
 {
 	DWORD m_dwDefaultDisabledColor;
 	DWORD m_dwDefaultFontColor;
 	DWORD m_dwDefaultLinkFontColor;
 	DWORD m_dwDefaultLinkHoverFontColor;
 	DWORD m_dwDefaultSelectedBkColor;
-	TFontInfo m_DefaultFontInfo;
+	TFONTINFO_UI m_DefaultFontInfo;
 	CDuiStringPtrMap m_CustomFonts;
 	CDuiStringPtrMap m_ImageHash;
 	CDuiStringPtrMap m_AttrHash;
 	CDuiStringPtrMap m_MultiLanguageHash;
-} TResInfo;
+} ;
 
 // Structure for notifications from the system
 // to the control implementation.
-typedef struct DUILIB_API tagTEventUI
+struct DUILIB_API TEVENT_UI
 {
     int Type;
     CControlUI* pSender;
@@ -159,7 +160,7 @@ typedef struct DUILIB_API tagTEventUI
     WORD wKeyState;
     WPARAM wParam;
     LPARAM lParam;
-} TEventUI;
+};
 
 // Listener interface
 class DUILIB_API INotifyUI
@@ -277,7 +278,7 @@ public:
     DWORD GetDefaultSelectedBkColor() const;
     void SetDefaultSelectedBkColor(DWORD dwColor, bool bShared = false);
 
-    TFontInfo* GetDefaultFontInfo();
+    TFONTINFO_UI* GetDefaultFontInfo();
     void SetDefaultFont(LPCTSTR pStrFontName, int nSize, bool bBold, bool bUnderline, bool bItalic, bool bShared = false);
     DWORD GetCustomFontCount(bool bShared = false) const;
     HFONT AddFont(int id, LPCTSTR pStrFontName, int nSize, bool bBold, bool bUnderline, bool bItalic, bool bShared = false);
@@ -288,13 +289,13 @@ public:
     void RemoveFont(HFONT hFont, bool bShared = false);
     void RemoveFont(int id, bool bShared = false);
     void RemoveAllFonts(bool bShared = false);
-    TFontInfo* GetFontInfo(int id);
-    TFontInfo* GetFontInfo(HFONT hFont);
+    TFONTINFO_UI* GetFontInfo(int id);
+    TFONTINFO_UI* GetFontInfo(HFONT hFont);
 
-    const TImageInfo* GetImage(LPCTSTR bitmap);
-    const TImageInfo* GetImageEx(LPCTSTR bitmap, LPCTSTR type = NULL, DWORD mask = 0, bool bUseHSL = false);
-    const TImageInfo* AddImage(LPCTSTR bitmap, LPCTSTR type = NULL, DWORD mask = 0, bool bUseHSL = false, bool bShared = false);
-    const TImageInfo* AddImage(LPCTSTR bitmap, HBITMAP hBitmap, int iWidth, int iHeight, bool bAlpha, bool bShared = false);
+    const TIMAGEINFO_UI* GetImage(LPCTSTR bitmap);
+    const TIMAGEINFO_UI* GetImageEx(LPCTSTR bitmap, LPCTSTR type = NULL, DWORD mask = 0, bool bUseHSL = false);
+    const TIMAGEINFO_UI* AddImage(LPCTSTR bitmap, LPCTSTR type = NULL, DWORD mask = 0, bool bUseHSL = false, bool bShared = false);
+    const TIMAGEINFO_UI* AddImage(LPCTSTR bitmap, HBITMAP hBitmap, int iWidth, int iHeight, bool bAlpha, bool bShared = false);
     void RemoveImage(LPCTSTR bitmap, bool bShared = false);
     void RemoveAllImages(bool bShared = false);
 	static void ReloadSharedImages();
@@ -456,7 +457,7 @@ private:
 	RECT m_rcLayeredInset;
 	bool m_bLayeredChanged;
 	RECT m_rcLayeredUpdate;
-	TDrawInfo m_diLayered;
+	struct TDRAWINFO_UI m_diLayered;
 
     bool m_bMouseTracking;
     bool m_bMouseCapture;
@@ -482,7 +483,7 @@ private:
 
     //
 	bool m_bForceUseSharedRes;
-	TResInfo m_ResInfo;
+	struct TRESINFO_UI m_ResInfo;
 
     //
 	static HINSTANCE m_hResourceInstance;
@@ -491,7 +492,7 @@ private:
 	static HANDLE m_hResourceZip;
 
 	static bool m_bCachedResourceZip;
-	static TResInfo m_SharedResInfo;
+	static TRESINFO_UI m_SharedResInfo;
     static HINSTANCE m_hInstance;
 	static bool m_bUseHSL;
     static short m_H;
@@ -504,6 +505,6 @@ public:
 	CDuiPtrArray m_aTranslateAccelerator;
 };
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UIMANAGER_H__

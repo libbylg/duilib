@@ -1,10 +1,10 @@
 #ifndef __UIRENDER_H__
 #define __UIRENDER_H__
 
-#include "UIlib.h"
+#include "DUILIB.h"
 #pragma once
 
-namespace DuiLib {
+namespace DUILIB {
 /////////////////////////////////////////////////////////////////////////////////////
 //
 
@@ -55,6 +55,6 @@ public:
 	static SIZE GetTextSize(HDC hDC, CPaintManagerUI* pManager , LPCTSTR pstrText, int iFont, UINT uStyle);
 };
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UIRENDER_H__

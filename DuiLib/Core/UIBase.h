@@ -4,7 +4,7 @@
 
 #pragma once
 
-namespace DuiLib {
+namespace DUILIB {
 /////////////////////////////////////////////////////////////////////////////////////
 //
 
@@ -101,6 +101,6 @@ protected:
     bool m_bSubclassed;
 };
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UIBASE_H__

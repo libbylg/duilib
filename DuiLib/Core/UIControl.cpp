@@ -1,6 +1,6 @@
 ﻿#include "StdAfx.h"
 
-namespace DuiLib {
+namespace DUILIB {
 
 CControlUI::CControlUI() : 
 m_pManager(NULL), 
@@ -272,7 +272,7 @@ void CControlUI::SetBorderRound(SIZE cxyRound)
     Invalidate();
 }
 
-bool CControlUI::DrawImage(HDC hDC, TDrawInfo& drawInfo)
+bool CControlUI::DrawImage(HDC hDC, TDRAWINFO_UI& drawInfo)
 {
 	return CRenderEngine::DrawImage(hDC, m_pManager, m_rcItem, m_rcPaint, drawInfo);
 }
@@ -358,7 +358,7 @@ void CControlUI::SetPos(RECT rc, bool bNeedInvalidate)
         if( m_pCover->IsFloat() ) {
             SIZE szXY = m_pCover->GetFixedXY();
             SIZE sz = {m_pCover->GetFixedWidth(), m_pCover->GetFixedHeight()};
-            TPercentInfo rcPercent = m_pCover->GetFloatPercent();
+            TPERCENTINFO_UI rcPercent = m_pCover->GetFloatPercent();
             LONG width = m_rcItem.right - m_rcItem.left;
             LONG height = m_rcItem.bottom - m_rcItem.top;
             RECT rcCtrl = { 0 };
@@ -448,12 +448,12 @@ void CControlUI::SetFixedXY(SIZE szXY)
     NeedParentUpdate();
 }
 
-TPercentInfo CControlUI::GetFloatPercent() const
+TPERCENTINFO_UI CControlUI::GetFloatPercent() const
 {
 	return m_piFloatPercent;
 }
 
-void CControlUI::SetFloatPercent(TPercentInfo piFloatPercent)
+void CControlUI::SetFloatPercent(TPERCENTINFO_UI piFloatPercent)
 {
 	m_piFloatPercent = piFloatPercent;
 	NeedParentUpdate();
@@ -995,7 +995,7 @@ void CControlUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
 			SetFloat(_tcscmp(pstrValue, _T("true")) == 0);
 		}
 		else {
-			TPercentInfo piFloatPercent = { 0 };
+			TPERCENTINFO_UI piFloatPercent = { 0 };
 			LPTSTR pstr = NULL;
 			piFloatPercent.left = _tcstod(pstrValue, &pstr);  ASSERT(pstr);
 			piFloatPercent.top = _tcstod(pstr + 1, &pstr);    ASSERT(pstr);
@@ -1202,4 +1202,4 @@ void CControlUI::SetBorderStyle( int nStyle )
 	Invalidate();
 }
 
-} // namespace DuiLib
+} // namespace DUILIB

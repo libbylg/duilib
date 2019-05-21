@@ -13,7 +13,7 @@
 
 #include "..\DuiLib\UIlib.h"
 
-using namespace DuiLib;
+using namespace DUILIB;
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

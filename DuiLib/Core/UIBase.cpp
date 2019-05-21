@@ -1,6 +1,6 @@
 #include "Core/UIBase.h"
 
-namespace DuiLib {
+namespace DUILIB {
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
@@ -487,4 +487,4 @@ void CWindowWnd::OnFinalMessage(HWND /*hWnd*/)
 {
 }
 
-} // namespace DuiLib
+} // namespace DUILIB

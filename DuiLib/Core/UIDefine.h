@@ -1,11 +1,12 @@
-#pragma once
+#ifndef __UIDefine_H_
+#define __UIDefine_H_
 
 #include "Utils/Utils.h"
 
 //////////////BEGIN消息映射宏定义////////////////////////////////////////////////////
 ///
 
-namespace DuiLib
+namespace DUILIB
 {
 
 #define _USEIMM					1
@@ -14,36 +15,36 @@ namespace DuiLib
 
 #define SCROLLBAR_LINESIZE      8
 
-enum DuiSig
-{
-	DuiSig_end = 0, // [marks end of message map]
-	DuiSig_lwl,     // LRESULT (WPARAM, LPARAM)
-	DuiSig_vn,      // void (TNotifyUI)
-};
+    enum DuiSig
+    {
+        DuiSig_end = 0, // [marks end of message map]
+        DuiSig_lwl,     // LRESULT (WPARAM, LPARAM)
+        DuiSig_vn,      // void (TNotifyUI)
+    };
 
-class CControlUI;
+    class CControlUI;
 
-// Structure for notifications to the outside world
-typedef struct tagTNotifyUI 
-{
-	CDuiString sType;
-	CDuiString sVirtualWnd;
-	CControlUI* pSender;
-	DWORD dwTimestamp;
-	POINT ptMouse;
-	WPARAM wParam;
-	LPARAM lParam;
-} TNotifyUI;
+    // Structure for notifications to the outside world
+    typedef struct tagTNotifyUI
+    {
+        CDuiString sType;
+        CDuiString sVirtualWnd;
+        CControlUI* pSender;
+        DWORD dwTimestamp;
+        POINT ptMouse;
+        WPARAM wParam;
+        LPARAM lParam;
+    } TNotifyUI;
 
-class CNotifyPump;
-typedef void (CNotifyPump::*DUI_PMSG)(TNotifyUI& msg);  //指针类型
+    class CNotifyPump;
+    typedef void (CNotifyPump::* DUI_PMSG)(TNotifyUI& msg);  //指针类型
 
-union DuiMessageMapFunctions
-{
-	DUI_PMSG pfn;   // generic member function pointer
-	LRESULT (CNotifyPump::*pfn_Notify_lwl)(WPARAM, LPARAM);
-	void (CNotifyPump::*pfn_Notify_vn)(TNotifyUI&);
-};
+    union DuiMessageMapFunctions
+    {
+        DUI_PMSG pfn;   // generic member function pointer
+        LRESULT(CNotifyPump::* pfn_Notify_lwl)(WPARAM, LPARAM);
+        void (CNotifyPump::* pfn_Notify_vn)(TNotifyUI&);
+    };
 
 //定义所有消息类型
 //////////////////////////////////////////////////////////////////////////
@@ -286,5 +287,6 @@ protected:                                                                \
 //////////////END控件名称宏定义//////////////////////////////////////////////////
 
 
-}// namespace DuiLib
+};// namespace DUILIB
 
+#endif//__UIDefine_H_

@@ -46,7 +46,7 @@ extern ZRESULT FindZipItemW(HZIP hz, const TCHAR *name, bool ic, int *index, ZIP
 extern ZRESULT UnzipItem(HZIP hz, int index, void *dst, unsigned int len, DWORD flags);
 ///////////////////////////////////////////////////////////////////////////////////////
 
-namespace DuiLib {
+namespace DUILIB {
 
 ///////////////////////////////////////////////////////////////////////////////////////
 //
@@ -664,4 +664,4 @@ bool CMarkup::_Failed(LPCTSTR pstrError, LPCTSTR pstrLocation)
     return false; // Always return 'false'
 }
 
-} // namespace DuiLib
+} // namespace DUILIB

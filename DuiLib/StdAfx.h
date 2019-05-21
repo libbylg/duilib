@@ -52,7 +52,7 @@
 #define _WIN32_WINNT 0x0500
 #endif
 
-//#include "UIlib.h"
+//#include "DUILIB.h"
 
 #include <olectl.h>
 
