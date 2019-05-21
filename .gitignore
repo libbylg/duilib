@@ -1,30 +1,47 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
+#	IDE自动生成的配置文件
+.idea
+.vs
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
+#	临时文件或者目标文件
+Bin
+Lib
+Temp
+Pkg
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.sbr
-MenuDemo/Debug/vc90.pdb
-*.idb
-QQDemo/Debug/color_skin.obj
-*.obj
-QQDemo/Debug/QQDemo.map
+#	目标文件类型
+*.exe
+*.dll
+*.lib
+
+#	调试文件和中间文件
+*.ilk
 *.pdb
-*.ncb
-DuiLib.suo
-*.pch
-FlashDemo/Debug/FlashDemo.map
-*.bsc
-FlashDemo/FlashDemo.vcproj.wengmq-PC.wengmq.user
-*.user
-QQDemo/Debug/mt.dep
-*.dep
 *.map
+*.bsc
+*.sdf
+*.ipch
+*.obj
+*.sbr
+*.pch
+*.tlog
+*.log
+*.idb
+*.cache
+*.exp
+*.aps
+*.iobj
+*.suo
+*.user
+*.res
+
+#	打包中间文件
+*.tar
+*.gz
+*.zip
+
+#	IDE管理类文件
+*.manifest
+*.opensdf
+*.lastbuildstate
+*.unsuccessfulbuild
+
