@@ -71,18 +71,24 @@
 #endif
 
 
-#include "Utils/Utils.h"
-#include "Utils/UIDelegate.h"
-#include "Core/UIDefine.h"
-#include "Core/UIManager.h"
-#include "Core/UIBase.h"
-#include "Core/UIControl.h"
-#include "Core/UIContainer.h"
-#include "Core/UIMarkup.h"
-#include "Core/UIDlgBuilder.h"
-#include "Core/UIRender.h"
-#include "Utils/WinImplBase.h"
-#include "Utils/WndShadow.h"
+#ifdef _DEBUG
+#include <shlwapi.h>
+#pragma comment(lib, "shlwapi.lib")
+#endif
+
+
+//#include "Utils/Utils.h"
+//#include "Utils/UIDelegate.h"
+//#include "Core/UIDefine.h"
+//#include "Core/UIManager.h"
+//#include "Core/UIBase.h"
+//#include "Core/UIControl.h"
+//#include "Core/UIContainer.h"
+//#include "Core/UIMarkup.h"
+//#include "Core/UIDlgBuilder.h"
+//#include "Core/UIRender.h"
+//#include "Utils/WinImplBase.h"
+//#include "Utils/WndShadow.h"
 
 //#include "Layout/UIVerticalLayout.h"
 //#include "Layout/UIHorizontalLayout.h"
