@@ -15,35 +15,108 @@ namespace DUILIB
 
 #define SCROLLBAR_LINESIZE      8
 
-    enum DuiSig
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    //
+
+    // Flags for CControlUI::GetControlFlags()
+#define UIFLAG_TABSTOP       0x00000001
+#define UIFLAG_SETCURSOR     0x00000002
+#define UIFLAG_WANTRETURN    0x00000004
+
+// Flags for FindControl()
+#define UIFIND_ALL           0x00000000
+#define UIFIND_VISIBLE       0x00000001
+#define UIFIND_ENABLED       0x00000002
+#define UIFIND_HITTEST       0x00000004
+#define UIFIND_UPDATETEST    0x00000008
+#define UIFIND_TOP_FIRST     0x00000010
+#define UIFIND_ME_FIRST      0x80000000
+
+// Flags for the CDialogLayout stretching
+#define UISTRETCH_NEWGROUP   0x00000001
+#define UISTRETCH_NEWLINE    0x00000002
+#define UISTRETCH_MOVE_X     0x00000004
+#define UISTRETCH_MOVE_Y     0x00000008
+#define UISTRETCH_SIZE_X     0x00000010
+#define UISTRETCH_SIZE_Y     0x00000020
+
+// Flags used for controlling the paint
+#define UISTATE_FOCUSED      0x00000001
+#define UISTATE_SELECTED     0x00000002
+#define UISTATE_DISABLED     0x00000004
+#define UISTATE_HOT          0x00000008
+#define UISTATE_PUSHED       0x00000010
+#define UISTATE_READONLY     0x00000020
+#define UISTATE_CAPTURED     0x00000040
+
+
+    enum SIG_UI
     {
-        DuiSig_end = 0, // [marks end of message map]
-        DuiSig_lwl,     // LRESULT (WPARAM, LPARAM)
-        DuiSig_vn,      // void (TNotifyUI)
+        UISIG_end = 0, // [marks end of message map]
+        UISIG_lwl,     // LRESULT (WPARAM, LPARAM)
+        UISIG_vn,      // void (struct TNOTIFY_UI)
     };
 
-    class CControlUI;
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    //
+
+    enum EVENTTYPE_UI
+    {
+        UIEVENT__FIRST = 1,
+        UIEVENT__KEYBEGIN,
+        UIEVENT_KEYDOWN,
+        UIEVENT_KEYUP,
+        UIEVENT_CHAR,
+        UIEVENT_SYSKEY,
+        UIEVENT__KEYEND,
+        UIEVENT__MOUSEBEGIN,
+        UIEVENT_MOUSEMOVE,
+        UIEVENT_MOUSELEAVE,
+        UIEVENT_MOUSEENTER,
+        UIEVENT_MOUSEHOVER,
+        UIEVENT_BUTTONDOWN,
+        UIEVENT_BUTTONUP,
+        UIEVENT_RBUTTONDOWN,
+        UIEVENT_DBLCLICK,
+        UIEVENT_CONTEXTMENU,
+        UIEVENT_SCROLLWHEEL,
+        UIEVENT__MOUSEEND,
+        UIEVENT_KILLFOCUS,
+        UIEVENT_SETFOCUS,
+        UIEVENT_WINDOWSIZE,
+        UIEVENT_SETCURSOR,
+        UIEVENT_TIMER,
+        UIEVENT_NOTIFY,
+        UIEVENT_COMMAND,
+        UIEVENT__LAST,
+    };
 
     // Structure for notifications to the outside world
-    typedef struct tagTNotifyUI
+    class CControlUI;
+    struct TNOTIFY_UI
     {
-        CDuiString sType;
-        CDuiString sVirtualWnd;
+        CStringUI sType;
+        CStringUI sVirtualWnd;
         CControlUI* pSender;
         DWORD dwTimestamp;
         POINT ptMouse;
         WPARAM wParam;
         LPARAM lParam;
-    } TNotifyUI;
+    };
 
     class CNotifyPump;
-    typedef void (CNotifyPump::* DUI_PMSG)(TNotifyUI& msg);  //指针类型
+    typedef void (CNotifyPump::* DUI_PMSG)(struct TNOTIFY_UI& msg);  //指针类型
 
     union DuiMessageMapFunctions
     {
         DUI_PMSG pfn;   // generic member function pointer
         LRESULT(CNotifyPump::* pfn_Notify_lwl)(WPARAM, LPARAM);
-        void (CNotifyPump::* pfn_Notify_vn)(TNotifyUI&);
+        void (CNotifyPump::* pfn_Notify_vn)(struct TNOTIFY_UI&);
     };
 
 //定义所有消息类型
@@ -103,8 +176,8 @@ struct DUI_MSGMAP
 //结构定义
 struct DUI_MSGMAP_ENTRY //定义一个结构体，来存放消息信息
 {
-	CDuiString sMsgType;          // DUI消息类型
-	CDuiString sCtrlName;         // 控件名称
+	CStringUI sMsgType;          // DUI消息类型
+	CStringUI sCtrlName;         // 控件名称
 	UINT       nSig;              // 标记函数指针类型
 	DUI_PMSG   pfn;               // 指向函数的指针
 };
@@ -180,45 +253,45 @@ protected:                                                                \
 
 //声明结束
 #define DUI_END_MESSAGE_MAP()                                             \
-	{ _T(""), _T(""), DuiSig_end, (DUI_PMSG)0 }                           \
+	{ _T(""), _T(""), UISIG_end, (DUI_PMSG)0 }                           \
 };                                                                        \
 
 
 //定义消息类型--执行函数宏
 #define DUI_ON_MSGTYPE(msgtype, memberFxn)                                \
-	{ msgtype, _T(""), DuiSig_vn, (DUI_PMSG)&memberFxn},                  \
+	{ msgtype, _T(""), UISIG_vn, (DUI_PMSG)&memberFxn},                  \
 
 
 //定义消息类型--控件名称--执行函数宏
 #define DUI_ON_MSGTYPE_CTRNAME(msgtype,ctrname,memberFxn)                 \
-	{ msgtype, ctrname, DuiSig_vn, (DUI_PMSG)&memberFxn },                \
+	{ msgtype, ctrname, UISIG_vn, (DUI_PMSG)&memberFxn },                \
 
 
 //定义click消息的控件名称--执行函数宏
 #define DUI_ON_CLICK_CTRNAME(ctrname,memberFxn)                           \
-	{ DUI_MSGTYPE_CLICK, ctrname, DuiSig_vn, (DUI_PMSG)&memberFxn },      \
+	{ DUI_MSGTYPE_CLICK, ctrname, UISIG_vn, (DUI_PMSG)&memberFxn },      \
 
 
 //定义selectchanged消息的控件名称--执行函数宏
 #define DUI_ON_SELECTCHANGED_CTRNAME(ctrname,memberFxn)                   \
-    { DUI_MSGTYPE_SELECTCHANGED,ctrname,DuiSig_vn,(DUI_PMSG)&memberFxn }, \
+    { DUI_MSGTYPE_SELECTCHANGED,ctrname,UISIG_vn,(DUI_PMSG)&memberFxn }, \
 
 
 //定义killfocus消息的控件名称--执行函数宏
 #define DUI_ON_KILLFOCUS_CTRNAME(ctrname,memberFxn)                       \
-	{ DUI_MSGTYPE_KILLFOCUS,ctrname,DuiSig_vn,(DUI_PMSG)&memberFxn },     \
+	{ DUI_MSGTYPE_KILLFOCUS,ctrname,UISIG_vn,(DUI_PMSG)&memberFxn },     \
 
 
 //定义menu消息的控件名称--执行函数宏
 #define DUI_ON_MENU_CTRNAME(ctrname,memberFxn)                            \
-	{ DUI_MSGTYPE_MENU,ctrname,DuiSig_vn,(DUI_PMSG)&memberFxn },          \
+	{ DUI_MSGTYPE_MENU,ctrname,UISIG_vn,(DUI_PMSG)&memberFxn },          \
 
 
 //定义与控件名称无关的消息宏
 
   //定义timer消息--执行函数宏
 #define DUI_ON_TIMER()                                                    \
-	{ DUI_MSGTYPE_TIMER, _T(""), DuiSig_vn,(DUI_PMSG)&OnTimer },          \
+	{ DUI_MSGTYPE_TIMER, _T(""), UISIG_vn,(DUI_PMSG)&OnTimer },          \
 
 
 ///

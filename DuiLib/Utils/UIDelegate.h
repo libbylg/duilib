@@ -3,7 +3,7 @@
 
 #include "Core/UIDefine.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 
     class DUILIB_API CDelegateBase
@@ -91,9 +91,9 @@ namespace DuiLib
         bool operator() (void* param);
 
     protected:
-        CDuiPtrArray m_aDelegates;
+        CPtrArrayUI m_aDelegates;
     };
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UIDELEGATE_H__

@@ -13,7 +13,7 @@ namespace DuiLib
 	};
 
 	class DUILIB_API WindowImplBase
-		: public CWindowWnd
+		: public CWindowUI
 		, public CNotifyPump
 		, public INotifyUI
 		, public IMessageFilterUI

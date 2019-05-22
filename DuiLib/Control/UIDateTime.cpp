@@ -9,7 +9,7 @@ namespace DuiLib
 #define DT_DELETE 2
 #define DT_KEEP   3
 
-	class CDateTimeWnd : public CWindowWnd
+	class CDateTimeWnd : public CWindowUI
 	{
 	public:
 		CDateTimeWnd();
@@ -154,7 +154,7 @@ namespace DuiLib
 			bHandled = FALSE;
 		}
 		else bHandled = FALSE;
-		if( !bHandled ) return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+		if( !bHandled ) return CWindowUI::HandleMessage(uMsg, wParam, lParam);
 		return lRes;
 	}
 

@@ -1,43 +1,88 @@
-// Copyright (c) 2010-2011, duilib develop team(www.duilib.com).
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or 
-// without modification, are permitted provided that the 
-// following conditions are met.
-//
-// Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-//
-// Redistributions in binary form must reproduce the above 
-// copyright notice, this list of conditions and the following
-// disclaimer in the documentation and/or other materials 
-// provided with the distribution.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND 
-// CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
-// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-// BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-// SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
-// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
-// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#ifndef _DUILIB_
+#define _DUILIB_
 
 
 #include <windows.h>
 #include <windowsx.h>
 #include <commctrl.h>
-#include <stddef.h>
+#include <olectl.h>
 #include <richedit.h>
+#include <zmouse.h>
+
+
+#include <stddef.h>
 #include <tchar.h>
 #include <assert.h>
 #include <crtdbg.h>
 #include <malloc.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+#ifdef _DEBUG
+#include <shlwapi.h>
+#endif
+
+
+#if defined(__GNUC__)
+// 怎么都没找到min，max的头文件-_-
+#ifndef min
+#define min(a,b) (((a) < (b)) ? (a) : (b))
+#endif
+#ifndef max
+#define max(a,b) (((a) > (b)) ? (a) : (b))
+#endif
+#endif
+
+#if defined(_MSC_VER)
+#pragma warning (disable : 4511) // copy operator could not be generated
+#pragma warning (disable : 4512) // assignment operator could not be generated
+#pragma warning (disable : 4702) // unreachable code (bugs in Microsoft's STL)
+#pragma warning (disable : 4786) // identifier was truncated
+#pragma warning (disable : 4996) // function or variable may be unsafe (deprecated)
+#ifndef _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS // eliminate deprecation warnings for VS2005
+#endif
+#ifndef _CRT_SECURE_NO_DEPRECATE
+#define _CRT_SECURE_NO_DEPRECATE
+#endif
+#endif
+
+#if defined(__BORLANDC__)
+#pragma option -w-8027		   // function not expanded inline
+#endif
+
+
+
+#ifndef __FILET__
+#define __DUILIB_STR2WSTR(str)  L##str
+#define _DUILIB_STR2WSTR(str)   __DUILIB_STR2WSTR(str)
+#ifdef _UNICODE
+#define __FILET__	    _DUILIB_STR2WSTR(__FILE__)
+#define __FUNCTIONT__	_DUILIB_STR2WSTR(__FUNCTION__)
+#else
+#define __FILET__	    __FILE__
+#define __FUNCTIONT__	__FUNCTION__
+#endif
+#endif
+
+
+
+// Required for VS 2008 (fails on XP and Win2000 without this fix)
+#ifndef _WIN32_WINNT
+#define _WIN32_WINNT 0x0500
+#endif
+
+
+#ifndef ASSERT
+#define ASSERT(expr)  _ASSERTE(expr)
+#endif
+
+
+#define lengthof(x)     (sizeof(x)/sizeof(*x))
+#define MAX max
+#define MIN min
+#define CLAMP(x,a,b)    (MIN(b,MAX(a,x)))
 
 
 #ifdef UILIB_STATIC
@@ -58,23 +103,13 @@
 #	endif
 #endif
 
+
 #define UILIB_COMDAT __declspec(selectany)
 
-#if defined _M_IX86
-#	pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#elif defined _M_IA64
-#	pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='ia64' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#elif defined _M_X64
-#	pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#else
-#	pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#endif
 
 
-#ifdef _DEBUG
-#include <shlwapi.h>
-#pragma comment(lib, "shlwapi.lib")
-#endif
+
+
 
 
 //#include "Utils/Utils.h"
@@ -98,7 +133,7 @@
 //
 //#include "Control/UIList.h"
 //#include "Control/UICombo.h"
-//#include "Control/UIScrollBar.h"
+//#include "Core/UIScrollBar.h"
 //#include "Control/UITreeView.h"
 //
 //#include "Control/UILabel.h"
@@ -120,3 +155,9 @@
 //#include "Control/UIGifAnim.h"
 
 //#include "Control/UIFlash.h"
+namespace DUILIB
+{
+};
+
+#endif//_DUILIB_
+

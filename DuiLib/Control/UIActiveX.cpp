@@ -13,7 +13,7 @@ class CActiveXCtrl;
 //
 //
 
-class CActiveXWnd : public CWindowWnd
+class CActiveXWnd : public CWindowUI
 {
 public:
 	CActiveXWnd() : m_iLayeredTick(0), m_bDrawCaret(false) {}
@@ -813,7 +813,7 @@ LRESULT CActiveXWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
     default:
         bHandled = FALSE;
     }
-    if( !bHandled ) return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+    if( !bHandled ) return CWindowUI::HandleMessage(uMsg, wParam, lParam);
     return lRes;
 }
 

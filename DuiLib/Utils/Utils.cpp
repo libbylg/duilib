@@ -1,6 +1,8 @@
 #include "Utils/Utils.h"
 
 
+
+
 namespace DUILIB
 {
     /////////////////////////////////////////////////////////////////////////////////////
@@ -19,30 +21,30 @@ namespace DUILIB
     //
     //
 
-	CDuiPoint::CDuiPoint()
+	CPointUI::CPointUI()
 	{
 		x = y = 0;
 	}
 
-	CDuiPoint::CDuiPoint(const POINT& src)
+	CPointUI::CPointUI(const POINT& src)
 	{
 		x = src.x;
 		y = src.y;
 	}
 
-	CDuiPoint::CDuiPoint(long _x, long _y)
+	CPointUI::CPointUI(long _x, long _y)
 	{
 		x = _x;
 		y = _y;
 	}
 
-	CDuiPoint::CDuiPoint(LPARAM lParam)
+	CPointUI::CPointUI(LPARAM lParam)
 	{
 		x = GET_X_LPARAM(lParam);
 		y = GET_Y_LPARAM(lParam);
 	}
 
-    CDuiPoint::CDuiPoint(LPCTSTR pstrValue)
+    CPointUI::CPointUI(LPCTSTR pstrValue)
     {
         if (pstrValue == NULL || *pstrValue == _T('\0')) x = y = 0;
         LPTSTR pstr = NULL;
@@ -50,9 +52,9 @@ namespace DUILIB
         y = _tcstol(pstr + 1, &pstr, 10);      ASSERT(pstr);
     }
 
-    CDuiString CDuiPoint::ToString()
+    CStringUI CPointUI::ToString()
     {
-        CDuiString sPoint;
+        CStringUI sPoint;
         sPoint.SmallFormat(_T("%ld,%ld"), x, y);
         return sPoint;
     }
@@ -61,30 +63,30 @@ namespace DUILIB
 	//
 	//
 
-	CDuiSize::CDuiSize()
+	CSizeUI::CSizeUI()
 	{
 		cx = cy = 0;
 	}
 
-	CDuiSize::CDuiSize(const SIZE& src)
+	CSizeUI::CSizeUI(const SIZE& src)
 	{
 		cx = src.cx;
 		cy = src.cy;
 	}
 
-	CDuiSize::CDuiSize(const RECT rc)
+	CSizeUI::CSizeUI(const RECT rc)
 	{
 		cx = rc.right - rc.left;
 		cy = rc.bottom - rc.top;
 	}
 
-	CDuiSize::CDuiSize(long _cx, long _cy)
+	CSizeUI::CSizeUI(long _cx, long _cy)
 	{
 		cx = _cx;
 		cy = _cy;
 	}
 
-    CDuiSize::CDuiSize(LPCTSTR pstrValue)
+    CSizeUI::CSizeUI(LPCTSTR pstrValue)
     {
         if (pstrValue == NULL || *pstrValue == _T('\0')) cx = cy = 0;
         LPTSTR pstr = NULL;
@@ -92,9 +94,9 @@ namespace DUILIB
         cy = _tcstol(pstr + 1, &pstr, 10);       ASSERT(pstr);
     }
 
-    CDuiString CDuiSize::ToString()
+    CStringUI CSizeUI::ToString()
     {
-        CDuiString sSize;
+        CStringUI sSize;
         sSize.SmallFormat(_T("%ld,%ld"), cx, cy);
         return sSize;
     }
@@ -103,12 +105,12 @@ namespace DUILIB
 	//
 	//
 
-	CDuiRect::CDuiRect()
+	CRectUI::CRectUI()
 	{
 		left = top = right = bottom = 0;
 	}
 
-	CDuiRect::CDuiRect(const RECT& src)
+	CRectUI::CRectUI(const RECT& src)
 	{
 		left = src.left;
 		top = src.top;
@@ -116,7 +118,7 @@ namespace DUILIB
 		bottom = src.bottom;
 	}
 
-	CDuiRect::CDuiRect(long iLeft, long iTop, long iRight, long iBottom)
+	CRectUI::CRectUI(long iLeft, long iTop, long iRight, long iBottom)
 	{
 		left = iLeft;
 		top = iTop;
@@ -124,7 +126,7 @@ namespace DUILIB
 		bottom = iBottom;
 	}
 
-    CDuiRect::CDuiRect(LPCTSTR pstrValue)
+    CRectUI::CRectUI(LPCTSTR pstrValue)
     {
         if (pstrValue == NULL || *pstrValue == _T('\0')) left = top = right = bottom = 0;
         LPTSTR pstr = NULL;
@@ -134,34 +136,34 @@ namespace DUILIB
         bottom = _tcstol(pstr + 1, &pstr, 10);                       ASSERT(pstr);
     }
 
-    CDuiString CDuiRect::ToString()
+    CStringUI CRectUI::ToString()
     {
-        CDuiString sRect;
+        CStringUI sRect;
         sRect.SmallFormat(_T("%ld,%ld,%ld,%ld"), left, top, right, bottom);
         return sRect;
     }
 
-	int CDuiRect::GetWidth() const
+	int CRectUI::GetWidth() const
 	{
 		return right - left;
 	}
 
-	int CDuiRect::GetHeight() const
+	int CRectUI::GetHeight() const
 	{
 		return bottom - top;
 	}
 
-	void CDuiRect::Empty()
+	void CRectUI::Empty()
 	{
 		left = top = right = bottom = 0;
 	}
 
-	bool CDuiRect::IsNull() const
+	bool CRectUI::IsNull() const
 	{
 		return (left == 0 && right == 0 && top == 0 && bottom == 0); 
 	}
 
-	void CDuiRect::Join(const RECT& rc)
+	void CRectUI::Join(const RECT& rc)
 	{
 		if( rc.left < left ) left = rc.left;
 		if( rc.top < top ) top = rc.top;
@@ -169,33 +171,33 @@ namespace DUILIB
 		if( rc.bottom > bottom ) bottom = rc.bottom;
 	}
 
-	void CDuiRect::ResetOffset()
+	void CRectUI::ResetOffset()
 	{
 		::OffsetRect(this, -left, -top);
 	}
 
-	void CDuiRect::Normalize()
+	void CRectUI::Normalize()
 	{
 		if( left > right ) { int iTemp = left; left = right; right = iTemp; }
 		if( top > bottom ) { int iTemp = top; top = bottom; bottom = iTemp; }
 	}
 
-	void CDuiRect::Offset(int cx, int cy)
+	void CRectUI::Offset(int cx, int cy)
 	{
 		::OffsetRect(this, cx, cy);
 	}
 
-	void CDuiRect::Inflate(int cx, int cy)
+	void CRectUI::Inflate(int cx, int cy)
 	{
 		::InflateRect(this, cx, cy);
 	}
 
-	void CDuiRect::Deflate(int cx, int cy)
+	void CRectUI::Deflate(int cx, int cy)
 	{
 		::InflateRect(this, -cx, -cy);
 	}
 
-	void CDuiRect::Union(CDuiRect& rc)
+	void CRectUI::Union(CRectUI& rc)
 	{
 		::UnionRect(this, this, &rc);
 	}
@@ -205,31 +207,31 @@ namespace DUILIB
 	//
 	//
 
-	CDuiPtrArray::CDuiPtrArray(int iPreallocSize) : m_ppVoid(NULL), m_nCount(0), m_nAllocated(iPreallocSize)
+	CPtrArrayUI::CPtrArrayUI(int iPreallocSize) : m_ppVoid(NULL), m_nCount(0), m_nAllocated(iPreallocSize)
 	{
 		ASSERT(iPreallocSize>=0);
 		if( iPreallocSize > 0 ) m_ppVoid = static_cast<LPVOID*>(malloc(iPreallocSize * sizeof(LPVOID)));
 	}
 
-	CDuiPtrArray::CDuiPtrArray(const CDuiPtrArray& src) : m_ppVoid(NULL), m_nCount(0), m_nAllocated(0)
+	CPtrArrayUI::CPtrArrayUI(const CPtrArrayUI& src) : m_ppVoid(NULL), m_nCount(0), m_nAllocated(0)
 	{
 		for(int i=0; i<src.GetSize(); i++)
 			Add(src.GetAt(i));
 	}
 
-	CDuiPtrArray::~CDuiPtrArray()
+	CPtrArrayUI::~CPtrArrayUI()
 	{
 		if( m_ppVoid != NULL ) free(m_ppVoid);
 	}
 
-	void CDuiPtrArray::Empty()
+	void CPtrArrayUI::Empty()
 	{
 		if( m_ppVoid != NULL ) free(m_ppVoid);
 		m_ppVoid = NULL;
 		m_nCount = m_nAllocated = 0;
 	}
 
-	void CDuiPtrArray::Resize(int iSize)
+	void CPtrArrayUI::Resize(int iSize)
 	{
 		Empty();
 		m_ppVoid = static_cast<LPVOID*>(malloc(iSize * sizeof(LPVOID)));
@@ -238,12 +240,12 @@ namespace DUILIB
 		m_nCount = iSize;
 	}
 
-	bool CDuiPtrArray::IsEmpty() const
+	bool CPtrArrayUI::IsEmpty() const
 	{
 		return m_nCount == 0;
 	}
 
-	bool CDuiPtrArray::Add(LPVOID pData)
+	bool CPtrArrayUI::Add(LPVOID pData)
 	{
 		if( ++m_nCount >= m_nAllocated) {
 			int nAllocated = m_nAllocated * 2;
@@ -262,7 +264,7 @@ namespace DUILIB
 		return true;
 	}
 
-	bool CDuiPtrArray::InsertAt(int iIndex, LPVOID pData)
+	bool CPtrArrayUI::InsertAt(int iIndex, LPVOID pData)
 	{
 		if( iIndex == m_nCount ) return Add(pData);
 		if( iIndex < 0 || iIndex > m_nCount ) return false;
@@ -284,14 +286,14 @@ namespace DUILIB
 		return true;
 	}
 
-	bool CDuiPtrArray::SetAt(int iIndex, LPVOID pData)
+	bool CPtrArrayUI::SetAt(int iIndex, LPVOID pData)
 	{
 		if( iIndex < 0 || iIndex >= m_nCount ) return false;
 		m_ppVoid[iIndex] = pData;
 		return true;
 	}
 
-    bool CDuiPtrArray::Remove(int iIndex, int iCount)
+    bool CPtrArrayUI::Remove(int iIndex, int iCount)
     {
         if( iIndex < 0 || iCount <= 0 || iIndex + iCount > m_nCount ) return false;
         if (iIndex + iCount < m_nCount) ::CopyMemory(m_ppVoid + iIndex, m_ppVoid + iIndex + iCount, (m_nCount - iIndex - iCount) * sizeof(LPVOID));
@@ -299,29 +301,29 @@ namespace DUILIB
         return true;
     }
 
-	int CDuiPtrArray::Find(LPVOID pData) const
+	int CPtrArrayUI::Find(LPVOID pData) const
 	{
 		for( int i = 0; i < m_nCount; i++ ) if( m_ppVoid[i] == pData ) return i;
 		return -1;
 	}
 
-	int CDuiPtrArray::GetSize() const
+	int CPtrArrayUI::GetSize() const
 	{
 		return m_nCount;
 	}
 
-	LPVOID* CDuiPtrArray::GetData()
+	LPVOID* CPtrArrayUI::GetData()
 	{
 		return m_ppVoid;
 	}
 
-	LPVOID CDuiPtrArray::GetAt(int iIndex) const
+	LPVOID CPtrArrayUI::GetAt(int iIndex) const
 	{
 		if( iIndex < 0 || iIndex >= m_nCount ) return NULL;
 		return m_ppVoid[iIndex];
 	}
 
-	LPVOID CDuiPtrArray::operator[] (int iIndex) const
+	LPVOID CPtrArrayUI::operator[] (int iIndex) const
 	{
 		ASSERT(iIndex>=0 && iIndex<m_nCount);
 		return m_ppVoid[iIndex];
@@ -332,7 +334,7 @@ namespace DUILIB
 	//
 	//
 
-	CDuiValArray::CDuiValArray(int iElementSize, int iPreallocSize /*= 0*/) : 
+	CValArrayUI::CValArrayUI(int iElementSize, int iPreallocSize /*= 0*/) : 
 	m_pVoid(NULL), 
 		m_nCount(0), 
 		m_iElementSize(iElementSize), 
@@ -343,22 +345,22 @@ namespace DUILIB
 		if( iPreallocSize > 0 ) m_pVoid = static_cast<LPBYTE>(malloc(iPreallocSize * m_iElementSize));
 	}
 
-	CDuiValArray::~CDuiValArray()
+	CValArrayUI::~CValArrayUI()
 	{
 		if( m_pVoid != NULL ) free(m_pVoid);
 	}
 
-	void CDuiValArray::Empty()
+	void CValArrayUI::Empty()
 	{   
 		m_nCount = 0;  // NOTE: We keep the memory in place
 	}
 
-	bool CDuiValArray::IsEmpty() const
+	bool CValArrayUI::IsEmpty() const
 	{
 		return m_nCount == 0;
 	}
 
-	bool CDuiValArray::Add(LPCVOID pData)
+	bool CValArrayUI::Add(LPCVOID pData)
 	{
 		if( ++m_nCount >= m_nAllocated) {
 			int nAllocated = m_nAllocated * 2;
@@ -377,7 +379,7 @@ namespace DUILIB
 		return true;
 	}
 
-	bool CDuiValArray::Remove(int iIndex, int iCount)
+	bool CValArrayUI::Remove(int iIndex, int iCount)
 	{
         if( iIndex < 0 || iCount <= 0 || iIndex + iCount > m_nCount ) return false;
         if (iIndex + iCount < m_nCount) ::CopyMemory(m_pVoid + (iIndex * m_iElementSize), m_pVoid + (iIndex + iCount) * m_iElementSize, (m_nCount - iIndex - iCount) * m_iElementSize);
@@ -385,23 +387,23 @@ namespace DUILIB
 		return true;
 	}
 
-	int CDuiValArray::GetSize() const
+	int CValArrayUI::GetSize() const
 	{
 		return m_nCount;
 	}
 
-	LPVOID CDuiValArray::GetData()
+	LPVOID CValArrayUI::GetData()
 	{
 		return static_cast<LPVOID>(m_pVoid);
 	}
 
-	LPVOID CDuiValArray::GetAt(int iIndex) const
+	LPVOID CValArrayUI::GetAt(int iIndex) const
 	{
 		if( iIndex < 0 || iIndex >= m_nCount ) return NULL;
 		return m_pVoid + (iIndex * m_iElementSize);
 	}
 
-	LPVOID CDuiValArray::operator[] (int iIndex) const
+	LPVOID CValArrayUI::operator[] (int iIndex) const
 	{
 		ASSERT(iIndex>=0 && iIndex<m_nCount);
 		return m_pVoid + (iIndex * m_iElementSize);
@@ -412,51 +414,51 @@ namespace DUILIB
 	//
 	//
 
-	CDuiString::CDuiString() : m_pstr(m_szBuffer)
+	CStringUI::CStringUI() : m_pstr(m_szBuffer)
 	{
 		m_szBuffer[0] = _T('\0');
 	}
 
-	CDuiString::CDuiString(const TCHAR ch) : m_pstr(m_szBuffer)
+	CStringUI::CStringUI(const TCHAR ch) : m_pstr(m_szBuffer)
 	{
 		m_szBuffer[0] = ch;
 		m_szBuffer[1] = _T('\0');
 	}
 
-	CDuiString::CDuiString(LPCTSTR lpsz, int nLen) : m_pstr(m_szBuffer)
+	CStringUI::CStringUI(LPCTSTR lpsz, int nLen) : m_pstr(m_szBuffer)
 	{      
 		ASSERT(!::IsBadStringPtr(lpsz,-1) || lpsz==NULL);
 		m_szBuffer[0] = _T('\0');
 		Assign(lpsz, nLen);
 	}
 
-	CDuiString::CDuiString(const CDuiString& src) : m_pstr(m_szBuffer)
+	CStringUI::CStringUI(const CStringUI& src) : m_pstr(m_szBuffer)
 	{
 		m_szBuffer[0] = _T('\0');
 		Assign(src.m_pstr);
 	}
 
-	CDuiString::~CDuiString()
+	CStringUI::~CStringUI()
 	{
 		if( m_pstr != m_szBuffer ) free(m_pstr);
 	}
 
-    CDuiString CDuiString::ToString()
+    CStringUI CStringUI::ToString()
     {
         return m_pstr;
     }
 
-	int CDuiString::GetLength() const
+	int CStringUI::GetLength() const
 	{ 
 		return (int) _tcslen(m_pstr); 
 	}
 
-	CDuiString::operator LPCTSTR() const 
+	CStringUI::operator LPCTSTR() const 
 	{ 
 		return m_pstr; 
 	}
 
-	void CDuiString::Append(LPCTSTR pstr)
+	void CStringUI::Append(LPCTSTR pstr)
 	{
 		int nNewLength = GetLength() + (int) _tcslen(pstr);
 		if( nNewLength >= MAX_LOCAL_STRING_LEN ) {
@@ -479,7 +481,7 @@ namespace DUILIB
 		}
 	}
 
-	void CDuiString::Assign(LPCTSTR pstr, int cchMax)
+	void CStringUI::Assign(LPCTSTR pstr, int cchMax)
 	{
 		if( pstr == NULL ) pstr = _T("");
 		cchMax = (cchMax < 0 ? (int) _tcslen(pstr) : cchMax);
@@ -497,40 +499,40 @@ namespace DUILIB
 		m_pstr[cchMax] = _T('\0');
 	}
 
-	bool CDuiString::IsEmpty() const 
+	bool CStringUI::IsEmpty() const 
 	{ 
 		return m_pstr[0] == _T('\0'); 
 	}
 
-	void CDuiString::Empty() 
+	void CStringUI::Empty() 
 	{ 
 		if( m_pstr != m_szBuffer ) free(m_pstr);
 		m_pstr = m_szBuffer;
 		m_szBuffer[0] = _T('\0'); 
 	}
 
-	LPCTSTR CDuiString::GetData() const
+	LPCTSTR CStringUI::GetData() const
 	{
 		return m_pstr;
 	}
 
-	TCHAR CDuiString::GetAt(int nIndex) const
+	TCHAR CStringUI::GetAt(int nIndex) const
 	{
 		return m_pstr[nIndex];
 	}
 
-	TCHAR CDuiString::operator[] (int nIndex) const
+	TCHAR CStringUI::operator[] (int nIndex) const
 	{ 
 		return m_pstr[nIndex];
 	}   
 
-	const CDuiString& CDuiString::operator=(const CDuiString& src)
+	const CStringUI& CStringUI::operator=(const CStringUI& src)
 	{      
 		Assign(src);
 		return *this;
 	}
 
-	const CDuiString& CDuiString::operator=(LPCTSTR lpStr)
+	const CStringUI& CStringUI::operator=(LPCTSTR lpStr)
 	{      
 		if ( lpStr )
 		{
@@ -546,7 +548,7 @@ namespace DUILIB
 
 #ifdef _UNICODE
 
-	const CDuiString& CDuiString::operator=(LPCSTR lpStr)
+	const CStringUI& CStringUI::operator=(LPCSTR lpStr)
 	{
 		if ( lpStr )
 		{
@@ -563,7 +565,7 @@ namespace DUILIB
 		return *this;
 	}
 
-	const CDuiString& CDuiString::operator+=(LPCSTR lpStr)
+	const CStringUI& CStringUI::operator+=(LPCSTR lpStr)
 	{
 		if ( lpStr )
 		{
@@ -579,7 +581,7 @@ namespace DUILIB
 
 #else
 
-	const CDuiString& CDuiString::operator=(LPCWSTR lpwStr)
+	const CStringUI& CStringUI::operator=(LPCWSTR lpwStr)
 	{      
 		if ( lpwStr )
 		{
@@ -597,7 +599,7 @@ namespace DUILIB
 		return *this;
 	}
 
-	const CDuiString& CDuiString::operator+=(LPCWSTR lpwStr)
+	const CStringUI& CStringUI::operator+=(LPCWSTR lpwStr)
 	{
 		if ( lpwStr )
 		{
@@ -613,7 +615,7 @@ namespace DUILIB
 
 #endif // _UNICODE
 
-	const CDuiString& CDuiString::operator=(const TCHAR ch)
+	const CStringUI& CStringUI::operator=(const TCHAR ch)
 	{
 		Empty();
 		m_szBuffer[0] = ch;
@@ -621,19 +623,19 @@ namespace DUILIB
 		return *this;
 	}
 
-	CDuiString CDuiString::operator+(const CDuiString& src) const
+	CStringUI CStringUI::operator+(const CStringUI& src) const
 	{
-		CDuiString sTemp = *this;
+		CStringUI sTemp = *this;
 		sTemp.Append(src);
 		return sTemp;
 	}
 
-	CDuiString CDuiString::operator+(LPCTSTR lpStr) const
+	CStringUI CStringUI::operator+(LPCTSTR lpStr) const
 	{
 		if ( lpStr )
 		{
 			ASSERT(!::IsBadStringPtr(lpStr,-1));
-			CDuiString sTemp = *this;
+			CStringUI sTemp = *this;
 			sTemp.Append(lpStr);
 			return sTemp;
 		}
@@ -641,13 +643,13 @@ namespace DUILIB
 		return *this;
 	}
 
-	const CDuiString& CDuiString::operator+=(const CDuiString& src)
+	const CStringUI& CStringUI::operator+=(const CStringUI& src)
 	{      
 		Append(src);
 		return *this;
 	}
 
-	const CDuiString& CDuiString::operator+=(LPCTSTR lpStr)
+	const CStringUI& CStringUI::operator+=(LPCTSTR lpStr)
 	{      
 		if ( lpStr )
 		{
@@ -658,72 +660,72 @@ namespace DUILIB
 		return *this;
 	}
 
-	const CDuiString& CDuiString::operator+=(const TCHAR ch)
+	const CStringUI& CStringUI::operator+=(const TCHAR ch)
 	{      
 		TCHAR str[] = { ch, _T('\0') };
 		Append(str);
 		return *this;
 	}
 
-	bool CDuiString::operator == (LPCTSTR str) const { return (Compare(str) == 0); };
-	bool CDuiString::operator != (LPCTSTR str) const { return (Compare(str) != 0); };
-	bool CDuiString::operator <= (LPCTSTR str) const { return (Compare(str) <= 0); };
-	bool CDuiString::operator <  (LPCTSTR str) const { return (Compare(str) <  0); };
-	bool CDuiString::operator >= (LPCTSTR str) const { return (Compare(str) >= 0); };
-	bool CDuiString::operator >  (LPCTSTR str) const { return (Compare(str) >  0); };
+	bool CStringUI::operator == (LPCTSTR str) const { return (Compare(str) == 0); };
+	bool CStringUI::operator != (LPCTSTR str) const { return (Compare(str) != 0); };
+	bool CStringUI::operator <= (LPCTSTR str) const { return (Compare(str) <= 0); };
+	bool CStringUI::operator <  (LPCTSTR str) const { return (Compare(str) <  0); };
+	bool CStringUI::operator >= (LPCTSTR str) const { return (Compare(str) >= 0); };
+	bool CStringUI::operator >  (LPCTSTR str) const { return (Compare(str) >  0); };
 
-	void CDuiString::SetAt(int nIndex, TCHAR ch)
+	void CStringUI::SetAt(int nIndex, TCHAR ch)
 	{
 		ASSERT(nIndex>=0 && nIndex<GetLength());
 		m_pstr[nIndex] = ch;
 	}
 
-	int CDuiString::Compare(LPCTSTR lpsz) const 
+	int CStringUI::Compare(LPCTSTR lpsz) const 
 	{ 
 		return _tcscmp(m_pstr, lpsz); 
 	}
 
-	int CDuiString::CompareNoCase(LPCTSTR lpsz) const 
+	int CStringUI::CompareNoCase(LPCTSTR lpsz) const 
 	{ 
 		return _tcsicmp(m_pstr, lpsz); 
 	}
 
-	void CDuiString::MakeUpper() 
+	void CStringUI::MakeUpper() 
 	{ 
 		_tcsupr(m_pstr); 
 	}
 
-	void CDuiString::MakeLower() 
+	void CStringUI::MakeLower() 
 	{ 
 		_tcslwr(m_pstr); 
 	}
 
-	CDuiString CDuiString::Left(int iLength) const
+	CStringUI CStringUI::Left(int iLength) const
 	{
 		if( iLength < 0 ) iLength = 0;
 		if( iLength > GetLength() ) iLength = GetLength();
-		return CDuiString(m_pstr, iLength);
+		return CStringUI(m_pstr, iLength);
 	}
 
-	CDuiString CDuiString::Mid(int iPos, int iLength) const
+	CStringUI CStringUI::Mid(int iPos, int iLength) const
 	{
 		if( iLength < 0 ) iLength = GetLength() - iPos;
 		if( iPos + iLength > GetLength() ) iLength = GetLength() - iPos;
-		if( iLength <= 0 ) return CDuiString();
-		return CDuiString(m_pstr + iPos, iLength);
+		if( iLength <= 0 ) return CStringUI();
+		return CStringUI(m_pstr + iPos, iLength);
 	}
 
-	CDuiString CDuiString::Right(int iLength) const
+	CStringUI CStringUI::Right(int iLength) const
 	{
 		int iPos = GetLength() - iLength;
 		if( iPos < 0 ) {
 			iPos = 0;
 			iLength = GetLength();
 		}
-		return CDuiString(m_pstr + iPos, iLength);
+		return CStringUI(m_pstr + iPos, iLength);
 	}
 
-	int CDuiString::Find(TCHAR ch, int iPos /*= 0*/) const
+	int CStringUI::Find(TCHAR ch, int iPos /*= 0*/) const
 	{
 		ASSERT(iPos>=0 && iPos<=GetLength());
 		if( iPos != 0 && (iPos < 0 || iPos >= GetLength()) ) return -1;
@@ -732,7 +734,7 @@ namespace DUILIB
 		return (int)(p - m_pstr);
 	}
 
-	int CDuiString::Find(LPCTSTR pstrSub, int iPos /*= 0*/) const
+	int CStringUI::Find(LPCTSTR pstrSub, int iPos /*= 0*/) const
 	{
 		ASSERT(!::IsBadStringPtr(pstrSub,-1));
 		ASSERT(iPos>=0 && iPos<=GetLength());
@@ -742,16 +744,16 @@ namespace DUILIB
 		return (int)(p - m_pstr);
 	}
 
-	int CDuiString::ReverseFind(TCHAR ch) const
+	int CStringUI::ReverseFind(TCHAR ch) const
 	{
 		LPCTSTR p = _tcsrchr(m_pstr, ch);
 		if( p == NULL ) return -1;
 		return (int)(p - m_pstr);
 	}
 
-	int CDuiString::Replace(LPCTSTR pstrFrom, LPCTSTR pstrTo)
+	int CStringUI::Replace(LPCTSTR pstrFrom, LPCTSTR pstrTo)
 	{
-		CDuiString sTemp;
+		CStringUI sTemp;
 		int nCount = 0;
 		int iPos = Find(pstrFrom);
 		if( iPos < 0 ) return 0;
@@ -768,7 +770,7 @@ namespace DUILIB
 		return nCount;
 	}
 
-	int CDuiString::Format(LPCTSTR pstrFormat, ...)
+	int CStringUI::Format(LPCTSTR pstrFormat, ...)
 	{
 		LPTSTR szSprintf = NULL;
 		va_list argList;
@@ -784,9 +786,9 @@ namespace DUILIB
 		return iRet;
 	}
 
-	int CDuiString::SmallFormat(LPCTSTR pstrFormat, ...)
+	int CStringUI::SmallFormat(LPCTSTR pstrFormat, ...)
 	{
-		CDuiString sFormat = pstrFormat;
+		CStringUI sFormat = pstrFormat;
 		TCHAR szBuffer[64] = { 0 };
 		va_list argList;
 		va_start(argList, pstrFormat);
@@ -801,7 +803,7 @@ namespace DUILIB
 	//
     struct TITEM
     {
-        CDuiString Key;
+        CStringUI Key;
         LPVOID Data;
         struct TITEM* pPrev;
         struct TITEM* pNext;
@@ -815,12 +817,12 @@ namespace DUILIB
 		return i;
 	}
 
-	static UINT HashKey(const CDuiString& Key)
+	static UINT HashKey(const CStringUI& Key)
 	{
 		return HashKey((LPCTSTR)Key);
 	};
 
-	CDuiStringPtrMap::CDuiStringPtrMap(int nSize) : m_nCount(0)
+	CStringPtrMapUI::CStringPtrMapUI(int nSize) : m_nCount(0)
 	{
 		if( nSize < 16 ) nSize = 16;
 		m_nBuckets = nSize;
@@ -828,7 +830,7 @@ namespace DUILIB
 		memset(m_aT, 0, nSize * sizeof(TITEM*));
 	}
 
-	CDuiStringPtrMap::~CDuiStringPtrMap()
+	CStringPtrMapUI::~CStringPtrMapUI()
 	{
 		if( m_aT ) {
 			int len = m_nBuckets;
@@ -845,12 +847,12 @@ namespace DUILIB
 		}
 	}
 
-	void CDuiStringPtrMap::RemoveAll()
+	void CStringPtrMapUI::RemoveAll()
 	{
 		this->Resize(m_nBuckets);
 	}
 
-	void CDuiStringPtrMap::Resize(int nSize)
+	void CStringPtrMapUI::Resize(int nSize)
 	{
 		if( m_aT ) {
 			int len = m_nBuckets;
@@ -875,7 +877,7 @@ namespace DUILIB
 		m_nCount = 0;
 	}
 
-	LPVOID CDuiStringPtrMap::Find(LPCTSTR key, bool optimize) const
+	LPVOID CStringPtrMapUI::Find(LPCTSTR key, bool optimize) const
 	{
 		if( m_nBuckets == 0 || GetSize() == 0 ) return NULL;
 
@@ -900,7 +902,7 @@ namespace DUILIB
 		return NULL;
 	}
 
-	bool CDuiStringPtrMap::Insert(LPCTSTR key, LPVOID pData)
+	bool CStringPtrMapUI::Insert(LPCTSTR key, LPVOID pData)
 	{
 		if( m_nBuckets == 0 ) return false;
 		if( Find(key) ) return false;
@@ -919,7 +921,7 @@ namespace DUILIB
 		return true;
 	}
 
-	LPVOID CDuiStringPtrMap::Set(LPCTSTR key, LPVOID pData)
+	LPVOID CStringPtrMapUI::Set(LPCTSTR key, LPVOID pData)
 	{
 		if( m_nBuckets == 0 ) return pData;
 
@@ -939,7 +941,7 @@ namespace DUILIB
 		return NULL;
 	}
 
-	bool CDuiStringPtrMap::Remove(LPCTSTR key)
+	bool CStringPtrMapUI::Remove(LPCTSTR key)
 	{
 		if( m_nBuckets == 0 || GetSize() == 0 ) return false;
 
@@ -961,7 +963,7 @@ namespace DUILIB
 		return false;
 	}
 
-	int CDuiStringPtrMap::GetSize() const
+	int CStringPtrMapUI::GetSize() const
 	{
 #if 0//def _DEBUG
 		int nCount = 0;
@@ -974,7 +976,7 @@ namespace DUILIB
 		return m_nCount;
 	}
 
-	LPCTSTR CDuiStringPtrMap::GetAt(int iIndex) const
+	LPCTSTR CStringPtrMapUI::GetAt(int iIndex) const
 	{
 		if( m_nBuckets == 0 || GetSize() == 0 ) return false;
 
@@ -991,7 +993,7 @@ namespace DUILIB
 		return NULL;
 	}
 
-	LPCTSTR CDuiStringPtrMap::operator[] (int nIndex) const
+	LPCTSTR CStringPtrMapUI::operator[] (int nIndex) const
 	{
 		return GetAt(nIndex);
 	}
@@ -1001,12 +1003,12 @@ namespace DUILIB
 	//
 	//
 
-	CWaitCursor::CWaitCursor()
+	CWaitCursorUI::CWaitCursorUI()
 	{
 		m_hOrigCursor = ::SetCursor(::LoadCursor(NULL, IDC_WAIT));
 	}
 
-	CWaitCursor::~CWaitCursor()
+	CWaitCursorUI::~CWaitCursorUI()
 	{
 		::SetCursor(m_hOrigCursor);
 	}

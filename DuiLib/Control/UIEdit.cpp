@@ -3,7 +3,7 @@
 
 namespace DuiLib
 {
-	class CEditWnd : public CWindowWnd
+	class CEditWnd : public CWindowUI
 	{
 	public:
 		CEditWnd();
@@ -184,7 +184,7 @@ namespace DuiLib
 		}
 		else if( uMsg == WM_PRINT ) {
 			if (m_pOwner->GetManager()->IsLayered()) {
-				lRes = CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+				lRes = CWindowUI::HandleMessage(uMsg, wParam, lParam);
 				if( m_pOwner->IsEnabled() && m_bDrawCaret ) { // todo:≈–∂œ «∑Òenabled
 					RECT rcClient;
 					::GetClientRect(m_hWnd, &rcClient);
@@ -208,7 +208,7 @@ namespace DuiLib
 			bHandled = FALSE;
 		}
 		else bHandled = FALSE;
-		if( !bHandled ) return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+		if( !bHandled ) return CWindowUI::HandleMessage(uMsg, wParam, lParam);
 		return lRes;
 	}
 

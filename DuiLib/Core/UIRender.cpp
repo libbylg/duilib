@@ -1,8 +1,8 @@
-#include "StdAfx.h"
+#include "Core/UIRender.h"
+#include "Core/UIDefine.h"
+#include "Core/UIManager.h"
+#include "Core/UIControl.h"
 
-#include "UIRender.h"
-
-#include "UIDefine.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////
 DECLARE_HANDLE(HZIP);	// An HZIP identifies a zip file that has been opened
@@ -54,9 +54,31 @@ extern "C"
 
 };
 
-namespace DUILIB {
+namespace DUILIB 
+{
 
 static int g_iFontID = MAX_FONT_ID;
+
+ 
+TDRAWINFO_UI::TDRAWINFO_UI()
+{
+    Clear();
+}
+
+TDRAWINFO_UI::TDRAWINFO_UI(LPCTSTR lpsz)
+{
+    Clear();
+    sDrawString = lpsz;
+}
+
+void TDRAWINFO_UI::Clear()
+{
+    sDrawString.Empty();
+    sImageName.Empty();
+    ::ZeroMemory(&bLoaded, sizeof(TDRAWINFO_UI) - offsetof(TDRAWINFO_UI, bLoaded));
+    uFade = 255;
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
@@ -344,7 +366,7 @@ TIMAGEINFO_UI* CRenderEngine::LoadImage(STRINGorID bitmap, LPCTSTR type, DWORD m
 	do 
 	{
 		if( type == NULL ) {
-			CDuiString sFile = CPaintManagerUI::GetResourcePath();
+			CStringUI sFile = CPaintManagerUI::GetResourcePath();
 			if( CPaintManagerUI::GetResourceZip().IsEmpty() ) {
 				sFile += bitmap.m_lpstr;
 				HANDLE hFile = ::CreateFile(sFile.GetData(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, \
@@ -997,13 +1019,13 @@ bool CRenderEngine::DrawImage(HDC hDC, CPaintManagerUI* pManager, const RECT& rc
 		if( drawInfo.sDrawString.IsEmpty() ) return false;
 
 		bool bUseRes = false;
-		CDuiString sImageName = drawInfo.sDrawString;
-		CDuiString sImageResType;
+		CStringUI sImageName = drawInfo.sDrawString;
+		CStringUI sImageResType;
 		DWORD dwMask = 0;
 		bool bUseHSL = false;
 
-		CDuiString sItem;
-		CDuiString sValue;
+		CStringUI sItem;
+		CStringUI sValue;
 		LPTSTR pstr = NULL;
 		LPCTSTR pstrImage = drawInfo.sDrawString.GetData();
 		while( *pstrImage != _T('\0') ) {
@@ -1277,7 +1299,7 @@ void CRenderEngine::DrawText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, LPCTS
     ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
     if( pstrText == NULL || pManager == NULL ) return;
 
-	CDuiString sText = pstrText;
+	CStringUI sText = pstrText;
 	CPaintManagerUI::ProcessMultiLanguageTokens(sText);
 	pstrText = sText;
 
@@ -1288,7 +1310,7 @@ void CRenderEngine::DrawText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, LPCTS
     ::SelectObject(hDC, hOldFont);
 }
 
-void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, LPCTSTR pstrText, DWORD dwTextColor, RECT* prcLinks, CDuiString* sLinks, int& nLinkRects, int iDefaultFont, UINT uStyle)
+void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, LPCTSTR pstrText, DWORD dwTextColor, RECT* prcLinks, CStringUI* sLinks, int& nLinkRects, int iDefaultFont, UINT uStyle)
 {
     // 考虑到在xml编辑器中使用<>符号不方便，可以使用{}符号代替
     // 支持标签嵌套（如<l><b>text</b></l>），但是交叉嵌套是应该避免的（如<l><b>text</l></b>）
@@ -1315,10 +1337,10 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
 
     bool bDraw = (uStyle & DT_CALCRECT) == 0;
 
-    CDuiPtrArray aFontArray(10);
-    CDuiPtrArray aColorArray(10);
-    CDuiPtrArray aPIndentArray(10);
-	CDuiPtrArray aVAlignArray(10);
+    CPtrArrayUI aFontArray(10);
+    CPtrArrayUI aColorArray(10);
+    CPtrArrayUI aPIndentArray(10);
+	CPtrArrayUI aVAlignArray(10);
 
     RECT rcClip = { 0 };
     ::GetClipBox(hDC, &rcClip);
@@ -1326,7 +1348,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
     HRGN hRgn = ::CreateRectRgnIndirect(&rc);
     if( bDraw ) ::ExtSelectClipRgn(hDC, hRgn, RGN_AND);
 
-	CDuiString sText = pstrText;
+	CStringUI sText = pstrText;
 	CPaintManagerUI::ProcessMultiLanguageTokens(sText);
 	pstrText = sText;
 
@@ -1366,11 +1388,11 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
 	}
 
     bool bHoverLink = false;
-    CDuiString sHoverLink;
+    CStringUI sHoverLink;
     POINT ptMouse = pManager->GetMousePos();
     for( int i = 0; !bHoverLink && i < nLinkRects; i++ ) {
         if( ::PtInRect(prcLinks + i, ptMouse) ) {
-            sHoverLink = *(CDuiString*)(sLinks + i);
+            sHoverLink = *(CStringUI*)(sLinks + i);
             bHoverLink = true;
         }
     }
@@ -1389,10 +1411,10 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
     int iLineLinkIndex = 0;
 
     // 排版习惯是图文底部对齐，所以每行绘制都要分两步，先计算高度，再绘制
-    CDuiPtrArray aLineFontArray;
-    CDuiPtrArray aLineColorArray;
-    CDuiPtrArray aLinePIndentArray;
-	CDuiPtrArray aLineVAlignArray;
+    CPtrArrayUI aLineFontArray;
+    CPtrArrayUI aLineColorArray;
+    CPtrArrayUI aLinePIndentArray;
+	CPtrArrayUI aLineVAlignArray;
     LPCTSTR pstrLineBegin = pstrText;
     bool bLineInRaw = false;
     bool bLineInLink = false;
@@ -1409,8 +1431,8 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
             if( !bLineDraw ) {
                 if( bInLink && iLinkIndex < nLinkRects ) {
                     ::SetRect(&prcLinks[iLinkIndex++], ptLinkStart.x, ptLinkStart.y, MIN(pt.x, rc.right), pt.y + cyLine);
-                    CDuiString *pStr1 = (CDuiString*)(sLinks + iLinkIndex - 1);
-                    CDuiString *pStr2 = (CDuiString*)(sLinks + iLinkIndex);
+                    CStringUI *pStr1 = (CStringUI*)(sLinks + iLinkIndex - 1);
+                    CStringUI *pStr2 = (CStringUI*)(sLinks + iLinkIndex);
                     *pStr2 = *pStr1;
                 }
                 for( int i = iLineLinkIndex; i < iLinkIndex; i++ ) {
@@ -1460,7 +1482,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
                     pstrText++;
                     while( *pstrText > _T('\0') && *pstrText <= _T(' ') ) pstrText = ::CharNext(pstrText);
                     if( iLinkIndex < nLinkRects && !bLineDraw ) {
-                        CDuiString *pStr = (CDuiString*)(sLinks + iLinkIndex);
+                        CStringUI *pStr = (CStringUI*)(sLinks + iLinkIndex);
                         pStr->Empty();
                         while( *pstrText != _T('\0') && *pstrText != _T('>') && *pstrText != _T('}') ) {
                             LPCTSTR pstrTemp = ::CharNext(pstrText);
@@ -1472,7 +1494,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
 
                     DWORD clrColor = pManager->GetDefaultLinkFontColor();
                     if( bHoverLink && iLinkIndex < nLinkRects ) {
-                        CDuiString *pStr = (CDuiString*)(sLinks + iLinkIndex);
+                        CStringUI *pStr = (CStringUI*)(sLinks + iLinkIndex);
                         if( sHoverLink == *pStr ) clrColor = pManager->GetDefaultLinkHoverFontColor();
                     }
                     //else if( prcLinks == NULL ) {
@@ -1542,9 +1564,9 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
                         ::SelectObject(hDC, pFontInfo->hFont);
                     }
                     else {
-                        CDuiString sFontName;
+                        CStringUI sFontName;
                         int iFontSize = 10;
-                        CDuiString sFontAttr;
+                        CStringUI sFontAttr;
                         bool bBold = false;
                         bool bUnderline = false;
                         bool bItalic = false;
@@ -1586,12 +1608,12 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
                 {    
                     pstrNextStart = pstrText - 1;
                     pstrText++;
-					CDuiString sImageString = pstrText;
+					CStringUI sImageString = pstrText;
                     int iWidth = 0;
                     int iHeight = 0;
                     while( *pstrText > _T('\0') && *pstrText <= _T(' ') ) pstrText = ::CharNext(pstrText);
                     const TIMAGEINFO_UI* pImageInfo = NULL;
-                    CDuiString sName;
+                    CStringUI sName;
                     while( *pstrText != _T('\0') && *pstrText != _T('>') && *pstrText != _T('}') && *pstrText != _T(' ') ) {
                         LPCTSTR pstrTemp = ::CharNext(pstrText);
                         while( pstrText < pstrTemp) {
@@ -1624,11 +1646,11 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
 						if( iImageListIndex < 0 || iImageListIndex >= iImageListNum ) iImageListIndex = 0;
 
 						if( _tcsstr(sImageString.GetData(), _T("file=\'")) != NULL || _tcsstr(sImageString.GetData(), _T("res=\'")) != NULL ) {
-							CDuiString sImageResType;
-							CDuiString sImageName;
+							CStringUI sImageResType;
+							CStringUI sImageName;
 							LPCTSTR pStrImage = sImageString.GetData();
-							CDuiString sItem;
-							CDuiString sValue;
+							CStringUI sItem;
+							CStringUI sValue;
 							while( *pStrImage != _T('\0') ) {
 								sItem.Empty();
 								sValue.Empty();
@@ -1678,7 +1700,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
                             else {
                                 pstrNextStart = NULL;
                                 if( bDraw && bLineDraw ) {
-                                    CDuiRect rcImage(pt.x + cxOffset, pt.y + cyLineHeight - iHeight, pt.x + + cxOffset + iWidth, pt.y + cyLineHeight);
+                                    CRectUI rcImage(pt.x + cxOffset, pt.y + cyLineHeight - iHeight, pt.x + + cxOffset + iWidth, pt.y + cyLineHeight);
 									iVAlign = DT_BOTTOM;
 									if (aVAlignArray.GetSize() > 0) iVAlign = (UINT)aVAlignArray.GetAt(aVAlignArray.GetSize() - 1); 
 									if (iVAlign == DT_VCENTER) {
@@ -1694,10 +1716,10 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
 										}
 									}
 
-                                    CDuiRect rcBmpPart(0, 0, iWidth, iHeight);
+                                    CRectUI rcBmpPart(0, 0, iWidth, iHeight);
                                     rcBmpPart.left = iWidth * iImageListIndex;
                                     rcBmpPart.right = iWidth * (iImageListIndex + 1);
-                                    CDuiRect rcCorner(0, 0, 0, 0);
+                                    CRectUI rcCorner(0, 0, 0, 0);
                                     DrawImage(hDC, pImageInfo->hBitmap, rcImage, rcImage, rcBmpPart, rcCorner, \
                                         pImageInfo->bAlpha, 255);
                                 }
@@ -1734,7 +1756,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
 				{
 					pstrText++;
 					while( *pstrText > _T('\0') && *pstrText <= _T(' ') ) pstrText = ::CharNext(pstrText);
-					CDuiString sVAlignStyle;
+					CStringUI sVAlignStyle;
 					while( *pstrText != _T('\0') && *pstrText != _T('>') && *pstrText != _T('}') ) {
 						LPCTSTR pstrTemp = ::CharNext(pstrText);
 						while( pstrText < pstrTemp) {
@@ -2177,7 +2199,7 @@ HBITMAP CRenderEngine::GenerateBitmap(CPaintManagerUI* pManager, CControlUI* pCo
 
 SIZE CRenderEngine::GetTextSize( HDC hDC, CPaintManagerUI* pManager , LPCTSTR pstrText, int iFont, UINT uStyle )
 {
-	CDuiString sText = pstrText;
+	CStringUI sText = pstrText;
 	CPaintManagerUI::ProcessMultiLanguageTokens(sText);
 	pstrText = sText;
 	SIZE size = {0,0};

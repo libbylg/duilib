@@ -2,6 +2,8 @@
 #define __UICONTROL_H__
 
 #include "Core/UIDefine.h"
+#include "Core/UIRender.h"
+#include "Utils/UIDelegate.h"
 
 namespace DUILIB
 {
@@ -13,7 +15,23 @@ namespace DUILIB
     class CPaintManagerUI;
     struct TDRAWINFO_UI;
 
-    typedef CControlUI* (CALLBACK* FINDCONTROLPROC)(CControlUI*, LPVOID);
+    typedef CControlUI* (CALLBACK* LPFINDCONTROLPROC_UI)(CControlUI*, LPVOID);
+
+    // Structure for notifications from the system
+    // to the control implementation.
+    struct DUILIB_API TEVENT_UI
+    {
+        int             Type;
+        CControlUI*     pSender;
+        DWORD           dwTimestamp;
+        POINT           ptMouse;
+        TCHAR           chKey;
+        WORD            wKeyState;
+        WPARAM          wParam;
+        LPARAM          lParam;
+    };
+
+
 
     class DUILIB_API CControlUI
     {
@@ -25,7 +43,7 @@ namespace DUILIB
         virtual ~CControlUI();
 
     public:
-        virtual CDuiString GetName() const;
+        virtual CStringUI GetName() const;
         virtual void SetName(LPCTSTR pstrName);
         virtual LPCTSTR GetClass() const;
         virtual LPVOID GetInterface(LPCTSTR pstrName);
@@ -40,7 +58,7 @@ namespace DUILIB
         virtual void SetCover(CControlUI* pControl);
 
         // 文本相关
-        virtual CDuiString GetText() const;
+        virtual CStringUI GetText() const;
         virtual void SetText(LPCTSTR pstrText);
 
         // 图形相关
@@ -100,7 +118,7 @@ namespace DUILIB
         virtual void SetMaxHeight(int cy);
 
         // 鼠标提示
-        virtual CDuiString GetToolTip() const;
+        virtual CStringUI GetToolTip() const;
         virtual void SetToolTip(LPCTSTR pstrText);
         virtual void SetToolTipWidth(int nWidth);
         virtual int	  GetToolTipWidth(void);	// 多行ToolTip单行最长宽度
@@ -114,7 +132,7 @@ namespace DUILIB
         virtual void SetContextMenuUsed(bool bMenuUsed);
 
         // 用户属性
-        virtual const CDuiString& GetUserData(); // 辅助函数，供用户使用
+        virtual const CStringUI& GetUserData(); // 辅助函数，供用户使用
         virtual void SetUserData(LPCTSTR pstrText); // 辅助函数，供用户使用
         virtual UINT_PTR GetTag() const; // 辅助函数，供用户使用
         virtual void SetTag(UINT_PTR pTag); // 辅助函数，供用户使用
@@ -140,7 +158,7 @@ namespace DUILIB
         bool RemoveCustomAttribute(LPCTSTR pstrName);
         void RemoveAllCustomAttribute();
 
-        virtual CControlUI* FindControl(FINDCONTROLPROC Proc, LPVOID pData, UINT uFlags);
+        virtual CControlUI* FindControl(LPFINDCONTROLPROC_UI Proc, LPVOID pData, UINT uFlags);
 
         void Invalidate();
         bool IsUpdateNeeded() const;
@@ -154,9 +172,9 @@ namespace DUILIB
         virtual void Event(struct TEVENT_UI& event);
         virtual void DoEvent(struct TEVENT_UI& event);
 
-        virtual CDuiString GetAttribute(LPCTSTR pstrName);
+        virtual CStringUI GetAttribute(LPCTSTR pstrName);
         virtual void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
-        virtual CDuiString GetAttributeList(bool bIgnoreDefault = true);
+        virtual CStringUI GetAttributeList(bool bIgnoreDefault = true);
         virtual void SetAttributeList(LPCTSTR pstrList);
 
         virtual SIZE EstimateSize(SIZE szAvailable);
@@ -173,7 +191,7 @@ namespace DUILIB
 
         //虚拟窗口参数
         void SetVirtualWnd(LPCTSTR pstrValue);
-        CDuiString GetVirtualWnd() const;
+        CStringUI GetVirtualWnd() const;
 
     public:
         CEventSource OnInit;
@@ -188,8 +206,8 @@ namespace DUILIB
         CPaintManagerUI* m_pManager;
         CControlUI* m_pParent;
         CControlUI* m_pCover;
-        CDuiString m_sVirtualWnd;
-        CDuiString m_sName;
+        CStringUI m_sVirtualWnd;
+        CStringUI m_sName;
         bool m_bUpdateNeeded;
         bool m_bMenuUsed;
         bool m_bAsyncNotify;
@@ -209,10 +227,10 @@ namespace DUILIB
         struct TPERCENTINFO_UI m_piFloatPercent;
         bool m_bSetPos; // 防止SetPos循环调用
 
-        CDuiString m_sText;
-        CDuiString m_sToolTip;
+        CStringUI m_sText;
+        CStringUI m_sToolTip;
         TCHAR m_chShortcut;
-        CDuiString m_sUserData;
+        CStringUI m_sUserData;
         UINT_PTR m_pTag;
 
         DWORD m_dwBackColor;
@@ -228,7 +246,7 @@ namespace DUILIB
         SIZE m_cxyBorderRound;
         RECT m_rcPaint;
         RECT m_rcBorderSize;
-        CDuiStringPtrMap m_mCustomAttrHash;
+        CStringPtrMapUI m_mCustomAttrHash;
     };
 
 } // namespace DUILIB

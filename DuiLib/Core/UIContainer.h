@@ -80,17 +80,17 @@ namespace DUILIB
         void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
         void SetManager(CPaintManagerUI* pManager, CControlUI* pParent, bool bInit = true);
-        CControlUI* FindControl(FINDCONTROLPROC Proc, LPVOID pData, UINT uFlags);
+        CControlUI* FindControl(LPFINDCONTROLPROC_UI Proc, LPVOID pData, UINT uFlags);
 
         bool SetSubControlText(LPCTSTR pstrSubControlName, LPCTSTR pstrText);
         bool SetSubControlFixedHeight(LPCTSTR pstrSubControlName, int cy);
         bool SetSubControlFixedWdith(LPCTSTR pstrSubControlName, int cx);
         bool SetSubControlUserData(LPCTSTR pstrSubControlName, LPCTSTR pstrText);
 
-        CDuiString GetSubControlText(LPCTSTR pstrSubControlName);
+        CStringUI GetSubControlText(LPCTSTR pstrSubControlName);
         int GetSubControlFixedHeight(LPCTSTR pstrSubControlName);
         int GetSubControlFixedWdith(LPCTSTR pstrSubControlName);
-        const CDuiString GetSubControlUserData(LPCTSTR pstrSubControlName);
+        const CStringUI GetSubControlUserData(LPCTSTR pstrSubControlName);
         CControlUI* FindSubControl(LPCTSTR pstrSubControlName);
 
         virtual SIZE GetScrollPos() const;
@@ -117,7 +117,7 @@ namespace DUILIB
         virtual void ProcessScrollBar(RECT rc, int cxRequired, int cyRequired);
 
     protected:
-        CDuiPtrArray m_items;
+        CPtrArrayUI m_items;
         RECT m_rcInset;
         int m_iChildPadding;
         UINT m_iChildAlign;

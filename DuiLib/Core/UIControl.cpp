@@ -1,6 +1,10 @@
-﻿#include "StdAfx.h"
+﻿#include "Core/UIControl.h"
+#include "Core/UIManager.h"
+#include "Core/UIRender.h"
 
-namespace DUILIB {
+
+namespace DUILIB 
+{
 
 CControlUI::CControlUI() : 
 m_pManager(NULL), 
@@ -59,7 +63,7 @@ void CControlUI::Delete()
     delete this;
 }
 
-CDuiString CControlUI::GetName() const
+CStringUI CControlUI::GetName() const
 {
     return m_sName;
 }
@@ -135,7 +139,7 @@ void CControlUI::SetCover(CControlUI *pControl)
     }
 }
 
-CDuiString CControlUI::GetText() const
+CStringUI CControlUI::GetText() const
 {
     return m_sText;
 }
@@ -287,12 +291,12 @@ RECT CControlUI::GetRelativePos() const
 	CControlUI* pParent = GetParent();
 	if( pParent != NULL ) {
 		RECT rcParentPos = pParent->GetPos();
-		CDuiRect rcRelativePos(m_rcItem);
+		CRectUI rcRelativePos(m_rcItem);
 		rcRelativePos.Offset(-rcParentPos.left, -rcParentPos.top);
 		return rcRelativePos;
 	}
 	else {
-		return CDuiRect(0, 0, 0, 0);
+		return CRectUI(0, 0, 0, 0);
 	}
 }
 
@@ -306,7 +310,7 @@ void CControlUI::SetPos(RECT rc, bool bNeedInvalidate)
     if( rc.right < rc.left ) rc.right = rc.left;
     if( rc.bottom < rc.top ) rc.bottom = rc.top;
 
-    CDuiRect invalidateRc = m_rcItem;
+    CRectUI invalidateRc = m_rcItem;
     if( ::IsRectEmpty(&invalidateRc) ) invalidateRc = rc;
 
 	if( m_bFloat ) {
@@ -358,7 +362,7 @@ void CControlUI::SetPos(RECT rc, bool bNeedInvalidate)
         if( m_pCover->IsFloat() ) {
             SIZE szXY = m_pCover->GetFixedXY();
             SIZE sz = {m_pCover->GetFixedWidth(), m_pCover->GetFixedHeight()};
-            TPERCENTINFO_UI rcPercent = m_pCover->GetFloatPercent();
+            struct TPERCENTINFO_UI rcPercent = m_pCover->GetFloatPercent();
             LONG width = m_rcItem.right - m_rcItem.left;
             LONG height = m_rcItem.bottom - m_rcItem.top;
             RECT rcCtrl = { 0 };
@@ -382,7 +386,7 @@ void CControlUI::SetPos(RECT rc, bool bNeedInvalidate)
 
 void CControlUI::Move(SIZE szOffset, bool bNeedInvalidate)
 {
-	CDuiRect invalidateRc = m_rcItem;
+	CRectUI invalidateRc = m_rcItem;
 	m_rcItem.left += szOffset.cx;
 	m_rcItem.top += szOffset.cy;
 	m_rcItem.right += szOffset.cx;
@@ -448,12 +452,12 @@ void CControlUI::SetFixedXY(SIZE szXY)
     NeedParentUpdate();
 }
 
-TPERCENTINFO_UI CControlUI::GetFloatPercent() const
+struct TPERCENTINFO_UI CControlUI::GetFloatPercent() const
 {
 	return m_piFloatPercent;
 }
 
-void CControlUI::SetFloatPercent(TPERCENTINFO_UI piFloatPercent)
+void CControlUI::SetFloatPercent(struct TPERCENTINFO_UI piFloatPercent)
 {
 	m_piFloatPercent = piFloatPercent;
 	NeedParentUpdate();
@@ -541,14 +545,14 @@ void CControlUI::SetMaxHeight(int cy)
     NeedParentUpdate();
 }
 
-CDuiString CControlUI::GetToolTip() const
+CStringUI CControlUI::GetToolTip() const
 {
     return m_sToolTip;
 }
 
 void CControlUI::SetToolTip(LPCTSTR pstrText)
 {
-	CDuiString strTemp(pstrText);
+	CStringUI strTemp(pstrText);
 	strTemp.Replace(_T("<n>"),_T("\r\n"));
 	m_sToolTip=strTemp;
 }
@@ -583,7 +587,7 @@ void CControlUI::SetContextMenuUsed(bool bMenuUsed)
     m_bMenuUsed = bMenuUsed;
 }
 
-const CDuiString& CControlUI::GetUserData()
+const CStringUI& CControlUI::GetUserData()
 {
     return m_sUserData;
 }
@@ -693,7 +697,7 @@ void CControlUI::SetFloat(bool bFloat)
 void CControlUI::AddCustomAttribute(LPCTSTR pstrName, LPCTSTR pstrAttr)
 {
 	if( pstrName == NULL || pstrName[0] == _T('\0') || pstrAttr == NULL || pstrAttr[0] == _T('\0') ) return;
-	CDuiString* pCostomAttr = new CDuiString(pstrAttr);
+	CStringUI* pCostomAttr = new CStringUI(pstrAttr);
 	if (pCostomAttr != NULL) {
 		if (m_mCustomAttrHash.Find(pstrName) == NULL)
 			m_mCustomAttrHash.Set(pstrName, (LPVOID)pCostomAttr);
@@ -705,7 +709,7 @@ void CControlUI::AddCustomAttribute(LPCTSTR pstrName, LPCTSTR pstrAttr)
 LPCTSTR CControlUI::GetCustomAttribute(LPCTSTR pstrName) const
 {
 	if( pstrName == NULL || pstrName[0] == _T('\0') ) return NULL;
-	CDuiString* pCostomAttr = static_cast<CDuiString*>(m_mCustomAttrHash.Find(pstrName));
+	CStringUI* pCostomAttr = static_cast<CStringUI*>(m_mCustomAttrHash.Find(pstrName));
 	if( pCostomAttr ) return pCostomAttr->GetData();
 	return NULL;
 }
@@ -713,7 +717,7 @@ LPCTSTR CControlUI::GetCustomAttribute(LPCTSTR pstrName) const
 bool CControlUI::RemoveCustomAttribute(LPCTSTR pstrName)
 {
 	if( pstrName == NULL || pstrName[0] == _T('\0') ) return NULL;
-	CDuiString* pCostomAttr = static_cast<CDuiString*>(m_mCustomAttrHash.Find(pstrName));
+	CStringUI* pCostomAttr = static_cast<CStringUI*>(m_mCustomAttrHash.Find(pstrName));
 	if( !pCostomAttr ) return false;
 
 	delete pCostomAttr;
@@ -722,17 +726,17 @@ bool CControlUI::RemoveCustomAttribute(LPCTSTR pstrName)
 
 void CControlUI::RemoveAllCustomAttribute()
 {
-	CDuiString* pCostomAttr;
+	CStringUI* pCostomAttr;
 	for( int i = 0; i< m_mCustomAttrHash.GetSize(); i++ ) {
 		if(LPCTSTR key = m_mCustomAttrHash.GetAt(i)) {
-			pCostomAttr = static_cast<CDuiString*>(m_mCustomAttrHash.Find(key));
+			pCostomAttr = static_cast<CStringUI*>(m_mCustomAttrHash.Find(key));
 			delete pCostomAttr;
 		}
 	}
 	m_mCustomAttrHash.Resize();
 }
 
-CControlUI* CControlUI::FindControl(FINDCONTROLPROC Proc, LPVOID pData, UINT uFlags)
+CControlUI* CControlUI::FindControl(LPFINDCONTROLPROC_UI Proc, LPVOID pData, UINT uFlags)
 {
     if( (uFlags & UIFIND_VISIBLE) != 0 && !IsVisible() ) return NULL;
     if( (uFlags & UIFIND_ENABLED) != 0 && !IsEnabled() ) return NULL;
@@ -820,12 +824,12 @@ void CControlUI::DoInit()
 
 }
 
-void CControlUI::Event(TEventUI& event)
+void CControlUI::Event(struct TEVENT_UI& event)
 {
     if( OnEvent(&event) ) DoEvent(event);
 }
 
-void CControlUI::DoEvent(TEventUI& event)
+void CControlUI::DoEvent(struct TEVENT_UI& event)
 {
     if( event.Type == UIEVENT_SETCURSOR )
     {
@@ -866,9 +870,9 @@ void CControlUI::SetVirtualWnd(LPCTSTR pstrValue)
 	m_pManager->UsedVirtualWnd(true);
 }
 
-CDuiString CControlUI::GetVirtualWnd() const
+CStringUI CControlUI::GetVirtualWnd() const
 {
-	CDuiString str;
+	CStringUI str;
 	if( !m_sVirtualWnd.IsEmpty() ){
 		str = m_sVirtualWnd;
 	}
@@ -884,7 +888,7 @@ CDuiString CControlUI::GetVirtualWnd() const
 	return str;
 }
 
-CDuiString CControlUI::GetAttribute(LPCTSTR pstrName)
+CStringUI CControlUI::GetAttribute(LPCTSTR pstrName)
 {
     return _T("");
 }
@@ -949,7 +953,7 @@ void CControlUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
     }
     else if( _tcscmp(pstrName, _T("colorhsl")) == 0 ) SetColorHSL(_tcscmp(pstrValue, _T("true")) == 0);
 	else if( _tcscmp(pstrName, _T("bordersize")) == 0 ) {
-		CDuiString nValue = pstrValue;
+		CStringUI nValue = pstrValue;
 		if(nValue.Find(',') < 0)
 		{
 			SetBorderSize(_ttoi(pstrValue));
@@ -990,12 +994,12 @@ void CControlUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
 	else if( _tcscmp(pstrName, _T("keyboard")) == 0 ) SetKeyboardEnabled(_tcscmp(pstrValue, _T("true")) == 0);
     else if( _tcscmp(pstrName, _T("visible")) == 0 ) SetVisible(_tcscmp(pstrValue, _T("true")) == 0);
     else if( _tcscmp(pstrName, _T("float")) == 0 ) {
-		CDuiString nValue = pstrValue;
+		CStringUI nValue = pstrValue;
 		if(nValue.Find(',') < 0) {
 			SetFloat(_tcscmp(pstrValue, _T("true")) == 0);
 		}
 		else {
-			TPERCENTINFO_UI piFloatPercent = { 0 };
+			struct TPERCENTINFO_UI piFloatPercent = { 0 };
 			LPTSTR pstr = NULL;
 			piFloatPercent.left = _tcstod(pstrValue, &pstr);  ASSERT(pstr);
 			piFloatPercent.top = _tcstod(pstr + 1, &pstr);    ASSERT(pstr);
@@ -1013,15 +1017,15 @@ void CControlUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
 	}
 }
 
-CDuiString CControlUI::GetAttributeList(bool bIgnoreDefault)
+CStringUI CControlUI::GetAttributeList(bool bIgnoreDefault)
 {
 	return _T("");
 }
 
 void CControlUI::SetAttributeList(LPCTSTR pstrList)
 {
-    CDuiString sItem;
-    CDuiString sValue;
+    CStringUI sItem;
+    CStringUI sValue;
     while( *pstrList != _T('\0') ) {
         sItem.Empty();
         sValue.Empty();

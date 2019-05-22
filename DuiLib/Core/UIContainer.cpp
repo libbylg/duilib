@@ -1,4 +1,7 @@
 #include "Core/UIContainer.h"
+#include "Core/UIManager.h"
+#include "Core/UIRender.h"
+#include "Core/UIScrollBar.h"
 
 namespace DUILIB
 {
@@ -79,7 +82,7 @@ namespace DUILIB
         if (iStartIndex + iCount > GetCount()) return false;
         if (iNewStartIndex + iCount > GetCount()) return false;
 
-        CDuiPtrArray pControls(iCount);
+        CPtrArrayUI pControls(iCount);
         pControls.Resize(iCount);
         ::CopyMemory(pControls.GetData(), m_items.GetData() + iStartIndex, iCount * sizeof(LPVOID));
         m_items.Remove(iStartIndex, iCount);
@@ -258,7 +261,7 @@ namespace DUILIB
 		CControlUI::SetMouseEnabled(bEnabled);
 	}
 
-	void CContainerUI::DoEvent(TEventUI& event)
+	void CContainerUI::DoEvent(struct TEVENT_UI& event)
 	{
 		if( !IsMouseEnabled() && event.Type > UIEVENT__MOUSEBEGIN && event.Type < UIEVENT__MOUSEEND ) {
 			if( m_pParent != NULL ) m_pParent->DoEvent(event);
@@ -408,7 +411,7 @@ namespace DUILIB
 			CControlUI* pControl = static_cast<CControlUI*>(m_items[it2]);
 			if( !pControl->IsVisible() ) continue;
 			if( pControl->IsFloat() ) continue;
-			pControl->Move(CDuiSize(-cx, -cy), false);
+			pControl->Move(CSizeUI(-cx, -cy), false);
 		}
 
 		Invalidate();
@@ -723,7 +726,7 @@ namespace DUILIB
 		CControlUI::SetManager(pManager, pParent, bInit);
 	}
 
-	CControlUI* CContainerUI::FindControl(FINDCONTROLPROC Proc, LPVOID pData, UINT uFlags)
+	CControlUI* CContainerUI::FindControl(LPFINDCONTROLPROC_UI Proc, LPVOID pData, UINT uFlags)
 	{
 		// Check if this guy is valid
 		if( (uFlags & UIFIND_VISIBLE) != 0 && !IsVisible() ) return NULL;
@@ -869,7 +872,7 @@ namespace DUILIB
 
 		SIZE szXY = pControl->GetFixedXY();
 		SIZE sz = {pControl->GetFixedWidth(), pControl->GetFixedHeight()};
-		TPercentInfo rcPercent = pControl->GetFloatPercent();
+		struct TPERCENTINFO_UI rcPercent = pControl->GetFloatPercent();
 		LONG width = m_rcItem.right - m_rcItem.left;
 		LONG height = m_rcItem.bottom - m_rcItem.top;
 		RECT rcCtrl = { 0 };
@@ -1106,7 +1109,7 @@ namespace DUILIB
 			return FALSE;
 	}
 
-	CDuiString CContainerUI::GetSubControlText( LPCTSTR pstrSubControlName )
+	CStringUI CContainerUI::GetSubControlText( LPCTSTR pstrSubControlName )
 	{
 		CControlUI* pSubControl=NULL;
 		pSubControl=this->FindSubControl(pstrSubControlName);
@@ -1136,7 +1139,7 @@ namespace DUILIB
 			return pSubControl->GetFixedWidth();
 	}
 
-	const CDuiString CContainerUI::GetSubControlUserData( LPCTSTR pstrSubControlName )
+	const CStringUI CContainerUI::GetSubControlUserData( LPCTSTR pstrSubControlName )
 	{
 		CControlUI* pSubControl=NULL;
 		pSubControl=this->FindSubControl(pstrSubControlName);

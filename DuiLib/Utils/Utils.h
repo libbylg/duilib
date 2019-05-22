@@ -19,43 +19,43 @@ namespace DUILIB
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
-    class CDuiString;
-	class DUILIB_API CDuiPoint : public tagPOINT
+    class CStringUI;
+	class DUILIB_API CPointUI : public tagPOINT
 	{
 	public:
-		CDuiPoint();
-		CDuiPoint(const POINT& src);
-		CDuiPoint(long x, long y);
-		CDuiPoint(LPARAM lParam);
-        CDuiPoint(LPCTSTR pstrValue);
-        CDuiString ToString();
+		CPointUI();
+		CPointUI(const POINT& src);
+		CPointUI(long x, long y);
+		CPointUI(LPARAM lParam);
+        CPointUI(LPCTSTR pstrValue);
+        CStringUI ToString();
 	};
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 
-	class DUILIB_API CDuiSize : public tagSIZE
+	class DUILIB_API CSizeUI : public tagSIZE
 	{
 	public:
-		CDuiSize();
-		CDuiSize(const SIZE& src);
-		CDuiSize(const RECT rc);
-		CDuiSize(long cx, long cy);
-        CDuiSize(LPCTSTR pstrValue);
-        CDuiString ToString();
+		CSizeUI();
+		CSizeUI(const SIZE& src);
+		CSizeUI(const RECT rc);
+		CSizeUI(long cx, long cy);
+        CSizeUI(LPCTSTR pstrValue);
+        CStringUI ToString();
 	};
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 
-	class DUILIB_API CDuiRect : public tagRECT
+	class DUILIB_API CRectUI : public tagRECT
 	{
 	public:
-		CDuiRect();
-		CDuiRect(const RECT& src);
-		CDuiRect(long iLeft, long iTop, long iRight, long iBottom);
-        CDuiRect(LPCTSTR pstrValue);
-        CDuiString ToString();
+		CRectUI();
+		CRectUI(const RECT& src);
+		CRectUI(long iLeft, long iTop, long iRight, long iBottom);
+        CRectUI(LPCTSTR pstrValue);
+        CStringUI ToString();
 
 		int GetWidth() const;
 		int GetHeight() const;
@@ -67,23 +67,23 @@ namespace DUILIB
 		void Offset(int cx, int cy);
 		void Inflate(int cx, int cy);
 		void Deflate(int cx, int cy);
-		void Union(CDuiRect& rc);
+		void Union(CRectUI& rc);
 	};
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    class DUILIB_API CDuiString
+    class DUILIB_API CStringUI
     {
     public:
         enum { MAX_LOCAL_STRING_LEN = 63 };
 
-        CDuiString();
-        CDuiString(const TCHAR ch);
-        CDuiString(const CDuiString& src);
-        CDuiString(LPCTSTR lpsz, int nLen = -1);
-        ~CDuiString();
-        CDuiString ToString();
+        CStringUI();
+        CStringUI(const TCHAR ch);
+        CStringUI(const CStringUI& src);
+        CStringUI(LPCTSTR lpsz, int nLen = -1);
+        ~CStringUI();
+        CStringUI ToString();
 
         void Empty();
         int GetLength() const;
@@ -97,21 +97,21 @@ namespace DUILIB
         operator LPCTSTR() const;
 
         TCHAR operator[] (int nIndex) const;
-        const CDuiString& operator=(const CDuiString& src);
-        const CDuiString& operator=(const TCHAR ch);
-        const CDuiString& operator=(LPCTSTR pstr);
+        const CStringUI& operator=(const CStringUI& src);
+        const CStringUI& operator=(const TCHAR ch);
+        const CStringUI& operator=(LPCTSTR pstr);
 #ifdef _UNICODE
-        const CDuiString& CDuiString::operator=(LPCSTR lpStr);
-        const CDuiString& CDuiString::operator+=(LPCSTR lpStr);
+        const CStringUI& CStringUI::operator=(LPCSTR lpStr);
+        const CStringUI& CStringUI::operator+=(LPCSTR lpStr);
 #else
-        const CDuiString& CDuiString::operator=(LPCWSTR lpwStr);
-        const CDuiString& CDuiString::operator+=(LPCWSTR lpwStr);
+        const CStringUI& CStringUI::operator=(LPCWSTR lpwStr);
+        const CStringUI& CStringUI::operator+=(LPCWSTR lpwStr);
 #endif
-        CDuiString operator+(const CDuiString& src) const;
-        CDuiString operator+(LPCTSTR pstr) const;
-        const CDuiString& operator+=(const CDuiString& src);
-        const CDuiString& operator+=(LPCTSTR pstr);
-        const CDuiString& operator+=(const TCHAR ch);
+        CStringUI operator+(const CStringUI& src) const;
+        CStringUI operator+(LPCTSTR pstr) const;
+        const CStringUI& operator+=(const CStringUI& src);
+        const CStringUI& operator+=(LPCTSTR pstr);
+        const CStringUI& operator+=(const TCHAR ch);
 
         bool operator == (LPCTSTR str) const;
         bool operator != (LPCTSTR str) const;
@@ -126,9 +126,9 @@ namespace DUILIB
         void MakeUpper();
         void MakeLower();
 
-        CDuiString Left(int nLength) const;
-        CDuiString Mid(int iPos, int nLength = -1) const;
-        CDuiString Right(int nLength) const;
+        CStringUI Left(int nLength) const;
+        CStringUI Mid(int iPos, int nLength = -1) const;
+        CStringUI Right(int nLength) const;
 
         int Find(TCHAR ch, int iPos = 0) const;
         int Find(LPCTSTR pstr, int iPos = 0) const;
@@ -146,12 +146,12 @@ namespace DUILIB
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 
-	class DUILIB_API CDuiPtrArray
+	class DUILIB_API CPtrArrayUI
 	{
 	public:
-		CDuiPtrArray(int iPreallocSize = 0);
-		CDuiPtrArray(const CDuiPtrArray& src);
-		~CDuiPtrArray();
+		CPtrArrayUI(int iPreallocSize = 0);
+		CPtrArrayUI(const CPtrArrayUI& src);
+		~CPtrArrayUI();
 
 		void Empty();
 		void Resize(int iSize);
@@ -177,11 +177,11 @@ namespace DUILIB
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 
-	class DUILIB_API CDuiValArray
+	class DUILIB_API CValArrayUI
 	{
 	public:
-		CDuiValArray(int iElementSize, int iPreallocSize = 0);
-		~CDuiValArray();
+		CValArrayUI(int iElementSize, int iPreallocSize = 0);
+		~CValArrayUI();
 
 		void Empty();
 		bool IsEmpty() const;
@@ -204,11 +204,11 @@ namespace DUILIB
 	//
 
     struct TITEM;
-	class DUILIB_API CDuiStringPtrMap
+	class DUILIB_API CStringPtrMapUI
 	{
 	public:
-		CDuiStringPtrMap(int nSize = 83);
-		~CDuiStringPtrMap();
+		CStringPtrMapUI(int nSize = 83);
+		~CStringPtrMapUI();
 
 		void Resize(int nSize = 83);
 		LPVOID Find(LPCTSTR key, bool optimize = true) const;
@@ -229,11 +229,11 @@ namespace DUILIB
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 
-	class DUILIB_API CWaitCursor
+	class DUILIB_API CWaitCursorUI
 	{
 	public:
-		CWaitCursor();
-		~CWaitCursor();
+		CWaitCursorUI();
+		~CWaitCursorUI();
 
 	protected:
 		HCURSOR m_hOrigCursor;
@@ -242,39 +242,39 @@ namespace DUILIB
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 
-	class CVariant : public VARIANT
+	class CVariantUI : public VARIANT
 	{
 	public:
-		CVariant() 
+		CVariantUI() 
 		{ 
 			VariantInit(this); 
 		}
-		CVariant(int i)
+		CVariantUI(int i)
 		{
 			VariantInit(this);
 			this->vt = VT_I4;
 			this->intVal = i;
 		}
-		CVariant(float f)
+		CVariantUI(float f)
 		{
 			VariantInit(this);
 			this->vt = VT_R4;
 			this->fltVal = f;
 		}
-		CVariant(LPOLESTR s)
+		CVariantUI(LPOLESTR s)
 		{
 			VariantInit(this);
 			this->vt = VT_BSTR;
 			this->bstrVal = s;
 		}
-		CVariant(IDispatch *disp)
+		CVariantUI(IDispatch *disp)
 		{
 			VariantInit(this);
 			this->vt = VT_DISPATCH;
 			this->pdispVal = disp;
 		}
 
-		~CVariant() 
+		~CVariantUI() 
 		{ 
 			VariantClear(this); 
 		}

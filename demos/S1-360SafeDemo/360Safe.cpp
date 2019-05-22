@@ -2,8 +2,9 @@
 #include <exdisp.h>
 #include <comdef.h>
 #include "ControlEx.h"
+#include "Core/UIWindow.h"
 
-class C360SafeFrameWnd : public CWindowWnd, public INotifyUI
+class C360SafeFrameWnd : public CWindowUI, public INotifyUI
 {
 public:
 	C360SafeFrameWnd() { };
@@ -21,7 +22,7 @@ public:
 	void OnPrepare() {
 	}
 
-	void Notify(TNotifyUI& msg)
+	void Notify(struct TNOTIFY_UI& msg)
 	{
 		if( msg.sType == _T("windowinit") ) OnPrepare();
 		else if( msg.sType == _T("click") ) {
@@ -38,7 +39,7 @@ public:
 		}
 		else if(msg.sType==_T("selectchanged"))
 		{
-			CDuiString name = msg.pSender->GetName();
+			CStringUI name = msg.pSender->GetName();
 			CTabLayoutUI* pControl = static_cast<CTabLayoutUI*>(m_pm.FindControl(_T("switch")));
 			if(name==_T("examine"))
 				 pControl->SelectItem(0);
@@ -148,7 +149,7 @@ public:
 	{
         SIZE szRoundCorner = m_pm.GetRoundCorner();
         if( !::IsIconic(*this) && (szRoundCorner.cx != 0 || szRoundCorner.cy != 0) ) {
-            CDuiRect rcWnd;
+            CRectUI rcWnd;
             ::GetWindowRect(*this, &rcWnd);
             rcWnd.Offset(-rcWnd.left, -rcWnd.top);
             rcWnd.right++; rcWnd.bottom++;
@@ -166,7 +167,7 @@ public:
 		MONITORINFO oMonitor = {};
 		oMonitor.cbSize = sizeof(oMonitor);
 		::GetMonitorInfo(::MonitorFromWindow(*this, MONITOR_DEFAULTTOPRIMARY), &oMonitor);
-		CDuiRect rcWork = oMonitor.rcWork;
+		CRectUI rcWork = oMonitor.rcWork;
 		rcWork.Offset(-oMonitor.rcMonitor.left, -oMonitor.rcMonitor.top);
 
 		LPMINMAXINFO lpMMI = (LPMINMAXINFO) lParam;

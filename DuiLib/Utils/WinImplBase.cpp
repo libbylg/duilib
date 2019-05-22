@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "Utils/WinImplBase.h"
 
 namespace DUILIB
 {
@@ -112,8 +112,8 @@ LRESULT WindowImplBase::OnNcCalcSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BO
 		MONITORINFO oMonitor = {};
 		oMonitor.cbSize = sizeof(oMonitor);
 		::GetMonitorInfo(::MonitorFromWindow(*this, MONITOR_DEFAULTTONEAREST), &oMonitor);
-		CDuiRect rcWork = oMonitor.rcWork;
-		CDuiRect rcMonitor = oMonitor.rcMonitor;
+		CRectUI rcWork = oMonitor.rcWork;
+		CRectUI rcMonitor = oMonitor.rcMonitor;
 		rcWork.Offset(-oMonitor.rcMonitor.left, -oMonitor.rcMonitor.top);
 
 		pRect->right = pRect->left + rcWork.GetWidth();
@@ -177,8 +177,8 @@ LRESULT WindowImplBase::OnGetMinMaxInfo(UINT uMsg, WPARAM wParam, LPARAM lParam,
 	MONITORINFO oMonitor = {};
 	oMonitor.cbSize = sizeof(oMonitor);
 	::GetMonitorInfo(::MonitorFromWindow(*this, MONITOR_DEFAULTTONEAREST), &oMonitor);
-	CDuiRect rcWork = oMonitor.rcWork;
-	CDuiRect rcMonitor = oMonitor.rcMonitor;
+	CRectUI rcWork = oMonitor.rcWork;
+	CRectUI rcMonitor = oMonitor.rcMonitor;
 	rcWork.Offset(-oMonitor.rcMonitor.left, -oMonitor.rcMonitor.top);
 
 	// 计算最大化时，正确的原点坐标
@@ -213,7 +213,7 @@ LRESULT WindowImplBase::OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
 	SIZE szRoundCorner = m_PaintManager.GetRoundCorner();
 #if defined(WIN32) && !defined(UNDER_CE)
 	if( !::IsIconic(*this) && (szRoundCorner.cx != 0 || szRoundCorner.cy != 0) ) {
-		CDuiRect rcWnd;
+		CRectUI rcWnd;
 		::GetWindowRect(*this, &rcWnd);
 		rcWnd.Offset(-rcWnd.left, -rcWnd.top);
 		rcWnd.right++; rcWnd.bottom++;
@@ -242,7 +242,7 @@ LRESULT WindowImplBase::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BO
 	}
 #if defined(WIN32) && !defined(UNDER_CE)
 	BOOL bZoomed = ::IsZoomed(*this);
-	LRESULT lRes = CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+	LRESULT lRes = CWindowUI::HandleMessage(uMsg, wParam, lParam);
 	if( ::IsZoomed(*this) != bZoomed )
 	{
         CControlUI* pbtnMax = static_cast<CControlUI*>(m_PaintManager.FindControl(_T("maxbtn")));         // max button
@@ -256,7 +256,7 @@ LRESULT WindowImplBase::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BO
         }
 	}
 #else
-	LRESULT lRes = CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+	LRESULT lRes = CWindowUI::HandleMessage(uMsg, wParam, lParam);
 #endif
 	return lRes;
 }
@@ -412,7 +412,7 @@ LRESULT WindowImplBase::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	if (m_PaintManager.MessageHandler(uMsg, wParam, lParam, lRes))
 		return lRes;
-	return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+	return CWindowUI::HandleMessage(uMsg, wParam, lParam);
 }
 
 LRESULT WindowImplBase::HandleCustomMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
@@ -429,7 +429,7 @@ LONG WindowImplBase::GetStyle()
 	return styleValue;
 }
 
-void WindowImplBase::OnClick(TNotifyUI& msg)
+void WindowImplBase::OnClick(struct TNOTIFY_UI& msg)
 {
 	CDuiString sCtrlName = msg.pSender->GetName();
 	if( sCtrlName == _T("closebtn") )
@@ -455,7 +455,7 @@ void WindowImplBase::OnClick(TNotifyUI& msg)
 	return;
 }
 
-void WindowImplBase::Notify(TNotifyUI& msg)
+void WindowImplBase::Notify(struct TNOTIFY_UI& msg)
 {
 	return CNotifyPump::NotifyPump(msg);
 }

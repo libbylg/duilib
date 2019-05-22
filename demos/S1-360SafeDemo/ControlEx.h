@@ -1,4 +1,7 @@
-#pragma once
+#ifndef __ComputerExamineUI_H_
+#define __ComputerExamineUI_H_
+
+#include "Core/UIContainer.h"
 
 class ComputerExamineUI : public CContainerUI
 {
@@ -17,6 +20,8 @@ public:
 	}
 };
 
+
+
 class CDialogBuilderCallbackEx : public IDialogBuilderCallback
 {
 public:
@@ -26,3 +31,7 @@ public:
 		return NULL;
 	}
 };
+
+
+#endif//__ComputerExamineUI_H_
+

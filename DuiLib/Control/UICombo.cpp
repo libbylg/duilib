@@ -118,7 +118,7 @@ bool CComboBodyUI::DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopContro
 //
 //
 
-class CComboWnd : public CWindowWnd
+class CComboWnd : public CWindowUI
 {
 public:
     void Init(CComboUI* pOwner);
@@ -310,7 +310,7 @@ LRESULT CComboWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     LRESULT lRes = 0;
     if( m_pm.MessageHandler(uMsg, wParam, lParam, lRes) ) return lRes;
-    return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+    return CWindowUI::HandleMessage(uMsg, wParam, lParam);
 }
 
 void CComboWnd::EnsureVisible(int iIndex)
