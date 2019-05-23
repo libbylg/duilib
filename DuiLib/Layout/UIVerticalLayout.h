@@ -1,9 +1,11 @@
 #ifndef __UIVERTICALLAYOUT_H__
 #define __UIVERTICALLAYOUT_H__
 
-#pragma once
 
-namespace DuiLib
+#include "Core/UIContainer.h"
+
+
+namespace DUILIB
 {
 	class DUILIB_API CVerticalLayoutUI : public CContainerUI
 	{
@@ -19,7 +21,7 @@ namespace DuiLib
 		void SetSepImmMode(bool bImmediately);
 		bool IsSepImmMode() const;
 		void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
-		void DoEvent(TEventUI& event);
+		void DoEvent(TEVENT_UI& event);
 
 		void SetPos(RECT rc, bool bNeedInvalidate = true);
 		void DoPostPaint(HDC hDC, const RECT& rcPaint);

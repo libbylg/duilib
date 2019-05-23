@@ -1,9 +1,9 @@
 #ifndef __UITILELAYOUT_H__
 #define __UITILELAYOUT_H__
 
-#pragma once
+#include "Core/UIContainer.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	class DUILIB_API CTileLayoutUI : public CContainerUI
 	{

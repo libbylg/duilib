@@ -1,9 +1,9 @@
 #ifndef __UIEDIT_H__
 #define __UIEDIT_H__
 
-#pragma once
+#include "Control/UILabel.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	class CEditWnd;
 
@@ -55,7 +55,7 @@ namespace DuiLib
 		void SetVisible(bool bVisible = true);
 		void SetInternVisible(bool bVisible = true);
 		SIZE EstimateSize(SIZE szAvailable);
-		void DoEvent(TEventUI& event);
+		void DoEvent(TEVENT_UI& event);
 		void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
 		void PaintStatusImage(HDC hDC);
@@ -73,10 +73,10 @@ namespace DuiLib
 		DWORD m_dwEditbkColor;
 		int m_iWindowStyls;
 
-		TDrawInfo m_diNormal;
-		TDrawInfo m_diHot;
-		TDrawInfo m_diFocused;
-		TDrawInfo m_diDisabled;
+		TDRAWINFO_UI m_diNormal;
+		TDRAWINFO_UI m_diHot;
+		TDRAWINFO_UI m_diFocused;
+		TDRAWINFO_UI m_diDisabled;
 	};
 }
 #endif // __UIEDIT_H__

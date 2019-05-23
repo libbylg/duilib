@@ -1,7 +1,7 @@
-#include "StdAfx.h"
-#include "UILabel.h"
+#include "Control/UILabel.h"
+#include "Core/UIManager.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	Color ARGB2Color(DWORD dwColor)
 	{
@@ -233,7 +233,7 @@ namespace DuiLib
         return m_cxyFixedLast;
 	}
 
-	void CLabelUI::DoEvent(TEventUI& event)
+	void CLabelUI::DoEvent(TEVENT_UI& event)
 	{
 		if( event.Type == UIEVENT_SETFOCUS ) 
 		{

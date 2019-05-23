@@ -1,7 +1,9 @@
-#include "stdafx.h"
-#include "UIHorizontalLayout.h"
+#include "Layout/UIHorizontalLayout.h"
+#include "Core/UIScrollBar.h"
+#include "Core/UIManager.h"
 
-namespace DuiLib
+
+namespace DUILIB
 {
 	CHorizontalLayoutUI::CHorizontalLayoutUI() : m_iSepWidth(0), m_uButtonState(0), m_bImmMode(false)
 	{
@@ -233,7 +235,7 @@ namespace DuiLib
 		else CContainerUI::SetAttribute(pstrName, pstrValue);
 	}
 
-	void CHorizontalLayoutUI::DoEvent(TEventUI& event)
+	void CHorizontalLayoutUI::DoEvent(TEVENT_UI& event)
 	{
 		if( m_iSepWidth != 0 ) {
 			if( event.Type == UIEVENT_BUTTONDOWN && IsEnabled() )
@@ -290,7 +292,7 @@ namespace DuiLib
 						}
 					}
 
-					CDuiRect rcInvalidate = GetThumbRect(true);
+					CRectUI rcInvalidate = GetThumbRect(true);
 					m_rcNewPos = rc;
 					m_cxyFixed.cx = m_rcNewPos.right - m_rcNewPos.left;
 
@@ -321,12 +323,12 @@ namespace DuiLib
 	RECT CHorizontalLayoutUI::GetThumbRect(bool bUseNew) const
 	{
 		if( (m_uButtonState & UISTATE_CAPTURED) != 0 && bUseNew) {
-			if( m_iSepWidth >= 0 ) return CDuiRect(m_rcNewPos.right - m_iSepWidth, m_rcNewPos.top, m_rcNewPos.right, m_rcNewPos.bottom);
-			else return CDuiRect(m_rcNewPos.left, m_rcNewPos.top, m_rcNewPos.left - m_iSepWidth, m_rcNewPos.bottom);
+			if( m_iSepWidth >= 0 ) return CRectUI(m_rcNewPos.right - m_iSepWidth, m_rcNewPos.top, m_rcNewPos.right, m_rcNewPos.bottom);
+			else return CRectUI(m_rcNewPos.left, m_rcNewPos.top, m_rcNewPos.left - m_iSepWidth, m_rcNewPos.bottom);
 		}
 		else {
-			if( m_iSepWidth >= 0 ) return CDuiRect(m_rcItem.right - m_iSepWidth, m_rcItem.top, m_rcItem.right, m_rcItem.bottom);
-			else return CDuiRect(m_rcItem.left, m_rcItem.top, m_rcItem.left - m_iSepWidth, m_rcItem.bottom);
+			if( m_iSepWidth >= 0 ) return CRectUI(m_rcItem.right - m_iSepWidth, m_rcItem.top, m_rcItem.right, m_rcItem.bottom);
+			else return CRectUI(m_rcItem.left, m_rcItem.top, m_rcItem.left - m_iSepWidth, m_rcItem.bottom);
 		}
 	}
 }

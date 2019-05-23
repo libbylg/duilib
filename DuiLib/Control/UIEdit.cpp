@@ -1,8 +1,12 @@
-#include "stdafx.h"
-#include "UIEdit.h"
+#include "Control/UIEdit.h"
 
-namespace DuiLib
+#include "Core/UIWindow.h"
+#include "Core/UIManager.h"
+
+namespace DUILIB
 {
+    class CEditUI;
+
 	class CEditWnd : public CWindowUI
 	{
 	public:
@@ -81,7 +85,7 @@ namespace DuiLib
 
 	RECT CEditWnd::CalPos()
 	{
-		CDuiRect rcPos = m_pOwner->GetPos();
+		CRectUI rcPos = m_pOwner->GetPos();
 		RECT rcInset = m_pOwner->GetTextPadding();
 		rcPos.left += rcInset.left;
 		rcPos.top += rcInset.top;
@@ -247,7 +251,7 @@ namespace DuiLib
 		m_bPasswordMode(false), m_cPasswordChar(_T('*')), m_bAutoSelAll(false), m_uButtonState(0), 
 		m_dwEditbkColor(0xFFFFFFFF), m_iWindowStyls(0)
 	{
-		SetTextPadding(CDuiRect(4, 3, 4, 3));
+		SetTextPadding(CRectUI(4, 3, 4, 3));
 		SetBkColor(0xFFFFFFFF);
 	}
 
@@ -275,7 +279,7 @@ namespace DuiLib
 		return NULL;
 	}
 
-	void CEditUI::DoEvent(TEventUI& event)
+	void CEditUI::DoEvent(TEVENT_UI& event)
 	{
 		if( !IsMouseEnabled() && event.Type > UIEVENT__MOUSEBEGIN && event.Type < UIEVENT__MOUSEEND ) {
 			if( m_pParent != NULL ) m_pParent->DoEvent(event);
@@ -592,7 +596,7 @@ namespace DuiLib
 
 	SIZE CEditUI::EstimateSize(SIZE szAvailable)
 	{
-		if( m_cxyFixed.cy == 0 ) return CDuiSize(m_cxyFixed.cx, m_pManager->GetFontInfo(GetFont())->tm.tmHeight + 8);
+		if( m_cxyFixed.cy == 0 ) return CSizeUI(m_cxyFixed.cx, m_pManager->GetFontInfo(GetFont())->tm.tmHeight + 8);
 		return CControlUI::EstimateSize(szAvailable);
 	}
 
@@ -643,7 +647,7 @@ namespace DuiLib
 
 		if( m_sText.IsEmpty() ) return;
 
-		CDuiString sText = m_sText;
+		CStringUI sText = m_sText;
 		if( m_bPasswordMode ) {
 			sText.Empty();
 			LPCTSTR p = m_sText.GetData();

@@ -1,7 +1,8 @@
-#include "stdafx.h"
-#include "UIDateTime.h"
+#include "Control/UIDateTime.h"
+#include "Core/UIWindow.h"
+#include "Core/UIManager.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	//CDateTimeUI::m_nDTUpdateFlag
 #define DT_NONE   0
@@ -60,7 +61,7 @@ namespace DuiLib
 
 	RECT CDateTimeWnd::CalPos()
 	{
-		CDuiRect rcPos = m_pOwner->GetPos();
+		CRectUI rcPos = m_pOwner->GetPos();
 
 		CControlUI* pParent = m_pOwner;
 		RECT rcParent;
@@ -251,7 +252,7 @@ namespace DuiLib
 			SetText(_T(""));
 		else if (m_nDTUpdateFlag == DT_UPDATE)
 		{
-			CDuiString sText;
+			CStringUI sText;
 			sText.SmallFormat(_T("%4d-%02d-%02d"),
 				m_sysTime.wYear, m_sysTime.wMonth, m_sysTime.wDay, m_sysTime.wHour, m_sysTime.wMinute);
 			SetText(sText);
@@ -284,7 +285,7 @@ namespace DuiLib
         }
     }
 
-	void CDateTimeUI::DoEvent(TEventUI& event)
+	void CDateTimeUI::DoEvent(TEVENT_UI& event)
 	{
 		if( !IsMouseEnabled() && event.Type > UIEVENT__MOUSEBEGIN && event.Type < UIEVENT__MOUSEEND ) {
 			if( m_pParent != NULL ) m_pParent->DoEvent(event);

@@ -1,9 +1,9 @@
 #ifndef __UITABLAYOUT_H__
 #define __UITABLAYOUT_H__
 
-#pragma once
+#include "Core/UIContainer.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	class DUILIB_API CTabLayoutUI : public CContainerUI
 	{

@@ -1,9 +1,9 @@
 #ifndef GifAnimUI_h__
 #define GifAnimUI_h__
 
-#pragma once
+#include "Core/UIControl.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	class CControl;
 
@@ -19,7 +19,7 @@ namespace DuiLib
 		LPVOID	GetInterface(LPCTSTR pstrName);
 		void	DoInit() override;
 		bool	DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
-		void	DoEvent(TEventUI& event);
+		void	DoEvent(TEVENT_UI& event);
 		void	SetVisible(bool bVisible = true );
 		void	SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 		void	SetBkImage(LPCTSTR pStrImage);
@@ -46,7 +46,7 @@ namespace DuiLib
 		UINT			m_nFramePosition;			// 当前放到第几帧
 		Gdiplus::PropertyItem*	m_pPropertyItem;	// 帧与帧之间间隔时间
 
-		CDuiString		m_sBkImage;
+		CStringUI		m_sBkImage;
 		bool			m_bIsAutoPlay;				// 是否自动播放gif
 		bool			m_bIsAutoSize;				// 是否自动根据图片设置大小
 		bool			m_bIsPlaying;

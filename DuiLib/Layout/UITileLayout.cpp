@@ -1,7 +1,7 @@
-#include "stdafx.h"
-#include "UITileLayout.h"
+#include "Layout/UITileLayout.h"
+#include "Core/UIScrollBar.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	CTileLayoutUI::CTileLayoutUI() : m_nColumns(1), m_nRows(0), m_nColumnsFixed(0), m_iChildVPadding(0),
 		m_bIgnoreItemPadding(true)

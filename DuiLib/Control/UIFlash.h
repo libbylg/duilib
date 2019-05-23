@@ -9,7 +9,7 @@
 #include "Utils/FlashEventHandler.h"
 #include "Utils/flash11.tlh"
 
-namespace DuiLib
+namespace DUILIB
 {
 	class DUILIB_API CFlashUI
 		: public CActiveXUI

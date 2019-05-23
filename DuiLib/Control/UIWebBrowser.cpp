@@ -5,7 +5,7 @@
 #include "../Utils/downloadmgr.h"
 #include <mshtml.h>
 
-namespace DuiLib {
+namespace DUILIB {
 
 CWebBrowserUI::CWebBrowserUI()
 : m_pWebBrowser2(NULL)
@@ -741,4 +741,4 @@ HRESULT STDMETHODCALLTYPE CWebBrowserUI::Exec( __RPC__in_opt const GUID *pguidCm
 	return (hr);
 }
 
-} // namespace DuiLib
+} // namespace DUILIB

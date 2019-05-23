@@ -1,12 +1,12 @@
-#include "stdafx.h"
-#ifdef _USEIMM
-#include <imm.h>
-#pragma comment(lib, "imm32.lib")
-#endif
+#include "Control/UIRichEdit.h"
+#include "Core/UIScrollBar.h"
+
+
 // These constants are for backward compatibility. They are the 
 // sizes used for initialization and reset in RichEdit 1.0
 
-namespace DuiLib {
+namespace DUILIB 
+{
 
 const LONG cInitTextMax = (32 * 1024) - 1;
 
@@ -1263,7 +1263,7 @@ long CRichEditUI::GetTextLength(DWORD dwFlags) const
     return (long)lResult;
 }
 
-CDuiString CRichEditUI::GetText() const
+CStringUI CRichEditUI::GetText() const
 {
     long lLen = GetTextLength(GTL_DEFAULT);
     LPTSTR lpText = NULL;
@@ -1283,7 +1283,7 @@ CDuiString CRichEditUI::GetText() const
     gt.lpDefaultChar = NULL;
     gt.lpUsedDefChar = NULL;
     TxSendMessage(EM_GETTEXTEX, (WPARAM)&gt, (LPARAM)lpText, 0);
-    CDuiString sText(lpText);
+    CStringUI sText(lpText);
     delete[] lpText;
     return sText;
 }
@@ -1358,9 +1358,9 @@ void CRichEditUI::ReplaceSelW(LPCWSTR lpszNewText, bool bCanUndo)
     TxSendMessage(EM_REPLACESEL, (WPARAM) bCanUndo, (LPARAM)lpszNewText, 0); 
 }
 
-CDuiString CRichEditUI::GetSelText() const
+CStringUI CRichEditUI::GetSelText() const
 {
-    if( !m_pTwh ) return CDuiString();
+    if( !m_pTwh ) return CStringUI();
     CHARRANGE cr;
     cr.cpMin = cr.cpMax = 0;
     TxSendMessage(EM_EXGETSEL, 0, (LPARAM)&cr, 0);
@@ -1368,7 +1368,7 @@ CDuiString CRichEditUI::GetSelText() const
     lpText = new WCHAR[cr.cpMax - cr.cpMin + 1];
     ::ZeroMemory(lpText, (cr.cpMax - cr.cpMin + 1) * sizeof(WCHAR));
     TxSendMessage(EM_GETSELTEXT, 0, (LPARAM)lpText, 0);
-    CDuiString sText;
+    CStringUI sText;
     sText = (LPCWSTR)lpText;
     delete[] lpText;
     return sText;
@@ -1442,7 +1442,7 @@ DWORD CRichEditUI::SetEventMask(DWORD dwEventMask)
     return (DWORD)lResult;
 }
 
-CDuiString CRichEditUI::GetTextRange(long nStartChar, long nEndChar) const
+CStringUI CRichEditUI::GetTextRange(long nStartChar, long nEndChar) const
 {
     TEXTRANGEW tr = { 0 };
     tr.chrg.cpMin = nStartChar;
@@ -1452,7 +1452,7 @@ CDuiString CRichEditUI::GetTextRange(long nStartChar, long nEndChar) const
     ::ZeroMemory(lpText, (nEndChar - nStartChar + 1) * sizeof(WCHAR));
     tr.lpstrText = lpText;
     TxSendMessage(EM_GETTEXTRANGE, 0, (LPARAM)&tr, 0);
-    CDuiString sText;
+    CStringUI sText;
     sText = (LPCWSTR)lpText;
     delete[] lpText;
     return sText;
@@ -1597,14 +1597,14 @@ int CRichEditUI::GetLineCount() const
     return (int)lResult; 
 }
 
-CDuiString CRichEditUI::GetLine(int nIndex, int nMaxLength) const
+CStringUI CRichEditUI::GetLine(int nIndex, int nMaxLength) const
 {
     LPWSTR lpText = NULL;
     lpText = new WCHAR[nMaxLength + 1];
     ::ZeroMemory(lpText, (nMaxLength + 1) * sizeof(WCHAR));
     *(LPWORD)lpText = (WORD)nMaxLength;
     TxSendMessage(EM_GETLINE, nIndex, (LPARAM)lpText, 0);
-    CDuiString sText;
+    CStringUI sText;
     sText = (LPCWSTR)lpText;
     delete[] lpText;
     return sText;
@@ -1631,9 +1631,9 @@ bool CRichEditUI::LineScroll(int nLines, int nChars)
     return (BOOL)lResult == TRUE;
 }
 
-CDuiPoint CRichEditUI::GetCharPos(long lChar) const
+CPointUI CRichEditUI::GetCharPos(long lChar) const
 { 
-    CDuiPoint pt; 
+    CPointUI pt; 
     TxSendMessage(EM_POSFROMCHAR, (WPARAM)&pt, (LPARAM)lChar, 0); 
     return pt;
 }
@@ -1646,14 +1646,14 @@ long CRichEditUI::LineFromChar(long nIndex) const
     return (long)lResult;
 }
 
-CDuiPoint CRichEditUI::PosFromChar(UINT nChar) const
+CPointUI CRichEditUI::PosFromChar(UINT nChar) const
 { 
     POINTL pt; 
     TxSendMessage(EM_POSFROMCHAR, (WPARAM)&pt, nChar, 0); 
-    return CDuiPoint(pt.x, pt.y); 
+    return CPointUI(pt.x, pt.y); 
 }
 
-int CRichEditUI::CharFromPos(CDuiPoint pt) const
+int CRichEditUI::CharFromPos(CPointUI pt) const
 { 
     POINTL ptl = {pt.x, pt.y}; 
     if( !m_pTwh ) return 0;
@@ -1899,7 +1899,7 @@ void CRichEditUI::EndRight()
     TxSendMessage(WM_HSCROLL, SB_RIGHT, 0L, 0);
 }
 
-void CRichEditUI::DoEvent(TEventUI& event)
+void CRichEditUI::DoEvent(TEVENT_UI& event)
 {
     if( !IsMouseEnabled() && event.Type > UIEVENT__MOUSEBEGIN && event.Type < UIEVENT__MOUSEEND ) {
         if( m_pParent != NULL ) m_pParent->DoEvent(event);
@@ -1989,7 +1989,7 @@ void CRichEditUI::DoEvent(TEventUI& event)
 
 SIZE CRichEditUI::EstimateSize(SIZE szAvailable)
 {
-    //return CDuiSize(m_rcItem); // 这种方式在第一次设置大小之后就大小不变了
+    //return CSizeUI(m_rcItem); // 这种方式在第一次设置大小之后就大小不变了
     return CContainerUI::EstimateSize(szAvailable);
 }
 
@@ -2404,4 +2404,4 @@ LRESULT CRichEditUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, boo
 
 
 
-} // namespace DuiLib
+} // namespace DUILIB

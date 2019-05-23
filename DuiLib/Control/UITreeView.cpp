@@ -1,8 +1,13 @@
-#include "StdAfx.h"
-#include "UITreeView.h"
+#include "Control/UITreeView.h"
+#include "Control/UICheckBox.h"
+#include "Control/UILabel.h"
+#include "Control/UIOption.h"
+
+#include "Core/UIManager.h"
+#include "Core/UIScrollBar.h"
 
 #pragma warning( disable: 4251 )
-namespace DuiLib
+namespace DUILIB
 {
 	//************************************
 	// 函数名称: CTreeNodeUI
@@ -92,10 +97,10 @@ namespace DuiLib
 	//************************************
 	// 函数名称: DoEvent
 	// 返回类型: void
-	// 参数信息: TEventUI & event
+	// 参数信息: TEVENT_UI & event
 	// 函数说明:
 	//************************************
-	void CTreeNodeUI::DoEvent( TEventUI& event )
+	void CTreeNodeUI::DoEvent( TEVENT_UI& event )
 	{
 		if( !IsMouseEnabled() && event.Type > UIEVENT__MOUSEBEGIN && event.Type < UIEVENT__MOUSEEND ) {
 			if( m_pOwner != NULL ) m_pOwner->DoEvent(event);
@@ -289,10 +294,10 @@ namespace DuiLib
 
 	//************************************
 	// 函数名称: GetItemText
-	// 返回类型: UiLib::CDuiString
+	// 返回类型: UiLib::CStringUI
 	// 函数说明: 
 	//************************************
-	CDuiString CTreeNodeUI::GetItemText()
+	CStringUI CTreeNodeUI::GetItemText()
 	{
 		return pItemButton->GetText();
 	}
@@ -486,10 +491,10 @@ namespace DuiLib
 
 	//************************************
 	// 函数名称: GetTreeNodes
-	// 返回类型: UiLib::CDuiPtrArray
+	// 返回类型: UiLib::CPtrArrayUI
 	// 函数说明: 
 	//************************************
-	CDuiPtrArray CTreeNodeUI::GetTreeNodes()
+	CPtrArrayUI CTreeNodeUI::GetTreeNodes()
 	{
 		return mTreeNodes;
 	}
@@ -598,7 +603,7 @@ namespace DuiLib
 			if(!pNode)
 				continue;
 
-			CDuiString aa = pNode->GetItemText();
+			CStringUI aa = pNode->GetItemText();
 
 			if(pNode->IsHasChild())
 				nRetNode = pNode->GetLastNode();
@@ -893,10 +898,10 @@ namespace DuiLib
 	//************************************
 	// 函数名称: Notify
 	// 返回类型: void
-	// 参数信息: TNotifyUI & msg
+	// 参数信息: TNOTIFY_UI & msg
 	// 函数说明: 
 	//************************************
-	void CTreeViewUI::Notify( TNotifyUI& msg )
+	void CTreeViewUI::Notify( TNOTIFY_UI& msg )
 	{
 		
 	}
@@ -909,7 +914,7 @@ namespace DuiLib
 	//************************************
 	bool CTreeViewUI::OnCheckBoxChanged( void* param )
 	{
-		TNotifyUI* pMsg = (TNotifyUI*)param;
+		TNOTIFY_UI* pMsg = (TNOTIFY_UI*)param;
 		if(pMsg->sType == DUI_MSGTYPE_SELECTCHANGED)
 		{
 			CCheckBoxUI* pCheckBox = (CCheckBoxUI*)pMsg->pSender;
@@ -928,7 +933,7 @@ namespace DuiLib
 	//************************************
 	bool CTreeViewUI::OnFolderChanged( void* param )
 	{
-		TNotifyUI* pMsg = (TNotifyUI*)param;
+		TNOTIFY_UI* pMsg = (TNOTIFY_UI*)param;
 		if(pMsg->sType == DUI_MSGTYPE_SELECTCHANGED)
 		{
 			CCheckBoxUI* pFolder = (CCheckBoxUI*)pMsg->pSender;
@@ -948,7 +953,7 @@ namespace DuiLib
 	//************************************
 	bool CTreeViewUI::OnDBClickItem( void* param )
 	{
-		TNotifyUI* pMsg = (TNotifyUI*)param;
+		TNOTIFY_UI* pMsg = (TNOTIFY_UI*)param;
 		if(pMsg->sType == DUI_MSGTYPE_ITEMDBCLICK)
 		{
 			CTreeNodeUI* pItem		= static_cast<CTreeNodeUI*>(pMsg->pSender);

@@ -1,12 +1,10 @@
 #ifndef __UITREEVIEW_H__
 #define __UITREEVIEW_H__
 
-#include <vector>
-using namespace std;
+#include "Control/UIList.h"
+#include "Core/UIManager.h"
 
-#pragma once
-
-namespace DuiLib
+namespace DUILIB
 {
 	class CTreeViewUI;
 	class CCheckBoxUI;
@@ -22,7 +20,7 @@ namespace DuiLib
 	public:
 		LPCTSTR GetClass() const;
 		LPVOID	GetInterface(LPCTSTR pstrName);
-		void	DoEvent(TEventUI& event);
+		void	DoEvent(TEVENT_UI& event);
 		void	Invalidate();
 		bool	Select(bool bSelect = true, bool bTriggerEvent=true);
 
@@ -32,7 +30,7 @@ namespace DuiLib
 		void	SetVisibleTag(bool _IsVisible);
 		bool	GetVisibleTag();
 		void	SetItemText(LPCTSTR pstrValue);
-		CDuiString	GetItemText();
+		CStringUI	GetItemText();
 		void	CheckBoxSelected(bool _Selected);
 		bool	IsCheckBoxSelected() const;
 		bool	IsHasChild() const;
@@ -60,7 +58,7 @@ namespace DuiLib
 
 		void	SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
-		CDuiPtrArray GetTreeNodes();
+		CPtrArrayUI GetTreeNodes();
 
 		int			 GetTreeIndex();
 		int			 GetNodeIndex();
@@ -93,7 +91,7 @@ namespace DuiLib
 
 		CTreeNodeUI*			pParentTreeNode;
 
-		CDuiPtrArray			mTreeNodes;
+		CPtrArrayUI			mTreeNodes;
 	};
 
 	class DUILIB_API CTreeViewUI : public CListUI,public INotifyUI
@@ -119,7 +117,7 @@ namespace DuiLib
 		virtual bool OnDBClickItem(void* param);
 		virtual bool SetItemCheckBox(bool _Selected,CTreeNodeUI* _TreeNode = NULL);
 		virtual void SetItemExpand(bool _Expanded,CTreeNodeUI* _TreeNode = NULL);
-		virtual void Notify(TNotifyUI& msg);
+		virtual void Notify(TNOTIFY_UI& msg);
 		virtual void SetVisibleFolderBtn(bool _IsVisibled);
 		virtual bool GetVisibleFolderBtn();
 		virtual void SetVisibleCheckBtn(bool _IsVisibled);

@@ -1,6 +1,8 @@
-#include "StdAfx.h"
+#include "Control/UIActiveX.h"
+#include "Core/UIWindow.h"
+#include "Core/UIRender.h"
 
-namespace DuiLib {
+namespace DUILIB {
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
@@ -482,7 +484,7 @@ STDMETHODIMP CActiveXCtrl::GetDC(LPCRECT pRect, DWORD grfFlags, HDC* phDC)
 	if( m_bWindowless ) return S_FALSE;
     *phDC = ::GetDC(m_pOwner->m_hwndHost);
     if( (grfFlags & OLEDC_PAINTBKGND) != 0 ) {
-        CDuiRect rcItem = m_pOwner->GetPos();
+        CRectUI rcItem = m_pOwner->GetPos();
         if( !m_bWindowless ) rcItem.ResetOffset();
         ::FillRect(*phDC, &rcItem, (HBRUSH) (COLOR_WINDOW + 1));
     }
@@ -554,7 +556,7 @@ STDMETHODIMP CActiveXCtrl::OnInPlaceActivateEx(BOOL* pfNoRedraw, DWORD dwFlags)
         Hr = m_pOwner->m_pUnk->QueryInterface(IID_IOleInPlaceObject, (LPVOID*) &m_pInPlaceObject);
     }
     if( m_pInPlaceObject != NULL ) {
-        CDuiRect rcItem = m_pOwner->m_rcItem;
+        CRectUI rcItem = m_pOwner->m_rcItem;
         if( !m_bWindowless ) rcItem.ResetOffset();
         m_pInPlaceObject->SetObjectRects(&rcItem, &rcItem);
     }
@@ -1000,7 +1002,7 @@ void CActiveXUI::SetPos(RECT rc, bool bNeedInvalidate)
         m_pUnk->SetExtent(DVASPECT_CONTENT, &hmSize);
     }
     if( m_pControl->m_pInPlaceObject != NULL ) {
-        CDuiRect rcItem = m_rcItem;
+        CRectUI rcItem = m_rcItem;
         if( !m_pControl->m_bWindowless ) rcItem.ResetOffset();
         m_pControl->m_pInPlaceObject->SetObjectRects(&rcItem, &rcItem);
     }
@@ -1227,7 +1229,7 @@ CLSID CActiveXUI::GetClisd() const
 	return m_clsid;
 }
 
-CDuiString CActiveXUI::GetModuleName() const
+CStringUI CActiveXUI::GetModuleName() const
 {
     return m_sModuleName;
 }
@@ -1237,4 +1239,4 @@ void CActiveXUI::SetModuleName(LPCTSTR pstrText)
     m_sModuleName = pstrText;
 }
 
-} // namespace DuiLib
+} // namespace DUILIB

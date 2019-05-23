@@ -1,9 +1,9 @@
 #ifndef __UIHORIZONTALLAYOUT_H__
 #define __UIHORIZONTALLAYOUT_H__
 
-#pragma once
+#include "Core/UIContainer.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	class DUILIB_API CHorizontalLayoutUI : public CContainerUI
 	{
@@ -19,7 +19,7 @@ namespace DuiLib
 		void SetSepImmMode(bool bImmediately);
 		bool IsSepImmMode() const;
 		void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
-		void DoEvent(TEventUI& event);
+		void DoEvent(TEVENT_UI& event);
 
 		void SetPos(RECT rc, bool bNeedInvalidate = true);
 		void DoPostPaint(HDC hDC, const RECT& rcPaint);

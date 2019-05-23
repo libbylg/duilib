@@ -1,9 +1,9 @@
 #ifndef __UITEXT_H__
 #define __UITEXT_H__
 
-#pragma once
+#include "Control/UILabel.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	class DUILIB_API CTextUI : public CLabelUI
 	{
@@ -15,9 +15,9 @@ namespace DuiLib
 		UINT GetControlFlags() const;
 		LPVOID GetInterface(LPCTSTR pstrName);
 
-		CDuiString* GetLinkContent(int iIndex);
+		CStringUI* GetLinkContent(int iIndex);
 
-		void DoEvent(TEventUI& event);
+		void DoEvent(TEVENT_UI& event);
 
 		void PaintText(HDC hDC);
 
@@ -25,10 +25,10 @@ namespace DuiLib
 		enum { MAX_LINK = 8 };
 		int m_nLinks;
 		RECT m_rcLinks[MAX_LINK];
-		CDuiString m_sLinks[MAX_LINK];
+		CStringUI m_sLinks[MAX_LINK];
 		int m_nHoverLink;
 	};
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif //__UITEXT_H__

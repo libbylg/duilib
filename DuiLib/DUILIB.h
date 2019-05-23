@@ -8,7 +8,10 @@
 #include <olectl.h>
 #include <richedit.h>
 #include <zmouse.h>
-
+#include <GdiPlus.h>
+#ifdef _USEIMM
+#include <imm.h>
+#endif
 
 #include <stddef.h>
 #include <tchar.h>
@@ -22,6 +25,10 @@
 #ifdef _DEBUG
 #include <shlwapi.h>
 #endif
+
+
+#include <vector>
+using namespace std;
 
 
 #if defined(__GNUC__)

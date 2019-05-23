@@ -1,9 +1,9 @@
 #ifndef __UIOPTION_H__
 #define __UIOPTION_H__
 
-#pragma once
+#include "Control/UIButton.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	class DUILIB_API COptionUI : public CButtonUI
 	{
@@ -47,16 +47,16 @@ namespace DuiLib
 
 	protected:
 		bool			m_bSelected;
-		CDuiString		m_sGroupName;
+		CStringUI		m_sGroupName;
 
 		DWORD			m_dwSelectedBkColor;
 		DWORD			m_dwSelectedTextColor;
 
-		TDrawInfo		m_diSelected;
-		TDrawInfo		m_diSelectedHot;
-		TDrawInfo		m_diFore;
+		TDRAWINFO_UI		m_diSelected;
+		TDRAWINFO_UI		m_diSelectedHot;
+		TDRAWINFO_UI		m_diFore;
 	};
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UIOPTION_H__

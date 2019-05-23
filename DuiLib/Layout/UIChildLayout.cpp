@@ -1,7 +1,9 @@
-#include "stdafx.h"
-#include "UIChildLayout.h"
+#include "Layout/UIChildLayout.h"
 
-namespace DuiLib
+#include "Control/UIDlgBuilder.h"
+
+
+namespace DUILIB
 {
 	CChildLayoutUI::CChildLayoutUI()
 	{
@@ -33,12 +35,12 @@ namespace DuiLib
 			CContainerUI::SetAttribute(pstrName,pstrValue);
 	}
 
-	void CChildLayoutUI::SetChildLayoutXML( CDuiString pXML )
+	void CChildLayoutUI::SetChildLayoutXML( CStringUI pXML )
 	{
 		m_pstrXMLFile=pXML;
 	}
 
-	CDuiString CChildLayoutUI::GetChildLayoutXML()
+	CStringUI CChildLayoutUI::GetChildLayoutXML()
 	{
 		return m_pstrXMLFile;
 	}
@@ -53,4 +55,4 @@ namespace DuiLib
 	{
 		return DUI_CTR_CHILDLAYOUT;
 	}
-} // namespace DuiLib
+} // namespace DUILIB

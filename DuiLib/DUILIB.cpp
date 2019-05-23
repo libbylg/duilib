@@ -69,6 +69,10 @@
 #pragma comment(lib, "shlwapi.lib")
 #endif
 
+#ifdef _USEIMM
+#pragma comment(lib, "imm32.lib")
+#endif
+
 
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD  dwReason, LPVOID /*lpReserved*/)
 {

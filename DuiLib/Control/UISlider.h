@@ -1,9 +1,9 @@
 #ifndef __UISLIDER_H__
 #define __UISLIDER_H__
 
-#pragma once
+#include "Control/UIProgress.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	class DUILIB_API CSliderUI : public CProgressUI
 	{
@@ -29,7 +29,7 @@ namespace DuiLib
 		LPCTSTR GetThumbPushedImage() const;
 		void SetThumbPushedImage(LPCTSTR pStrImage);
 
-		void DoEvent(TEventUI& event);
+		void DoEvent(TEVENT_UI& event);
 		void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 		void PaintStatusImage(HDC hDC);
 
@@ -39,9 +39,9 @@ namespace DuiLib
 		int m_nStep;
 		bool m_bImmMode;
 
-		TDrawInfo m_diThumb;
-		TDrawInfo m_diThumbHot;
-		TDrawInfo m_diThumbPushed;
+		TDRAWINFO_UI m_diThumb;
+		TDRAWINFO_UI m_diThumbHot;
+		TDRAWINFO_UI m_diThumbPushed;
 	};
 }
 

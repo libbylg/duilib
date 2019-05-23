@@ -1,7 +1,7 @@
-#include "StdAfx.h"
-#include "UISlider.h"
+#include "Control/UISlider.h"
+#include "Core/UIManager.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	CSliderUI::CSliderUI() : m_uButtonState(0), m_nStep(1), m_bImmMode(false)
 	{
@@ -54,12 +54,12 @@ namespace DuiLib
 		if( m_bHorizontal ) {
 			int left = m_rcItem.left + (m_rcItem.right - m_rcItem.left - m_szThumb.cx) * (m_nValue - m_nMin) / (m_nMax - m_nMin);
 			int top = (m_rcItem.bottom + m_rcItem.top - m_szThumb.cy) / 2;
-			return CDuiRect(left, top, left + m_szThumb.cx, top + m_szThumb.cy); 
+			return CRectUI(left, top, left + m_szThumb.cx, top + m_szThumb.cy); 
 		}
 		else {
 			int left = (m_rcItem.right + m_rcItem.left - m_szThumb.cx) / 2;
 			int top = m_rcItem.bottom - m_szThumb.cy - (m_rcItem.bottom - m_rcItem.top - m_szThumb.cy) * (m_nValue - m_nMin) / (m_nMax - m_nMin);
-			return CDuiRect(left, top, left + m_szThumb.cx, top + m_szThumb.cy); 
+			return CRectUI(left, top, left + m_szThumb.cx, top + m_szThumb.cy); 
 		}
 	}
 
@@ -112,7 +112,7 @@ namespace DuiLib
 		Invalidate();
 	}
 
-	void CSliderUI::DoEvent(TEventUI& event)
+	void CSliderUI::DoEvent(TEVENT_UI& event)
 	{
 		if( !IsMouseEnabled() && event.Type > UIEVENT__MOUSEBEGIN && event.Type < UIEVENT__MOUSEEND ) {
 			if( m_pParent != NULL ) m_pParent->DoEvent(event);

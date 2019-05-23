@@ -1,9 +1,9 @@
 #ifndef __UIDATETIME_H__
 #define __UIDATETIME_H__
 
-#pragma once
+#include "Control/UILabel.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	class CDateTimeWnd;
 
@@ -29,7 +29,7 @@ namespace DuiLib
         void SetPos(RECT rc, bool bNeedInvalidate = true);
         void Move(SIZE szOffset, bool bNeedInvalidate = true);
 
-		void DoEvent(TEventUI& event);
+		void DoEvent(TEVENT_UI& event);
 
 	protected:
 		SYSTEMTIME m_sysTime;

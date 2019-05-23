@@ -1,9 +1,9 @@
 #ifndef __UICHILDLAYOUT_H__
 #define __UICHILDLAYOUT_H__
 
-#pragma once
+#include "Core/UIContainer.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	class DUILIB_API CChildLayoutUI : public CContainerUI
 	{
@@ -12,13 +12,13 @@ namespace DuiLib
 
 		void Init();
 		void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
-		void SetChildLayoutXML(CDuiString pXML);
-		CDuiString GetChildLayoutXML();
+		void SetChildLayoutXML(CStringUI pXML);
+		CStringUI GetChildLayoutXML();
 		virtual LPVOID GetInterface(LPCTSTR pstrName);
 		virtual LPCTSTR GetClass() const;
 
 	private:
-		CDuiString m_pstrXMLFile;
+		CStringUI m_pstrXMLFile;
 	};
-} // namespace DuiLib
+} // namespace DUILIB
 #endif // __UICHILDLAYOUT_H__

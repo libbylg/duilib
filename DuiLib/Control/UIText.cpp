@@ -1,7 +1,7 @@
-#include "StdAfx.h"
-#include "UIText.h"
+#include "Control/UIText.h"
+#include "Core/UIManager.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	CTextUI::CTextUI() : m_nLinks(0), m_nHoverLink(-1)
 	{
@@ -32,13 +32,13 @@ namespace DuiLib
 		else return 0;
 	}
 
-	CDuiString* CTextUI::GetLinkContent(int iIndex)
+	CStringUI* CTextUI::GetLinkContent(int iIndex)
 	{
 		if( iIndex >= 0 && iIndex < m_nLinks ) return &m_sLinks[iIndex];
 		return NULL;
 	}
 
-	void CTextUI::DoEvent(TEventUI& event)
+	void CTextUI::DoEvent(TEVENT_UI& event)
 	{
 		if( !IsMouseEnabled() && event.Type > UIEVENT__MOUSEBEGIN && event.Type < UIEVENT__MOUSEEND ) {
 			if( m_pParent != NULL ) m_pParent->DoEvent(event);

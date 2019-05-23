@@ -1,7 +1,7 @@
-#include "stdafx.h"
-#include "UIButton.h"
+#include "Control/UIButton.h"
+#include "Core/UIManager.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	CButtonUI::CButtonUI()
 		: m_uButtonState(0)
@@ -31,7 +31,7 @@ namespace DuiLib
 		return (IsKeyboardEnabled() ? UIFLAG_TABSTOP : 0) | (IsEnabled() ? UIFLAG_SETCURSOR : 0);
 	}
 
-	void CButtonUI::DoEvent(TEventUI& event)
+	void CButtonUI::DoEvent(TEVENT_UI& event)
 	{
 		if( !IsMouseEnabled() && event.Type > UIEVENT__MOUSEBEGIN && event.Type < UIEVENT__MOUSEEND ) {
 			if( m_pParent != NULL ) m_pParent->DoEvent(event);
@@ -303,7 +303,7 @@ namespace DuiLib
 		if (m_diNormal.pImageInfo) {
 			LONG width = m_diNormal.pImageInfo->nX / 5;
 			LONG height = m_diNormal.pImageInfo->nY;
-			m_diNormal.rcBmpPart = CDuiRect(0, 0, width, height);
+			m_diNormal.rcBmpPart = CRectUI(0, 0, width, height);
 			if( m_bFloat && m_cxyFixed.cx == 0 && m_cxyFixed.cy == 0 ) {
 				m_cxyFixed.cx = width;
 				m_cxyFixed.cy = height;
@@ -316,7 +316,7 @@ namespace DuiLib
 		if (m_diPushed.pImageInfo) {
 			LONG width = m_diPushed.pImageInfo->nX / 5;
 			LONG height = m_diPushed.pImageInfo->nY;
-			m_diPushed.rcBmpPart = CDuiRect(width, 0, width*2, height);
+			m_diPushed.rcBmpPart = CRectUI(width, 0, width*2, height);
 		}
 
 		m_diHot.Clear();
@@ -325,7 +325,7 @@ namespace DuiLib
 		if (m_diHot.pImageInfo) {
 			LONG width = m_diHot.pImageInfo->nX / 5;
 			LONG height = m_diHot.pImageInfo->nY;
-			m_diHot.rcBmpPart = CDuiRect(width*2, 0, width*3, height);
+			m_diHot.rcBmpPart = CRectUI(width*2, 0, width*3, height);
 		}
 
 		m_diFocused.Clear();
@@ -334,7 +334,7 @@ namespace DuiLib
 		if (m_diFocused.pImageInfo) {
 			LONG width = m_diFocused.pImageInfo->nX / 5;
 			LONG height = m_diFocused.pImageInfo->nY;
-			m_diFocused.rcBmpPart = CDuiRect(width*3, 0, width*4, height);
+			m_diFocused.rcBmpPart = CRectUI(width*3, 0, width*4, height);
 		}
 
 		m_diDisabled.Clear();
@@ -343,7 +343,7 @@ namespace DuiLib
 		if (m_diDisabled.pImageInfo) {
 			LONG width = m_diDisabled.pImageInfo->nX / 5;
 			LONG height = m_diDisabled.pImageInfo->nY;
-			m_diDisabled.rcBmpPart = CDuiRect(width*4, 0, width*5, height);
+			m_diDisabled.rcBmpPart = CRectUI(width*4, 0, width*5, height);
 		}
 
 		Invalidate();
@@ -361,7 +361,7 @@ namespace DuiLib
 
 	SIZE CButtonUI::EstimateSize(SIZE szAvailable)
 	{
-		if( m_cxyFixed.cy == 0 ) return CDuiSize(m_cxyFixed.cx, m_pManager->GetFontInfo(GetFont())->tm.tmHeight + 8);
+		if( m_cxyFixed.cy == 0 ) return CSizeUI(m_cxyFixed.cx, m_pManager->GetFontInfo(GetFont())->tm.tmHeight + 8);
 		return CControlUI::EstimateSize(szAvailable);
 	}
 

@@ -6,7 +6,7 @@
 #define DISPID_FLASHEVENT_FSCOMMAND	 ( 0x0096 )
 #define DISPID_FLASHEVENT_ONPROGRESS	( 0x07A6 )
 
-namespace DuiLib
+namespace DUILIB
 {
 
 	CFlashUI::CFlashUI(void)
@@ -15,7 +15,7 @@ namespace DuiLib
 		, m_pFlash(NULL)
 		, m_pFlashEventHandler(NULL)
 	{
-		CDuiString strFlashCLSID=_T("{D27CDB6E-AE6D-11CF-96B8-444553540000}");
+		CStringUI strFlashCLSID=_T("{D27CDB6E-AE6D-11CF-96B8-444553540000}");
 		OLECHAR szCLSID[100] = { 0 };
 #ifndef _UNICODE
 		::MultiByteToWideChar(::GetACP(), 0, strFlashCLSID, -1, szCLSID, lengthof(szCLSID) - 1);

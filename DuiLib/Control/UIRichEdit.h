@@ -1,9 +1,11 @@
 #ifndef __UIRICHEDIT_H__
 #define __UIRICHEDIT_H__
 
-#pragma once
+#include "Core/UIContainer.h"
+#include "Core/UIManager.h"
 
-namespace DuiLib {
+namespace DUILIB 
+{
 
 class CTxtWinHost;
 
@@ -41,7 +43,7 @@ public:
     int GetLimitText();
     void SetLimitText(int iChars);
     long GetTextLength(DWORD dwFlags = GTL_DEFAULT) const;
-    CDuiString GetText() const;
+    CStringUI GetText() const;
     void SetText(LPCTSTR pstrText);
     bool IsModify() const;
     void SetModify(bool bModified = true) const;
@@ -51,7 +53,7 @@ public:
     int SetSel(long nStartChar, long nEndChar);
     void ReplaceSel(LPCTSTR lpszNewText, bool bCanUndo);
     void ReplaceSelW(LPCWSTR lpszNewText, bool bCanUndo = false);
-    CDuiString GetSelText() const;
+    CStringUI GetSelText() const;
     int SetSelAll();
     int SetSelNone();
     WORD GetSelectionType() const;
@@ -62,7 +64,7 @@ public:
     bool SetAutoURLDetect(bool bAutoDetect = true);
     DWORD GetEventMask() const;
     DWORD SetEventMask(DWORD dwEventMask);
-    CDuiString GetTextRange(long nStartChar, long nEndChar) const;
+    CStringUI GetTextRange(long nStartChar, long nEndChar) const;
     void HideSelection(bool bHide = true, bool bChangeStyle = false);
     void ScrollCaret();
     int InsertText(long nInsertAfterChar, LPCTSTR lpstrText, bool bCanUndo = false);
@@ -81,14 +83,14 @@ public:
     void Cut();
     void Paste();
     int GetLineCount() const;
-    CDuiString GetLine(int nIndex, int nMaxLength) const;
+    CStringUI GetLine(int nIndex, int nMaxLength) const;
     int LineIndex(int nLine = -1) const;
     int LineLength(int nLine = -1) const;
     bool LineScroll(int nLines, int nChars = 0);
-	CDuiPoint GetCharPos(long lChar) const;
+	CPointUI GetCharPos(long lChar) const;
     long LineFromChar(long nIndex) const;
-    CDuiPoint PosFromChar(UINT nChar) const;
-    int CharFromPos(CDuiPoint pt) const;
+    CPointUI PosFromChar(UINT nChar) const;
+    int CharFromPos(CPointUI pt) const;
     void EmptyUndoBuffer();
     UINT SetUndoLimit(UINT nLimit);
     long StreamIn(int nFormat, EDITSTREAM &es);
@@ -123,7 +125,7 @@ public:
     SIZE EstimateSize(SIZE szAvailable);
 	void SetPos(RECT rc, bool bNeedInvalidate = true);
 	void Move(SIZE szOffset, bool bNeedInvalidate = true);
-    void DoEvent(TEventUI& event);
+    void DoEvent(TEVENT_UI& event);
     bool DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
 
     void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
@@ -153,6 +155,6 @@ protected:
 	RECT	m_rcTextPadding;
 };
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UIRICHEDIT_H__

@@ -1,9 +1,9 @@
 #ifndef __UIBUTTON_H__
 #define __UIBUTTON_H__
 
-#pragma once
+#include "Control/UILabel.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	class DUILIB_API CButtonUI : public CLabelUI
 	{
@@ -16,7 +16,7 @@ namespace DuiLib
 
 		bool Activate();
 		void SetEnabled(bool bEnable = true);
-		void DoEvent(TEventUI& event);
+		void DoEvent(TEVENT_UI& event);
 
 		LPCTSTR GetNormalImage();
 		void SetNormalImage(LPCTSTR pStrImage);
@@ -68,15 +68,15 @@ namespace DuiLib
 		BYTE m_uFadeAlpha;
 		BYTE m_uFadeAlphaDelta;
 
-		TDrawInfo m_diNormal;
-		TDrawInfo m_diHot;
-		TDrawInfo m_diHotFore;
-		TDrawInfo m_diPushed;
-		TDrawInfo m_diPushedFore;
-		TDrawInfo m_diFocused;
-		TDrawInfo m_diDisabled;
+		TDRAWINFO_UI m_diNormal;
+		TDRAWINFO_UI m_diHot;
+		TDRAWINFO_UI m_diHotFore;
+		TDRAWINFO_UI m_diPushed;
+		TDRAWINFO_UI m_diPushedFore;
+		TDRAWINFO_UI m_diFocused;
+		TDRAWINFO_UI m_diDisabled;
 	};
 
-}	// namespace DuiLib
+}	// namespace DUILIB
 
 #endif // __UIBUTTON_H__

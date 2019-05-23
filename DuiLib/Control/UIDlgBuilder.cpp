@@ -1,12 +1,33 @@
-#include "Core/UIDlgBuilder.h"
-
-#include "Utils/Utils.h"
+#include "Control/UIDlgBuilder.h"
 
 #include "Core/UIManager.h"
 #include "Core/UIContainer.h"
-#include "Core/UIBase.h"
+#include "Core/UIWindow.h"
+#include "Core/UIScrollBar.h"
 
 #include "Control/UITreeView.h"
+#include "Control/UIList.h"
+#include "Control/UIEdit.h"
+#include "Control/UIButton.h"
+#include "Control/UIText.h"
+#include "Control/UILabel.h"
+#include "Control/UICombo.h"
+#include "Control/UIOption.h"
+#include "Control/UISlider.h"
+//#include "Control/UIActiveX.h"
+#include "Control/UIProgress.h"
+//#include "Control/UIRichEdit.h"
+#include "Control/UICheckBox.h"
+#include "Control/UICombo.h"
+#include "Control/UIDateTime.h"
+#include "Control/UITreeView.h"
+//#include "Control/UIWebBrowser.h"
+#include "Control/UIGifAnim.h"
+
+#include "Layout/UITabLayout.h"
+#include "Layout/UITileLayout.h"
+#include "Layout/UIChildLayout.h"
+
 
 
 
@@ -298,12 +319,12 @@ namespace DUILIB
                         break;
                     case 7:
                         if (_tcsicmp(pstrClass, DUI_CTR_CONTROL) == 0)               pControl = new CControlUI;
-                        else if (_tcsicmp(pstrClass, DUI_CTR_ACTIVEX) == 0)          pControl = new CActiveXUI;
+                        //else if (_tcsicmp(pstrClass, DUI_CTR_ACTIVEX) == 0)          pControl = new CActiveXUI;
                         else if (_tcscmp(pstrClass, DUI_CTR_GIFANIM) == 0)            pControl = new CGifAnimUI;
                         break;
                     case 8:
                         if (_tcsicmp(pstrClass, DUI_CTR_PROGRESS) == 0)              pControl = new CProgressUI;
-                        else if (_tcsicmp(pstrClass, DUI_CTR_RICHEDIT) == 0)         pControl = new CRichEditUI;
+                        //else if (_tcsicmp(pstrClass, DUI_CTR_RICHEDIT) == 0)         pControl = new CRichEditUI;
                         else if (_tcsicmp(pstrClass, DUI_CTR_CHECKBOX) == 0)		  pControl = new CCheckBoxUI;
                         else if (_tcsicmp(pstrClass, DUI_CTR_COMBOBOX) == 0)		  pControl = new CComboUI;
                         else if (_tcsicmp(pstrClass, DUI_CTR_DATETIME) == 0)		  pControl = new CDateTimeUI;
@@ -318,7 +339,7 @@ namespace DUILIB
                     case 10:
                         if (_tcsicmp(pstrClass, DUI_CTR_LISTHEADER) == 0)            pControl = new CListHeaderUI;
                         else if (_tcsicmp(pstrClass, DUI_CTR_TILELAYOUT) == 0)       pControl = new CTileLayoutUI;
-                        else if (_tcsicmp(pstrClass, DUI_CTR_WEBBROWSER) == 0)       pControl = new CWebBrowserUI;
+                        //else if (_tcsicmp(pstrClass, DUI_CTR_WEBBROWSER) == 0)       pControl = new CWebBrowserUI;
                         break;
                     case 11:
                         if (_tcsicmp(pstrClass, DUI_CTR_CHILDLAYOUT) == 0)			  pControl = new CChildLayoutUI;
@@ -341,7 +362,7 @@ namespace DUILIB
                 }
                 // User-supplied control factory
                 if (pControl == NULL) {
-                    CDuiPtrArray* pPlugins = CPaintManagerUI::GetPlugins();
+                    CPtrArrayUI* pPlugins = CPaintManagerUI::GetPlugins();
                     LPCREATECONTROL lpCreateControl = NULL;
                     for (int i = 0; i < pPlugins->GetSize(); ++i) {
                         lpCreateControl = (LPCREATECONTROL)pPlugins->GetAt(i);

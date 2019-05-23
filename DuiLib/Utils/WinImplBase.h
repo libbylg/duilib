@@ -1,7 +1,7 @@
 #ifndef WIN_IMPL_BASE_HPP
 #define WIN_IMPL_BASE_HPP
 
-namespace DuiLib
+namespace DUILIB
 {
 
 	enum UILIB_RESOURCETYPE
@@ -24,14 +24,14 @@ namespace DuiLib
 		virtual ~WindowImplBase(){};
 		virtual void InitWindow(){};
 		virtual void OnFinalMessage( HWND hWnd );
-		virtual void Notify(TNotifyUI& msg);
+		virtual void Notify(TNOTIFY_UI& msg);
 
 		DUI_DECLARE_MESSAGE_MAP()
-		virtual void OnClick(TNotifyUI& msg);
+		virtual void OnClick(TNOTIFY_UI& msg);
 
 	protected:
-		virtual CDuiString GetSkinFolder() = 0;
-		virtual CDuiString GetSkinFile() = 0;
+		virtual CStringUI GetSkinFolder() = 0;
+		virtual CStringUI GetSkinFile() = 0;
 		virtual LPCTSTR GetWindowClassName(void) const = 0 ;
 		virtual LRESULT ResponseDefaultKeyEvent(WPARAM wParam);
 
@@ -41,7 +41,7 @@ namespace DuiLib
 	public:
 		virtual UINT GetClassStyle() const;
 		virtual UILIB_RESOURCETYPE GetResourceType() const;
-		virtual CDuiString GetZIPFileName() const;
+		virtual CStringUI GetZIPFileName() const;
 		virtual LPCTSTR GetResourceID() const;
 		virtual CControlUI* CreateControl(LPCTSTR pstrClass);
 		virtual LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM /*lParam*/, bool& /*bHandled*/);

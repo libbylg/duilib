@@ -1,9 +1,9 @@
 #ifndef __UIPROGRESS_H__
 #define __UIPROGRESS_H__
 
-#pragma once
+#include "Control/UILabel.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	class DUILIB_API CProgressUI : public CLabelUI
 	{
@@ -33,9 +33,9 @@ namespace DuiLib
 		int m_nMin;
 		int m_nValue;
 
-		TDrawInfo m_diFore;
+		TDRAWINFO_UI m_diFore;
 	};
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UIPROGRESS_H__

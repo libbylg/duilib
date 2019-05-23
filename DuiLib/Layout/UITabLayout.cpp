@@ -1,7 +1,8 @@
-#include "stdafx.h"
-#include "UITabLayout.h"
+#include "Layout/UITabLayout.h"
+#include "Core/UIManager.h"
 
-namespace DuiLib
+
+namespace DUILIB
 {
 	CTabLayoutUI::CTabLayoutUI() : m_iCurSel(-1)
 	{

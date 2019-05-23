@@ -1,7 +1,9 @@
-#include "stdafx.h"
-#include "UIVerticalLayout.h"
+#include "Layout/UIVerticalLayout.h"
+#include "Core/UIScrollBar.h"
+#include "Core/UIManager.h"
 
-namespace DuiLib
+
+namespace DUILIB
 {
 	CVerticalLayoutUI::CVerticalLayoutUI() : m_iSepHeight(0), m_uButtonState(0), m_bImmMode(false)
 	{
@@ -226,7 +228,7 @@ namespace DuiLib
 		else CContainerUI::SetAttribute(pstrName, pstrValue);
 	}
 
-	void CVerticalLayoutUI::DoEvent(TEventUI& event)
+	void CVerticalLayoutUI::DoEvent(TEVENT_UI& event)
 	{
 		if( m_iSepHeight != 0 ) {
 			if( event.Type == UIEVENT_BUTTONDOWN && IsEnabled() )
@@ -283,7 +285,7 @@ namespace DuiLib
 						}
 					}
 
-					CDuiRect rcInvalidate = GetThumbRect(true);
+					CRectUI rcInvalidate = GetThumbRect(true);
 					m_rcNewPos = rc;
 					m_cxyFixed.cy = m_rcNewPos.bottom - m_rcNewPos.top;
 
@@ -315,18 +317,18 @@ namespace DuiLib
 	{
 		if( (m_uButtonState & UISTATE_CAPTURED) != 0 && bUseNew) {
 			if( m_iSepHeight >= 0 ) 
-				return CDuiRect(m_rcNewPos.left, MAX(m_rcNewPos.bottom - m_iSepHeight, m_rcNewPos.top), 
+				return CRectUI(m_rcNewPos.left, MAX(m_rcNewPos.bottom - m_iSepHeight, m_rcNewPos.top), 
 				m_rcNewPos.right, m_rcNewPos.bottom);
 			else 
-				return CDuiRect(m_rcNewPos.left, m_rcNewPos.top, m_rcNewPos.right, 
+				return CRectUI(m_rcNewPos.left, m_rcNewPos.top, m_rcNewPos.right, 
 				MIN(m_rcNewPos.top - m_iSepHeight, m_rcNewPos.bottom));
 		}
 		else {
 			if( m_iSepHeight >= 0 ) 
-				return CDuiRect(m_rcItem.left, MAX(m_rcItem.bottom - m_iSepHeight, m_rcItem.top), m_rcItem.right, 
+				return CRectUI(m_rcItem.left, MAX(m_rcItem.bottom - m_iSepHeight, m_rcItem.top), m_rcItem.right, 
 				m_rcItem.bottom);
 			else 
-				return CDuiRect(m_rcItem.left, m_rcItem.top, m_rcItem.right, 
+				return CRectUI(m_rcItem.left, m_rcItem.top, m_rcItem.right, 
 				MIN(m_rcItem.top - m_iSepHeight, m_rcItem.bottom));
 
 		}

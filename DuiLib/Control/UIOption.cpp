@@ -1,7 +1,8 @@
-#include "stdafx.h"
-#include "UIOption.h"
+#include "Control/UIOption.h"
 
-namespace DuiLib
+#include "Core/UIManager.h"
+
+namespace DUILIB
 {
 	COptionUI::COptionUI() : m_bSelected(false), m_dwSelectedBkColor(0), m_dwSelectedTextColor(0)
 	{
@@ -73,7 +74,7 @@ namespace DuiLib
 		if( m_pManager != NULL ) {
 			if( !m_sGroupName.IsEmpty() ) {
 				if( m_bSelected ) {
-					CDuiPtrArray* aOptionGroup = m_pManager->GetOptionGroup(m_sGroupName);
+					CPtrArrayUI* aOptionGroup = m_pManager->GetOptionGroup(m_sGroupName);
 					for( int i = 0; i < aOptionGroup->GetSize(); i++ ) {
 						COptionUI* pControl = static_cast<COptionUI*>(aOptionGroup->GetAt(i));
 						if( pControl != this ) {
@@ -171,7 +172,7 @@ namespace DuiLib
 
 	SIZE COptionUI::EstimateSize(SIZE szAvailable)
 	{
-		if( m_cxyFixed.cy == 0 ) return CDuiSize(m_cxyFixed.cx, m_pManager->GetFontInfo(GetFont())->tm.tmHeight + 8);
+		if( m_cxyFixed.cy == 0 ) return CSizeUI(m_cxyFixed.cx, m_pManager->GetFontInfo(GetFont())->tm.tmHeight + 8);
 		return CControlUI::EstimateSize(szAvailable);
 	}
 

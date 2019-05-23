@@ -1,146 +1,149 @@
-#include "StdAfx.h"
+#include "Control/UICombo.h"
+#include "Core/UIManager.h"
+#include "Core/UIScrollBar.h"
+#include "Core/UIWindow.h"
 
-namespace DuiLib {
+namespace DUILIB 
+{
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
 
-class CComboBodyUI : public CVerticalLayoutUI
-{
-public:
-    CComboBodyUI::CComboBodyUI(CComboUI* pOwner);
-    bool DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
+    class CComboBodyUI : public CVerticalLayoutUI
+    {
+    public:
+        CComboBodyUI::CComboBodyUI(CComboUI* pOwner);
+        bool DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
 
-protected:
-    CComboUI* m_pOwner;
-};
+    protected:
+        CComboUI* m_pOwner;
+    };
 
 
-CComboBodyUI::CComboBodyUI(CComboUI* pOwner) : m_pOwner(pOwner)
-{
-    ASSERT(m_pOwner);
-}
+    CComboBodyUI::CComboBodyUI(CComboUI* pOwner) : m_pOwner(pOwner)
+    {
+        ASSERT(m_pOwner);
+    }
 
-bool CComboBodyUI::DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl) {
-    RECT rcTemp = { 0 };
-    if( !::IntersectRect(&rcTemp, &rcPaint, &m_rcItem) ) return true;
+    bool CComboBodyUI::DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl)
+    {
+        RECT rcTemp = {0};
+        if (!::IntersectRect(&rcTemp, &rcPaint, &m_rcItem)) return true;
 
-    TListInfoUI* pListInfo = NULL;
-    if( m_pOwner ) pListInfo = m_pOwner->GetListInfo();
+        TListInfoUI* pListInfo = NULL;
+        if (m_pOwner) pListInfo = m_pOwner->GetListInfo();
 
-    CRenderClip clip;
-    CRenderClip::GenerateClip(hDC, rcTemp, clip);
-    CControlUI::DoPaint(hDC, rcPaint, pStopControl);
+        CRenderClip clip;
+        CRenderClip::GenerateClip(hDC, rcTemp, clip);
+        CControlUI::DoPaint(hDC, rcPaint, pStopControl);
 
-    if( m_items.GetSize() > 0 ) {
-        RECT rc = m_rcItem;
-        rc.left += m_rcInset.left;
-        rc.top += m_rcInset.top;
-        rc.right -= m_rcInset.right;
-        rc.bottom -= m_rcInset.bottom;
-        if( m_pVerticalScrollBar && m_pVerticalScrollBar->IsVisible() ) rc.right -= m_pVerticalScrollBar->GetFixedWidth();
-        if( m_pHorizontalScrollBar && m_pHorizontalScrollBar->IsVisible() ) rc.bottom -= m_pHorizontalScrollBar->GetFixedHeight();
+        if (m_items.GetSize() > 0) {
+            RECT rc = m_rcItem;
+            rc.left += m_rcInset.left;
+            rc.top += m_rcInset.top;
+            rc.right -= m_rcInset.right;
+            rc.bottom -= m_rcInset.bottom;
+            if (m_pVerticalScrollBar && m_pVerticalScrollBar->IsVisible()) rc.right -= m_pVerticalScrollBar->GetFixedWidth();
+            if (m_pHorizontalScrollBar && m_pHorizontalScrollBar->IsVisible()) rc.bottom -= m_pHorizontalScrollBar->GetFixedHeight();
 
-        if( !::IntersectRect(&rcTemp, &rcPaint, &rc) ) {
-            for( int it = 0; it < m_items.GetSize(); it++ ) {
-                CControlUI* pControl = static_cast<CControlUI*>(m_items[it]);
-                if( pControl == pStopControl ) return false;
-                if( !pControl->IsVisible() ) continue;
-                if( !::IntersectRect(&rcTemp, &rcPaint, &pControl->GetPos()) ) continue;
-                if( pControl->IsFloat() ) {
-                    if( !::IntersectRect(&rcTemp, &m_rcItem, &pControl->GetPos()) ) continue;
-                    if( !pControl->Paint(hDC, rcPaint, pStopControl) ) return false;
-                }
-            }
-        }
-        else {
-            int iDrawIndex = 0;
-            CRenderClip childClip;
-            CRenderClip::GenerateClip(hDC, rcTemp, childClip);
-            for( int it = 0; it < m_items.GetSize(); it++ ) {
-                CControlUI* pControl = static_cast<CControlUI*>(m_items[it]);
-                if( pControl == pStopControl ) return false;
-                if( !pControl->IsVisible() ) continue;
-                if( !pControl->IsFloat() ) {
-                    IListItemUI* pListItem = static_cast<IListItemUI*>(pControl->GetInterface(DUI_CTR_ILISTITEM));
-                    if( pListItem != NULL ) {
-                        pListItem->SetDrawIndex(iDrawIndex);
-                        iDrawIndex += 1;
+            if (!::IntersectRect(&rcTemp, &rcPaint, &rc)) {
+                for (int it = 0; it < m_items.GetSize(); it++) {
+                    CControlUI* pControl = static_cast<CControlUI*>(m_items[it]);
+                    if (pControl == pStopControl) return false;
+                    if (!pControl->IsVisible()) continue;
+                    if (!::IntersectRect(&rcTemp, &rcPaint, &pControl->GetPos())) continue;
+                    if (pControl->IsFloat()) {
+                        if (!::IntersectRect(&rcTemp, &m_rcItem, &pControl->GetPos())) continue;
+                        if (!pControl->Paint(hDC, rcPaint, pStopControl)) return false;
                     }
-                    if (pListInfo && pListInfo->iHLineSize > 0) {
-                        // 因为没有为最后一个预留分割条长度，如果list铺满，最后一条不会显示
-                        RECT rcPadding = pControl->GetPadding();
-                        const RECT& rcPos = pControl->GetPos();
-                        RECT rcBottomLine = { rcPos.left, rcPos.bottom + rcPadding.bottom, rcPos.right, rcPos.bottom + rcPadding.bottom + pListInfo->iHLineSize };
-                        if( ::IntersectRect(&rcTemp, &rcPaint, &rcBottomLine) ) {
-                            rcBottomLine.top += pListInfo->iHLineSize / 2;
-                            rcBottomLine.bottom = rcBottomLine.top;
-                            CRenderEngine::DrawLine(hDC, rcBottomLine, pListInfo->iHLineSize, GetAdjustColor(pListInfo->dwHLineColor));
+                }
+            } else {
+                int iDrawIndex = 0;
+                CRenderClip childClip;
+                CRenderClip::GenerateClip(hDC, rcTemp, childClip);
+                for (int it = 0; it < m_items.GetSize(); it++) {
+                    CControlUI* pControl = static_cast<CControlUI*>(m_items[it]);
+                    if (pControl == pStopControl) return false;
+                    if (!pControl->IsVisible()) continue;
+                    if (!pControl->IsFloat()) {
+                        IListItemUI* pListItem = static_cast<IListItemUI*>(pControl->GetInterface(DUI_CTR_ILISTITEM));
+                        if (pListItem != NULL) {
+                            pListItem->SetDrawIndex(iDrawIndex);
+                            iDrawIndex += 1;
+                        }
+                        if (pListInfo && pListInfo->iHLineSize > 0) {
+                            // 因为没有为最后一个预留分割条长度，如果list铺满，最后一条不会显示
+                            RECT rcPadding = pControl->GetPadding();
+                            const RECT& rcPos = pControl->GetPos();
+                            RECT rcBottomLine = {rcPos.left, rcPos.bottom + rcPadding.bottom, rcPos.right, rcPos.bottom + rcPadding.bottom + pListInfo->iHLineSize};
+                            if (::IntersectRect(&rcTemp, &rcPaint, &rcBottomLine)) {
+                                rcBottomLine.top += pListInfo->iHLineSize / 2;
+                                rcBottomLine.bottom = rcBottomLine.top;
+                                CRenderEngine::DrawLine(hDC, rcBottomLine, pListInfo->iHLineSize, GetAdjustColor(pListInfo->dwHLineColor));
+                            }
                         }
                     }
-                }
-                if( !::IntersectRect(&rcTemp, &rcPaint, &pControl->GetPos()) ) continue;
-                if( pControl->IsFloat() ) {
-                    if( !::IntersectRect(&rcTemp, &m_rcItem, &pControl->GetPos()) ) continue;
-                    CRenderClip::UseOldClipBegin(hDC, childClip);
-                    if( !pControl->Paint(hDC, rcPaint, pStopControl) ) return false;
-                    CRenderClip::UseOldClipEnd(hDC, childClip);
-                }
-                else {
-                    if( !::IntersectRect(&rcTemp, &rc, &pControl->GetPos()) ) continue;
-                    if( !pControl->Paint(hDC, rcPaint, pStopControl) ) return false;
+                    if (!::IntersectRect(&rcTemp, &rcPaint, &pControl->GetPos())) continue;
+                    if (pControl->IsFloat()) {
+                        if (!::IntersectRect(&rcTemp, &m_rcItem, &pControl->GetPos())) continue;
+                        CRenderClip::UseOldClipBegin(hDC, childClip);
+                        if (!pControl->Paint(hDC, rcPaint, pStopControl)) return false;
+                        CRenderClip::UseOldClipEnd(hDC, childClip);
+                    } else {
+                        if (!::IntersectRect(&rcTemp, &rc, &pControl->GetPos())) continue;
+                        if (!pControl->Paint(hDC, rcPaint, pStopControl)) return false;
+                    }
                 }
             }
         }
-    }
 
-    if( m_pVerticalScrollBar != NULL ) {
-        if( m_pVerticalScrollBar == pStopControl ) return false;
-        if (m_pVerticalScrollBar->IsVisible()) {
-            if( ::IntersectRect(&rcTemp, &rcPaint, &m_pVerticalScrollBar->GetPos()) ) {
-                if( !m_pVerticalScrollBar->Paint(hDC, rcPaint, pStopControl) ) return false;
+        if (m_pVerticalScrollBar != NULL) {
+            if (m_pVerticalScrollBar == pStopControl) return false;
+            if (m_pVerticalScrollBar->IsVisible()) {
+                if (::IntersectRect(&rcTemp, &rcPaint, &m_pVerticalScrollBar->GetPos())) {
+                    if (!m_pVerticalScrollBar->Paint(hDC, rcPaint, pStopControl)) return false;
+                }
             }
         }
-    }
 
-    if( m_pHorizontalScrollBar != NULL ) {
-        if( m_pHorizontalScrollBar == pStopControl ) return false;
-        if (m_pHorizontalScrollBar->IsVisible()) {
-            if( ::IntersectRect(&rcTemp, &rcPaint, &m_pHorizontalScrollBar->GetPos()) ) {
-                if( !m_pHorizontalScrollBar->Paint(hDC, rcPaint, pStopControl) ) return false;
+        if (m_pHorizontalScrollBar != NULL) {
+            if (m_pHorizontalScrollBar == pStopControl) return false;
+            if (m_pHorizontalScrollBar->IsVisible()) {
+                if (::IntersectRect(&rcTemp, &rcPaint, &m_pHorizontalScrollBar->GetPos())) {
+                    if (!m_pHorizontalScrollBar->Paint(hDC, rcPaint, pStopControl)) return false;
+                }
             }
         }
+        return true;
     }
-    return true;
-}
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
 //
 
-class CComboWnd : public CWindowUI
-{
-public:
-    void Init(CComboUI* pOwner);
-    LPCTSTR GetWindowClassName() const;
-    void OnFinalMessage(HWND hWnd);
+    class CComboWnd : public CWindowUI
+    {
+    public:
+        void Init(CComboUI* pOwner);
+        LPCTSTR GetWindowClassName() const;
+        void OnFinalMessage(HWND hWnd);
 
-    LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
+        LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-    void EnsureVisible(int iIndex);
-    void Scroll(int dx, int dy);
+        void EnsureVisible(int iIndex);
+        void Scroll(int dx, int dy);
 
 #if(_WIN32_WINNT >= 0x0501)
-	virtual UINT GetClassStyle() const;
+        virtual UINT GetClassStyle() const;
 #endif
 
-public:
-    CPaintManagerUI m_pm;
-    CComboUI* m_pOwner;
-    CVerticalLayoutUI* m_pLayout;
-    int m_iOldSel;
-    bool m_bScrollbarClicked;
-};
+    public:
+        CPaintManagerUI m_pm;
+        CComboUI* m_pOwner;
+        CVerticalLayoutUI* m_pLayout;
+        int m_iOldSel;
+        bool m_bScrollbarClicked;
+    };
 
 
 void CComboWnd::Init(CComboUI* pOwner)
@@ -174,7 +177,7 @@ void CComboWnd::Init(CComboUI* pOwner)
     MONITORINFO oMonitor = {};
     oMonitor.cbSize = sizeof(oMonitor);
     ::GetMonitorInfo(::MonitorFromWindow(*this, MONITOR_DEFAULTTOPRIMARY), &oMonitor);
-    CDuiRect rcWork = oMonitor.rcWork;
+    CRectUI rcWork = oMonitor.rcWork;
     if( rc.bottom > rcWork.bottom ) {
         rc.left = rcOwner.left;
         rc.right = rcOwner.right;
@@ -219,7 +222,7 @@ LRESULT CComboWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
         if( pDefaultAttributes ) {
             m_pLayout->SetAttributeList(pDefaultAttributes);
         }
-        m_pLayout->SetInset(CDuiRect(1, 1, 1, 1));
+        m_pLayout->SetInset(CRectUI(1, 1, 1, 1));
         m_pLayout->SetBkColor(0xFFFFFFFF);
         m_pLayout->SetBorderColor(0xFFC6C7D2);
         m_pLayout->SetBorderSize(1);
@@ -270,7 +273,7 @@ LRESULT CComboWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
             PostMessage(WM_KILLFOCUS);
             break;
         default:
-            TEventUI event;
+            TEVENT_UI event;
             event.Type = UIEVENT_KEYDOWN;
             event.chKey = (TCHAR)wParam;
             m_pOwner->DoEvent(event);
@@ -280,7 +283,7 @@ LRESULT CComboWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
     }
     else if( uMsg == WM_MOUSEWHEEL ) {
         int zDelta = (int) (short) HIWORD(wParam);
-        TEventUI event = { 0 };
+        TEVENT_UI event = { 0 };
         event.Type = UIEVENT_SCROLLWHEEL;
         event.wParam = MAKELPARAM(zDelta < 0 ? SB_LINEDOWN : SB_LINEUP, 0);
         event.lParam = lParam;
@@ -333,7 +336,7 @@ void CComboWnd::Scroll(int dx, int dy)
 {
     if( dx == 0 && dy == 0 ) return;
     SIZE sz = m_pLayout->GetScrollPos();
-    m_pLayout->SetScrollPos(CDuiSize(sz.cx + dx, sz.cy + dy));
+    m_pLayout->SetScrollPos(CSizeUI(sz.cx + dx, sz.cy + dy));
 }
 
 #if(_WIN32_WINNT >= 0x0501)
@@ -347,7 +350,7 @@ UINT CComboWnd::GetClassStyle() const
 
 CComboUI::CComboUI() : m_pWindow(NULL), m_iCurSel(-1), m_uButtonState(0)
 {
-    m_szDropBox = CDuiSize(0, 150);
+    m_szDropBox = CSizeUI(0, 150);
     ::ZeroMemory(&m_rcTextPadding, sizeof(m_rcTextPadding));
 
     m_ListInfo.nColumns = 0;
@@ -580,7 +583,7 @@ void CComboUI::RemoveAll()
     CContainerUI::RemoveAll();
 }
 
-void CComboUI::DoEvent(TEventUI& event)
+void CComboUI::DoEvent(TEVENT_UI& event)
 {
     if( !IsMouseEnabled() && event.Type > UIEVENT__MOUSEBEGIN && event.Type < UIEVENT__MOUSEEND ) {
         if( m_pParent != NULL ) m_pParent->DoEvent(event);
@@ -696,7 +699,7 @@ void CComboUI::DoEvent(TEventUI& event)
 
 SIZE CComboUI::EstimateSize(SIZE szAvailable)
 {
-    if( m_cxyFixed.cy == 0 ) return CDuiSize(m_cxyFixed.cx, m_pManager->GetDefaultFontInfo()->tm.tmHeight + 8);
+    if( m_cxyFixed.cy == 0 ) return CSizeUI(m_cxyFixed.cx, m_pManager->GetDefaultFontInfo()->tm.tmHeight + 8);
     return CControlUI::EstimateSize(szAvailable);
 }
 
@@ -712,7 +715,7 @@ bool CComboUI::Activate()
     return true;
 }
 
-CDuiString CComboUI::GetText() const
+CStringUI CComboUI::GetText() const
 {
     if( m_iCurSel < 0 ) return _T("");
     CControlUI* pControl = static_cast<CControlUI*>(m_items[m_iCurSel]);
@@ -725,7 +728,7 @@ void CComboUI::SetEnabled(bool bEnable)
     if( !IsEnabled() ) m_uButtonState = 0;
 }
 
-CDuiString CComboUI::GetDropBoxAttributeList()
+CStringUI CComboUI::GetDropBoxAttributeList()
 {
     return m_sDropBoxAttributes;
 }
@@ -1265,4 +1268,4 @@ void CComboUI::PaintText(HDC hDC)
     }
 }
 
-} // namespace DuiLib
+} // namespace DUILIB

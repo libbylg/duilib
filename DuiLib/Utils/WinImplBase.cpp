@@ -43,7 +43,7 @@ UILIB_RESOURCETYPE WindowImplBase::GetResourceType() const
 	return UILIB_FILE;
 }
 
-CDuiString WindowImplBase::GetZIPFileName() const
+CStringUI WindowImplBase::GetZIPFileName() const
 {
 	return _T("");
 }
@@ -275,7 +275,7 @@ LRESULT WindowImplBase::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
 	m_PaintManager.AddPreMessageFilter(this);
 
 	CDialogBuilder builder;
-	CDuiString strResourcePath=m_PaintManager.GetResourcePath();
+	CStringUI strResourcePath=m_PaintManager.GetResourcePath();
 	if (strResourcePath.IsEmpty())
 	{
 		strResourcePath=m_PaintManager.GetInstancePath();
@@ -431,7 +431,7 @@ LONG WindowImplBase::GetStyle()
 
 void WindowImplBase::OnClick(struct TNOTIFY_UI& msg)
 {
-	CDuiString sCtrlName = msg.pSender->GetName();
+	CStringUI sCtrlName = msg.pSender->GetName();
 	if( sCtrlName == _T("closebtn") )
 	{
 		Close();

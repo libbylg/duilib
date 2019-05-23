@@ -6,7 +6,7 @@
 #include "Utils/WebBrowserEventHandler.h"
 #include <ExDisp.h>
 
-namespace DuiLib
+namespace DUILIB
 {
 	class DUILIB_API CWebBrowserUI
 		: public CActiveXUI
@@ -51,7 +51,7 @@ namespace DuiLib
 		virtual void ReleaseControl();
 		HRESULT RegisterEventHandler(BOOL inAdvise);
 		virtual void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
-		CDuiString m_sHomePage;	// 默认页面
+		CStringUI m_sHomePage;	// 默认页面
 		bool m_bAutoNavi;	// 是否启动时打开默认页面
 		CWebBrowserEventHandler* m_pWebBrowserEventHandler;	//浏览器事件处理
 
@@ -118,5 +118,5 @@ namespace DuiLib
 		// Duilib消息分发给WebBrowser
 		virtual LRESULT TranslateAccelerator( MSG *pMsg );
 	};
-} // namespace DuiLib
+} // namespace DUILIB
 #endif // __UIWEBBROWSER_H__

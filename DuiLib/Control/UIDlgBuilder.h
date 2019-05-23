@@ -1,7 +1,7 @@
 #ifndef __UIDLGBUILDER_H__
 #define __UIDLGBUILDER_H__
 
-#include "UIMarkup.h"
+#include "Core/UIMarkup.h"
 
 namespace DUILIB
 {

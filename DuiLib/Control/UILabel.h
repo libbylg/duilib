@@ -1,7 +1,7 @@
 #ifndef __UILABEL_H__
 #define __UILABEL_H__
 
-#pragma once
+#include "Core/UIControl.h"
 
 #define _USE_GDIPLUS 1
 
@@ -9,12 +9,12 @@
 #include <GdiPlus.h>
 #pragma comment( lib, "GdiPlus.lib" )
 using namespace Gdiplus;
-class DUILIB_API Gdiplus::RectF;
+class DUILIB_API  Gdiplus::RectF;
 struct DUILIB_API Gdiplus::GdiplusStartupInput;
 #endif
 
 
-namespace DuiLib
+namespace DUILIB
 {
 	class DUILIB_API CLabelUI : public CControlUI
 	{
@@ -45,7 +45,7 @@ namespace DuiLib
 		void SetShowHtml(bool bShowHtml = true);
 
 		SIZE EstimateSize(SIZE szAvailable);
-		void DoEvent(TEventUI& event);
+		void DoEvent(TEVENT_UI& event);
 		void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
 		void PaintText(HDC hDC);

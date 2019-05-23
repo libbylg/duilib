@@ -1,7 +1,6 @@
-#include "stdafx.h"
-#include "UICheckBox.h"
+#include "Control/UICheckBox.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	LPCTSTR CCheckBoxUI::GetClass() const
 	{

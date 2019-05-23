@@ -1,9 +1,9 @@
 #ifndef __UICHECKBOX_H__
 #define __UICHECKBOX_H__
 
-#pragma once
+#include "Control/UIOption.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	/// 最普通的单选按钮控件，只有是、否两种结果
 	/// 派生于COptionUI，只是每组只有一个按钮而已，组名为空，配置文件默认属性举例：
