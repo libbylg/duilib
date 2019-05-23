@@ -27,7 +27,7 @@ namespace DUILIB
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
-    class CScrollBarUI;
+    class CScrollUI;
 
     class DUILIB_API CContainerUI : public CControlUI, public IContainerUI
     {
@@ -79,7 +79,7 @@ namespace DUILIB
 
         void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
-        void SetManager(CPaintManagerUI* pManager, CControlUI* pParent, bool bInit = true);
+        void SetManager(CManagerUI* pManager, CControlUI* pParent, bool bInit = true);
         CControlUI* FindControl(LPFINDCONTROLPROC_UI Proc, LPVOID pData, UINT uFlags);
 
         bool SetSubControlText(LPCTSTR pstrSubControlName, LPCTSTR pstrText);
@@ -109,8 +109,8 @@ namespace DUILIB
         virtual void HomeLeft();
         virtual void EndRight();
         virtual void EnableScrollBar(bool bEnableVertical = true, bool bEnableHorizontal = false);
-        virtual CScrollBarUI* GetVerticalScrollBar() const;
-        virtual CScrollBarUI* GetHorizontalScrollBar() const;
+        virtual CScrollUI* GetVerticalScrollBar() const;
+        virtual CScrollUI* GetHorizontalScrollBar() const;
 
     protected:
         virtual void SetFloatPos(int iIndex);
@@ -127,8 +127,8 @@ namespace DUILIB
         bool m_bMouseChildEnabled;
         bool m_bScrollProcess; // ∑¿÷πSetPos—≠ª∑µ˜”√
 
-        CScrollBarUI* m_pVerticalScrollBar;
-        CScrollBarUI* m_pHorizontalScrollBar;
+        CScrollUI* m_pVerticalScrollBar;
+        CScrollUI* m_pHorizontalScrollBar;
     };
 
 } // namespace DUILIB

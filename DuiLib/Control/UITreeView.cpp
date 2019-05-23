@@ -4,7 +4,7 @@
 #include "Control/UIOption.h"
 
 #include "Core/UIManager.h"
-#include "Core/UIScrollBar.h"
+#include "Core/UIScroll.h"
 
 #pragma warning( disable: 4251 )
 namespace DUILIB
@@ -165,9 +165,9 @@ namespace DUILIB
 				rc.top += rcInset.top;
 				rc.right -= rcInset.right;
 				rc.bottom -= rcInset.bottom;
-				CScrollBarUI* pVerticalScrollBar = pParentContainer->GetVerticalScrollBar();
+				CScrollUI* pVerticalScrollBar = pParentContainer->GetVerticalScrollBar();
 				if( pVerticalScrollBar && pVerticalScrollBar->IsVisible() ) rc.right -= pVerticalScrollBar->GetFixedWidth();
-				CScrollBarUI* pHorizontalScrollBar = pParentContainer->GetHorizontalScrollBar();
+				CScrollUI* pHorizontalScrollBar = pParentContainer->GetHorizontalScrollBar();
 				if( pHorizontalScrollBar && pHorizontalScrollBar->IsVisible() ) rc.bottom -= pHorizontalScrollBar->GetFixedHeight();
 
 				RECT invalidateRc = m_rcItem;

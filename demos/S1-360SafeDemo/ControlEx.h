@@ -2,6 +2,8 @@
 #define __ComputerExamineUI_H_
 
 #include "Core/UIContainer.h"
+#include "Control/UIDlgBuilder.h"
+
 using namespace DUILIB;
 
 class ComputerExamineUI : public CContainerUI

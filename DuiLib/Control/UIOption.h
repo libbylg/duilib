@@ -14,7 +14,7 @@ namespace DUILIB
 		LPCTSTR GetClass() const;
 		LPVOID GetInterface(LPCTSTR pstrName);
 
-		void SetManager(CPaintManagerUI* pManager, CControlUI* pParent, bool bInit = true);
+		void SetManager(CManagerUI* pManager, CControlUI* pParent, bool bInit = true);
 
 		bool Activate();
 		void SetEnabled(bool bEnable = true);

@@ -909,7 +909,7 @@ LRESULT CActiveXWnd::OnPrint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHan
 				RECT rcCaret;
 				rcCaret = guiThreadInfo.rcCaret;
 				rcCaret.right = rcCaret.left;
-				CRenderEngine::DrawLine((HDC)wParam, rcCaret, 1, 0xFF000000);
+				CRenderUI::DrawLine((HDC)wParam, rcCaret, 1, 0xFF000000);
 			}
 		}
 	}

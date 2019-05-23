@@ -1,5 +1,5 @@
 #include "Layout/UIHorizontalLayout.h"
-#include "Core/UIScrollBar.h"
+#include "Core/UIScroll.h"
 #include "Core/UIManager.h"
 
 
@@ -199,7 +199,7 @@ namespace DUILIB
 	{
 		if( (m_uButtonState & UISTATE_CAPTURED) != 0 && !m_bImmMode ) {
 			RECT rcSeparator = GetThumbRect(true);
-			CRenderEngine::DrawColor(hDC, rcSeparator, 0xAA000000);
+			CRenderUI::DrawColor(hDC, rcSeparator, 0xAA000000);
 		}
 	}
 

@@ -297,7 +297,7 @@ static BOOL WINAPI AlphaBitBlt(HDC hDC, int nDestX, int nDestY, int dwWidth, int
 //
 //
 
-DWORD CRenderEngine::AdjustColor(DWORD dwColor, short H, short S, short L)
+DWORD CRenderUI::AdjustColor(DWORD dwColor, short H, short S, short L)
 {
     if( H == 180 && S == 100 && L == 100 ) return dwColor;
     float fH, fS, fL;
@@ -312,7 +312,7 @@ DWORD CRenderEngine::AdjustColor(DWORD dwColor, short H, short S, short L)
     return dwColor;
 }
 
-HBITMAP CRenderEngine::CreateARGB32Bitmap(HDC hDC, int cx, int cy, COLORREF** pBits)
+HBITMAP CRenderUI::CreateARGB32Bitmap(HDC hDC, int cx, int cy, COLORREF** pBits)
 {
 	LPBITMAPINFO lpbiSrc = NULL;
 	lpbiSrc = (LPBITMAPINFO) new BYTE[sizeof(BITMAPINFOHEADER)];
@@ -335,7 +335,7 @@ HBITMAP CRenderEngine::CreateARGB32Bitmap(HDC hDC, int cx, int cy, COLORREF** pB
 	return hBitmap;
 }
 
-void CRenderEngine::AdjustImage(bool bUseHSL, TIMAGEINFO_UI* imageInfo, short H, short S, short L)
+void CRenderUI::AdjustImage(bool bUseHSL, TIMAGEINFO_UI* imageInfo, short H, short S, short L)
 {
 	if( imageInfo == NULL || imageInfo->bUseHSL == false || imageInfo->hBitmap == NULL || 
 		imageInfo->pBits == NULL || imageInfo->pSrcBits == NULL ) 
@@ -358,7 +358,7 @@ void CRenderEngine::AdjustImage(bool bUseHSL, TIMAGEINFO_UI* imageInfo, short H,
 	}
 }
 
-TIMAGEINFO_UI* CRenderEngine::LoadImage(STRINGorID bitmap, LPCTSTR type, DWORD mask)
+TIMAGEINFO_UI* CRenderUI::LoadImage(STRINGorID bitmap, LPCTSTR type, DWORD mask)
 {
     LPBYTE pData = NULL;
     DWORD dwSize = 0;
@@ -366,8 +366,8 @@ TIMAGEINFO_UI* CRenderEngine::LoadImage(STRINGorID bitmap, LPCTSTR type, DWORD m
 	do 
 	{
 		if( type == NULL ) {
-			CStringUI sFile = CPaintManagerUI::GetResourcePath();
-			if( CPaintManagerUI::GetResourceZip().IsEmpty() ) {
+			CStringUI sFile = CManagerUI::GetResourcePath();
+			if( CManagerUI::GetResourceZip().IsEmpty() ) {
 				sFile += bitmap.m_lpstr;
 				HANDLE hFile = ::CreateFile(sFile.GetData(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, \
 					FILE_ATTRIBUTE_NORMAL, NULL);
@@ -387,9 +387,9 @@ TIMAGEINFO_UI* CRenderEngine::LoadImage(STRINGorID bitmap, LPCTSTR type, DWORD m
 				}
 			}
 			else {
-				sFile += CPaintManagerUI::GetResourceZip();
+				sFile += CManagerUI::GetResourceZip();
 				HZIP hz = NULL;
-				if( CPaintManagerUI::IsCachedResourceZip() ) hz = (HZIP)CPaintManagerUI::GetResourceZipHandle();
+				if( CManagerUI::IsCachedResourceZip() ) hz = (HZIP)CManagerUI::GetResourceZipHandle();
 				else hz = OpenZip((void*)sFile.GetData(), 0, 2);
 				if( hz == NULL ) break;
 				ZIPENTRY ze; 
@@ -402,25 +402,25 @@ TIMAGEINFO_UI* CRenderEngine::LoadImage(STRINGorID bitmap, LPCTSTR type, DWORD m
 				if( res != 0x00000000 && res != 0x00000600) {
 					delete[] pData;
 					pData = NULL;
-					if( !CPaintManagerUI::IsCachedResourceZip() ) CloseZip(hz);
+					if( !CManagerUI::IsCachedResourceZip() ) CloseZip(hz);
 					break;
 				}
-				if( !CPaintManagerUI::IsCachedResourceZip() ) CloseZip(hz);
+				if( !CManagerUI::IsCachedResourceZip() ) CloseZip(hz);
 			}
 		}
 		else if (_tcscmp(type, RES_TYPE_COLOR) == 0) {
 			pData = (PBYTE)0x1;  /* dummy pointer */
 		}
 		else {
-			HRSRC hResource = ::FindResource(CPaintManagerUI::GetResourceDll(), bitmap.m_lpstr, type);
+			HRSRC hResource = ::FindResource(CManagerUI::GetResourceDll(), bitmap.m_lpstr, type);
 			if( hResource == NULL ) break;
-			HGLOBAL hGlobal = ::LoadResource(CPaintManagerUI::GetResourceDll(), hResource);
+			HGLOBAL hGlobal = ::LoadResource(CManagerUI::GetResourceDll(), hResource);
 			if( hGlobal == NULL ) {
 				FreeResource(hResource);
 				break;
 			}
 
-			dwSize = ::SizeofResource(CPaintManagerUI::GetResourceDll(), hResource);
+			dwSize = ::SizeofResource(CManagerUI::GetResourceDll(), hResource);
 			if( dwSize == 0 ) break;
 			pData = new BYTE[ dwSize ];
 			::CopyMemory(pData, (LPBYTE)::LockResource(hGlobal), dwSize);
@@ -539,7 +539,7 @@ TIMAGEINFO_UI* CRenderEngine::LoadImage(STRINGorID bitmap, LPCTSTR type, DWORD m
 	return data;
 }
 
-void CRenderEngine::FreeImage(TIMAGEINFO_UI* bitmap, bool bDelete)
+void CRenderUI::FreeImage(TIMAGEINFO_UI* bitmap, bool bDelete)
 {
 	if (bitmap == NULL) return;
 	if (bitmap->hBitmap) {
@@ -553,7 +553,7 @@ void CRenderEngine::FreeImage(TIMAGEINFO_UI* bitmap, bool bDelete)
 	if (bDelete) delete bitmap ;
 }
 
-void CRenderEngine::DrawImage(HDC hDC, HBITMAP hBitmap, const RECT& rc, const RECT& rcPaint,
+void CRenderUI::DrawImage(HDC hDC, HBITMAP hBitmap, const RECT& rc, const RECT& rcPaint,
 							  const RECT& rcBmpPart, const RECT& rcScale9, bool bAlpha, 
 							  BYTE uFade, bool bHole, bool bTiledX, bool bTiledY)
 {
@@ -1006,7 +1006,7 @@ void CRenderEngine::DrawImage(HDC hDC, HBITMAP hBitmap, const RECT& rc, const RE
 	::DeleteDC(hCloneDC);
 }
 
-bool CRenderEngine::DrawImage(HDC hDC, CPaintManagerUI* pManager, const RECT& rcItem, const RECT& rcPaint, 
+bool CRenderUI::DrawImage(HDC hDC, CManagerUI* pManager, const RECT& rcItem, const RECT& rcPaint, 
 					  TDRAWINFO_UI& drawInfo)
 {
 	// 1、aaa.jpg
@@ -1147,7 +1147,7 @@ bool CRenderEngine::DrawImage(HDC hDC, CPaintManagerUI* pManager, const RECT& rc
 	return true;
 }
 
-void CRenderEngine::DrawColor(HDC hDC, const RECT& rc, DWORD color)
+void CRenderUI::DrawColor(HDC hDC, const RECT& rc, DWORD color)
 {
     if( color <= 0x00FFFFFF ) return;
     if( color >= 0xFF000000 )
@@ -1179,7 +1179,7 @@ void CRenderEngine::DrawColor(HDC hDC, const RECT& rc, DWORD color)
     }
 }
 
-void CRenderEngine::DrawGradient(HDC hDC, const RECT& rc, DWORD dwFirst, DWORD dwSecond, bool bVertical, int nSteps)
+void CRenderUI::DrawGradient(HDC hDC, const RECT& rc, DWORD dwFirst, DWORD dwSecond, bool bVertical, int nSteps)
 {
     typedef BOOL (WINAPI *LPALPHABLEND)(HDC, int, int, int, int,HDC, int, int, int, int, BLENDFUNCTION);
     static LPALPHABLEND lpAlphaBlend = (LPALPHABLEND) ::GetProcAddress(::GetModuleHandle(_T("msimg32.dll")), "AlphaBlend");
@@ -1255,7 +1255,7 @@ void CRenderEngine::DrawGradient(HDC hDC, const RECT& rc, DWORD dwFirst, DWORD d
     }
 }
 
-void CRenderEngine::DrawLine( HDC hDC, const RECT& rc, int nSize, DWORD dwPenColor, int nStyle)
+void CRenderUI::DrawLine( HDC hDC, const RECT& rc, int nSize, DWORD dwPenColor, int nStyle)
 {
 	ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
 
@@ -1272,7 +1272,7 @@ void CRenderEngine::DrawLine( HDC hDC, const RECT& rc, int nSize, DWORD dwPenCol
 	::DeleteObject(hPen);
 }
 
-void CRenderEngine::DrawRect(HDC hDC, const RECT& rc, int nSize, DWORD dwPenColor, int nStyle)
+void CRenderUI::DrawRect(HDC hDC, const RECT& rc, int nSize, DWORD dwPenColor, int nStyle)
 {
     ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
     HPEN hPen = ::CreatePen(nStyle | PS_INSIDEFRAME, nSize, RGB(GetBValue(dwPenColor), GetGValue(dwPenColor), GetRValue(dwPenColor)));
@@ -1283,7 +1283,7 @@ void CRenderEngine::DrawRect(HDC hDC, const RECT& rc, int nSize, DWORD dwPenColo
     ::DeleteObject(hPen);
 }
 
-void CRenderEngine::DrawRoundRect(HDC hDC, const RECT& rc, int nSize, int width, int height, DWORD dwPenColor, int nStyle)
+void CRenderUI::DrawRoundRect(HDC hDC, const RECT& rc, int nSize, int width, int height, DWORD dwPenColor, int nStyle)
 {
     ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
     HPEN hPen = ::CreatePen(nStyle | PS_INSIDEFRAME, nSize, RGB(GetBValue(dwPenColor), GetGValue(dwPenColor), GetRValue(dwPenColor)));
@@ -1294,13 +1294,13 @@ void CRenderEngine::DrawRoundRect(HDC hDC, const RECT& rc, int nSize, int width,
     ::DeleteObject(hPen);
 }
 
-void CRenderEngine::DrawText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, LPCTSTR pstrText, DWORD dwTextColor, int iFont, UINT uStyle)
+void CRenderUI::DrawText(HDC hDC, CManagerUI* pManager, RECT& rc, LPCTSTR pstrText, DWORD dwTextColor, int iFont, UINT uStyle)
 {
     ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
     if( pstrText == NULL || pManager == NULL ) return;
 
 	CStringUI sText = pstrText;
-	CPaintManagerUI::ProcessMultiLanguageTokens(sText);
+	CManagerUI::ProcessMultiLanguageTokens(sText);
 	pstrText = sText;
 
     ::SetBkMode(hDC, TRANSPARENT);
@@ -1310,7 +1310,7 @@ void CRenderEngine::DrawText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, LPCTS
     ::SelectObject(hDC, hOldFont);
 }
 
-void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, LPCTSTR pstrText, DWORD dwTextColor, RECT* prcLinks, CStringUI* sLinks, int& nLinkRects, int iDefaultFont, UINT uStyle)
+void CRenderUI::DrawHtmlText(HDC hDC, CManagerUI* pManager, RECT& rc, LPCTSTR pstrText, DWORD dwTextColor, RECT* prcLinks, CStringUI* sLinks, int& nLinkRects, int iDefaultFont, UINT uStyle)
 {
     // 考虑到在xml编辑器中使用<>符号不方便，可以使用{}符号代替
     // 支持标签嵌套（如<l><b>text</b></l>），但是交叉嵌套是应该避免的（如<l><b>text</l></b>）
@@ -1349,7 +1349,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
     if( bDraw ) ::ExtSelectClipRgn(hDC, hRgn, RGN_AND);
 
 	CStringUI sText = pstrText;
-	CPaintManagerUI::ProcessMultiLanguageTokens(sText);
+	CManagerUI::ProcessMultiLanguageTokens(sText);
 	pstrText = sText;
 
     TEXTMETRIC* pTm = &pManager->GetFontInfo(iDefaultFont)->tm;
@@ -2098,7 +2098,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
     ::SelectObject(hDC, hOldFont);
 }
 
-HBITMAP CRenderEngine::GenerateBitmap(CPaintManagerUI* pManager, RECT rc, CControlUI* pStopControl, DWORD dwFilterColor)
+HBITMAP CRenderUI::GenerateBitmap(CManagerUI* pManager, RECT rc, CControlUI* pStopControl, DWORD dwFilterColor)
 {
 	if (pManager == NULL) return NULL;
 	int cx = rc.right - rc.left;
@@ -2152,7 +2152,7 @@ HBITMAP CRenderEngine::GenerateBitmap(CPaintManagerUI* pManager, RECT rc, CContr
 	return hBitmap;
 }
 
-HBITMAP CRenderEngine::GenerateBitmap(CPaintManagerUI* pManager, CControlUI* pControl, RECT rc, DWORD dwFilterColor)
+HBITMAP CRenderUI::GenerateBitmap(CManagerUI* pManager, CControlUI* pControl, RECT rc, DWORD dwFilterColor)
 {
 	if (pManager == NULL || pControl == NULL) return NULL;
     int cx = rc.right - rc.left;
@@ -2197,10 +2197,10 @@ HBITMAP CRenderEngine::GenerateBitmap(CPaintManagerUI* pManager, CControlUI* pCo
     return hBitmap;
 }
 
-SIZE CRenderEngine::GetTextSize( HDC hDC, CPaintManagerUI* pManager , LPCTSTR pstrText, int iFont, UINT uStyle )
+SIZE CRenderUI::GetTextSize( HDC hDC, CManagerUI* pManager , LPCTSTR pstrText, int iFont, UINT uStyle )
 {
 	CStringUI sText = pstrText;
-	CPaintManagerUI::ProcessMultiLanguageTokens(sText);
+	CManagerUI::ProcessMultiLanguageTokens(sText);
 	pstrText = sText;
 	SIZE size = {0,0};
 	ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);

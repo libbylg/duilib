@@ -82,13 +82,13 @@ using namespace std;
 
 
 #ifndef ASSERT
-#define ASSERT(expr)  _ASSERTE(expr)
+#define ASSERT(expr)    _ASSERTE(expr)
 #endif
 
 
 #define lengthof(x)     (sizeof(x)/sizeof(*x))
-#define MAX max
-#define MIN min
+#define MAX             max
+#define MIN             min
 #define CLAMP(x,a,b)    (MIN(b,MAX(a,x)))
 
 
@@ -140,7 +140,7 @@ using namespace std;
 //
 //#include "Control/UIList.h"
 //#include "Control/UICombo.h"
-//#include "Core/UIScrollBar.h"
+//#include "Core/UIScroll.h"
 //#include "Control/UITreeView.h"
 //
 //#include "Control/UILabel.h"

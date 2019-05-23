@@ -35,7 +35,7 @@ namespace DUILIB
 		virtual LPCTSTR GetWindowClassName(void) const = 0 ;
 		virtual LRESULT ResponseDefaultKeyEvent(WPARAM wParam);
 
-		CPaintManagerUI m_PaintManager;
+		CManagerUI m_PaintManager;
 		static LPBYTE m_lpResourceZIPBuffer;
 
 	public:

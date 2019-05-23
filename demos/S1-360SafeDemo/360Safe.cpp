@@ -3,6 +3,9 @@
 #include <comdef.h>
 #include "ControlEx.h"
 #include "Core/UIWindow.h"
+#include "Core/UIManager.h"
+#include "Control/UIButton.h"
+#include "Layout/UITabLayout.h"
 
 class C360SafeFrameWnd : public CWindowUI, public INotifyUI
 {
@@ -189,7 +192,7 @@ public:
 			return 0;
 		}
 		BOOL bZoomed = ::IsZoomed(*this);
-		LRESULT lRes = CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+		LRESULT lRes = CWindowUI::HandleMessage(uMsg, wParam, lParam);
 		if( ::IsZoomed(*this) != bZoomed ) {
 			if( !bZoomed ) {
 				CControlUI* pControl = static_cast<CControlUI*>(m_pm.FindControl(_T("maxbtn")));
@@ -227,7 +230,7 @@ public:
 		}
 		if( bHandled ) return lRes;
 		if( m_pm.MessageHandler(uMsg, wParam, lParam, lRes) ) return lRes;
-		return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+		return CWindowUI::HandleMessage(uMsg, wParam, lParam);
 	}
 
 public:

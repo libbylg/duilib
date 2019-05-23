@@ -169,7 +169,7 @@ namespace DUILIB
 			if (clrColor < 0xFF000000) {
 				if (m_hBkBrush != NULL) ::DeleteObject(m_hBkBrush);
 				RECT rcWnd = m_pOwner->GetManager()->GetNativeWindowRect(m_hWnd);
-				HBITMAP hBmpEditBk = CRenderEngine::GenerateBitmap(m_pOwner->GetManager(), rcWnd, m_pOwner, clrColor);
+				HBITMAP hBmpEditBk = CRenderUI::GenerateBitmap(m_pOwner->GetManager(), rcWnd, m_pOwner, clrColor);
 				m_hBkBrush = ::CreatePatternBrush(hBmpEditBk);
 				::DeleteObject(hBmpEditBk);
 			}
@@ -195,7 +195,7 @@ namespace DUILIB
 					POINT ptCaret;
 					::GetCaretPos(&ptCaret);
 					RECT rcCaret = { ptCaret.x, ptCaret.y, ptCaret.x, ptCaret.y+rcClient.bottom-rcClient.top };
-					CRenderEngine::DrawLine((HDC)wParam, rcCaret, 1, 0xFF000000);
+					CRenderUI::DrawLine((HDC)wParam, rcCaret, 1, 0xFF000000);
 				}
 				return lRes;
 			}
@@ -663,11 +663,11 @@ namespace DUILIB
 		rc.top += m_rcTextPadding.top;
 		rc.bottom -= m_rcTextPadding.bottom;
 		if( IsEnabled() ) {
-			CRenderEngine::DrawText(hDC, m_pManager, rc, sText, m_dwTextColor, \
+			CRenderUI::DrawText(hDC, m_pManager, rc, sText, m_dwTextColor, \
 				m_iFont, DT_SINGLELINE | m_uTextStyle);
 		}
 		else {
-			CRenderEngine::DrawText(hDC, m_pManager, rc, sText, m_dwDisabledTextColor, \
+			CRenderUI::DrawText(hDC, m_pManager, rc, sText, m_dwDisabledTextColor, \
 				m_iFont, DT_SINGLELINE | m_uTextStyle);
 
 		}

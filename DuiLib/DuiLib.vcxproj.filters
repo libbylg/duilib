@@ -39,9 +39,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Utils\stb_image.c">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
     <ClCompile Include="Utils\UIDelegate.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
@@ -69,14 +66,8 @@
     <ClCompile Include="Utils\WndShadow.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="DUILIB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Core\UIWindow.cpp">
       <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\UIScrollBar.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Control\UIDlgBuilder.cpp">
       <Filter>Source Files</Filter>
@@ -135,6 +126,15 @@
     <ClCompile Include="Control\UIGifAnim.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Utils\stb_image.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\UIScroll.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\UIDefine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\UIContainer.h">
@@ -168,9 +168,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utils\WndShadow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\UIScrollBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Control\UIDlgBuilder.h">
@@ -228,6 +225,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Control\UIGifAnim.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\UIScroll.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

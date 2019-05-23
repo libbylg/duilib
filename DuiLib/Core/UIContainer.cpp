@@ -1,7 +1,7 @@
 #include "Core/UIContainer.h"
 #include "Core/UIManager.h"
 #include "Core/UIRender.h"
-#include "Core/UIScrollBar.h"
+#include "Core/UIScroll.h"
 
 namespace DUILIB
 {
@@ -534,7 +534,7 @@ namespace DUILIB
 	void CContainerUI::EnableScrollBar(bool bEnableVertical, bool bEnableHorizontal)
 	{
 		if( bEnableVertical && !m_pVerticalScrollBar ) {
-			m_pVerticalScrollBar = new CScrollBarUI;
+			m_pVerticalScrollBar = new CScrollUI;
 			m_pVerticalScrollBar->SetScrollRange(0);
 			m_pVerticalScrollBar->SetOwner(this);
 			m_pVerticalScrollBar->SetManager(m_pManager, NULL, false);
@@ -551,7 +551,7 @@ namespace DUILIB
 		}
 
 		if( bEnableHorizontal && !m_pHorizontalScrollBar ) {
-			m_pHorizontalScrollBar = new CScrollBarUI;
+			m_pHorizontalScrollBar = new CScrollUI;
 			m_pHorizontalScrollBar->SetScrollRange(0);
 			m_pHorizontalScrollBar->SetHorizontal(true);
 			m_pHorizontalScrollBar->SetOwner(this);
@@ -571,12 +571,12 @@ namespace DUILIB
 		NeedUpdate();
 	}
 
-	CScrollBarUI* CContainerUI::GetVerticalScrollBar() const
+	CScrollUI* CContainerUI::GetVerticalScrollBar() const
 	{
 		return m_pVerticalScrollBar;
 	}
 
-	CScrollBarUI* CContainerUI::GetHorizontalScrollBar() const
+	CScrollUI* CContainerUI::GetHorizontalScrollBar() const
 	{
 		return m_pHorizontalScrollBar;
 	}
@@ -715,7 +715,7 @@ namespace DUILIB
 		else CControlUI::SetAttribute(pstrName, pstrValue);
 	}
 
-	void CContainerUI::SetManager(CPaintManagerUI* pManager, CControlUI* pParent, bool bInit)
+	void CContainerUI::SetManager(CManagerUI* pManager, CControlUI* pParent, bool bInit)
 	{
 		for( int it = 0; it < m_items.GetSize(); it++ ) {
 			static_cast<CControlUI*>(m_items[it])->SetManager(pManager, this, bInit);

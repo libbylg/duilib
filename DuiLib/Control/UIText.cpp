@@ -129,18 +129,18 @@ namespace DUILIB
 		rc.bottom -= m_rcTextPadding.bottom;
 		if( IsEnabled() ) {
 			if( m_bShowHtml )
-				CRenderEngine::DrawHtmlText(hDC, m_pManager, rc, m_sText, m_dwTextColor, \
+				CRenderUI::DrawHtmlText(hDC, m_pManager, rc, m_sText, m_dwTextColor, \
 				m_rcLinks, m_sLinks, m_nLinks, m_iFont, m_uTextStyle);
 			else
-				CRenderEngine::DrawText(hDC, m_pManager, rc, m_sText, m_dwTextColor, \
+				CRenderUI::DrawText(hDC, m_pManager, rc, m_sText, m_dwTextColor, \
 				m_iFont, m_uTextStyle);
 		}
 		else {
 			if( m_bShowHtml )
-				CRenderEngine::DrawHtmlText(hDC, m_pManager, rc, m_sText, m_dwDisabledTextColor, \
+				CRenderUI::DrawHtmlText(hDC, m_pManager, rc, m_sText, m_dwDisabledTextColor, \
 				m_rcLinks, m_sLinks, m_nLinks, m_iFont, m_uTextStyle);
 			else
-				CRenderEngine::DrawText(hDC, m_pManager, rc, m_sText, m_dwDisabledTextColor, \
+				CRenderUI::DrawText(hDC, m_pManager, rc, m_sText, m_dwDisabledTextColor, \
 				m_iFont, m_uTextStyle);
 		}
 	}

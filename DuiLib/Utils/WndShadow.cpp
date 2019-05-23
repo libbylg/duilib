@@ -89,7 +89,7 @@ namespace DUILIB
     {
         if (::IsWindow(m_hWnd)) PostMessage(m_hWnd, WM_CLOSE, (WPARAM)0, 0L);
         if (m_pImageInfo) {
-            CRenderEngine::FreeImage(m_pImageInfo);
+            CRenderUI::FreeImage(m_pImageInfo);
             m_pImageInfo = NULL;
         }
     }
@@ -349,7 +349,7 @@ namespace DUILIB
             RECT rcBmpPart = {0, 0, m_pImageInfo->nX, m_pImageInfo->nY};
             RECT rcCorner = {m_rcCorner.left + m_rcHoleOffset.left, m_rcCorner.top + m_rcHoleOffset.top,
                 m_rcCorner.right + m_rcHoleOffset.right, m_rcCorner.bottom + m_rcHoleOffset.bottom};
-            CRenderEngine::DrawImage(hMemDC, m_pImageInfo->hBitmap, rc, rc, rcBmpPart, rcCorner, true, 255, true);
+            CRenderUI::DrawImage(hMemDC, m_pImageInfo->hBitmap, rc, rc, rcBmpPart, rcCorner, true, 255, true);
         } else {
             MakeShadow((UINT32*)pvBits, hParent, &WndRect);
             hOriBmp = (HBITMAP)SelectObject(hMemDC, hbitmap);
@@ -566,10 +566,10 @@ namespace DUILIB
 
     bool CWndShadow::SetImage(LPCTSTR image, RECT rcCorner, RECT rcHoleOffset)
     {
-        TIMAGEINFO_UI* pImageInfo = CRenderEngine::LoadImage(image);
+        TIMAGEINFO_UI* pImageInfo = CRenderUI::LoadImage(image);
         if (pImageInfo == NULL) return false;
 
-        if (m_pImageInfo) CRenderEngine::FreeImage(m_pImageInfo);
+        if (m_pImageInfo) CRenderUI::FreeImage(m_pImageInfo);
         m_pImageInfo = pImageInfo;
         m_rcCorner = rcCorner;
         m_rcHoleOffset = rcHoleOffset;

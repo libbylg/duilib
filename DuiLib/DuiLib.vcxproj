@@ -162,9 +162,9 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <OutputFile>../bin/DuiLib_d.dll</OutputFile>
+      <OutputFile>$(SolutionDir)\bin\DuiLib_d.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>.\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
       <BaseAddress>0x11000000</BaseAddress>
@@ -267,23 +267,14 @@
     <ClCompile Include="Control\UISlider.cpp" />
     <ClCompile Include="Control\UIText.cpp" />
     <ClCompile Include="Control\UITreeView.cpp" />
-    <ClCompile Include="Core\UIScrollBar.cpp" />
-    <ClCompile Include="DUILIB.cpp" />
+    <ClCompile Include="Core\UIScroll.cpp" />
+    <ClCompile Include="Core\UIDefine.cpp" />
     <ClCompile Include="Layout\UIChildLayout.cpp" />
     <ClCompile Include="Layout\UIHorizontalLayout.cpp" />
     <ClCompile Include="Layout\UITabLayout.cpp" />
     <ClCompile Include="Layout\UITileLayout.cpp" />
     <ClCompile Include="Layout\UIVerticalLayout.cpp" />
-    <ClCompile Include="Utils\stb_image.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='UnicodeDebug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='UnicodeRelease|Win32'">
-      </PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="Utils\stb_image.c" />
     <ClCompile Include="Utils\UIDelegate.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
     <ClCompile Include="Utils\WndShadow.cpp" />
@@ -319,7 +310,7 @@
     <ClInclude Include="Control\UISlider.h" />
     <ClInclude Include="Control\UIText.h" />
     <ClInclude Include="Control\UITreeView.h" />
-    <ClInclude Include="Core\UIScrollBar.h" />
+    <ClInclude Include="Core\UIScroll.h" />
     <ClInclude Include="Core\UIWindow.h" />
     <ClInclude Include="Core\UIContainer.h" />
     <ClInclude Include="Core\UIControl.h" />
@@ -333,6 +324,7 @@
     <ClInclude Include="Layout\UITabLayout.h" />
     <ClInclude Include="Layout\UITileLayout.h" />
     <ClInclude Include="Layout\UIVerticalLayout.h" />
+    <ClInclude Include="Utils\stb_image.h" />
     <ClInclude Include="Utils\UIDelegate.h" />
     <ClInclude Include="Utils\Utils.h" />
     <ClInclude Include="Utils\WndShadow.h" />

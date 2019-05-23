@@ -208,8 +208,8 @@ namespace DUILIB
         void HomeLeft();
         void EndRight();
         void EnableScrollBar(bool bEnableVertical = true, bool bEnableHorizontal = false);
-        virtual CScrollBarUI* GetVerticalScrollBar() const;
-        virtual CScrollBarUI* GetHorizontalScrollBar() const;
+        virtual CScrollUI* GetVerticalScrollBar() const;
+        virtual CScrollUI* GetHorizontalScrollBar() const;
         bool SortItems(PULVCompareFunc pfnCompare, UINT_PTR dwData);
 
     protected:

@@ -6,10 +6,10 @@
 namespace DUILIB
 {
 
-    class CMarkupNode;
-    class CMarkup;
+    class CMarkupNodeUI;
+    class CMarkupUI;
     class CControlUI;
-    class CPaintManagerUI;
+    class CManagerUI;
     class STRINGorID;
 
 
@@ -25,17 +25,17 @@ namespace DUILIB
     {
     public:
         CDialogBuilder();
-        CControlUI* Create(STRINGorID xml, LPCTSTR type = NULL, IDialogBuilderCallback* pCallback = NULL, CPaintManagerUI* pManager = NULL, CControlUI* pParent = NULL);
-        CControlUI* Create(IDialogBuilderCallback* pCallback = NULL, CPaintManagerUI* pManager = NULL, CControlUI* pParent = NULL);
+        CControlUI* Create(STRINGorID xml, LPCTSTR type = NULL, IDialogBuilderCallback* pCallback = NULL, CManagerUI* pManager = NULL, CControlUI* pParent = NULL);
+        CControlUI* Create(IDialogBuilderCallback* pCallback = NULL, CManagerUI* pManager = NULL, CControlUI* pParent = NULL);
 
-        CMarkup* GetMarkup();
+        CMarkupUI* GetMarkup();
 
         void GetLastErrorMessage(LPTSTR pstrMessage, SIZE_T cchMax) const;
         void GetLastErrorLocation(LPTSTR pstrSource, SIZE_T cchMax) const;
     private:
-        CControlUI* _Parse(CMarkupNode* parent, CControlUI* pParent = NULL, CPaintManagerUI* pManager = NULL);
+        CControlUI* _Parse(CMarkupNodeUI* parent, CControlUI* pParent = NULL, CManagerUI* pManager = NULL);
 
-        CMarkup m_xml;
+        CMarkupUI m_xml;
         IDialogBuilderCallback* m_pCallback;
         LPCTSTR m_pstrtype;
     };

@@ -1,7 +1,7 @@
 #include "Control/UIList.h"
 
 #include "Core/UIManager.h"
-#include "Core/UIScrollBar.h"
+#include "Core/UIScroll.h"
 
 
 namespace DUILIB
@@ -815,7 +815,7 @@ void CListUI::EnsureVisible(int iIndex)
     rcList.right -= rcListInset.right;
     rcList.bottom -= rcListInset.bottom;
 
-    CScrollBarUI* pHorizontalScrollBar = m_pList->GetHorizontalScrollBar();
+    CScrollUI* pHorizontalScrollBar = m_pList->GetHorizontalScrollBar();
     if( pHorizontalScrollBar && pHorizontalScrollBar->IsVisible() ) rcList.bottom -= pHorizontalScrollBar->GetFixedHeight();
 
     int iPos = m_pList->GetScrollPos().cy;
@@ -1055,12 +1055,12 @@ void CListUI::EnableScrollBar(bool bEnableVertical, bool bEnableHorizontal)
     m_pList->EnableScrollBar(bEnableVertical, bEnableHorizontal);
 }
 
-CScrollBarUI* CListUI::GetVerticalScrollBar() const
+CScrollUI* CListUI::GetVerticalScrollBar() const
 {
     return m_pList->GetVerticalScrollBar();
 }
 
-CScrollBarUI* CListUI::GetHorizontalScrollBar() const
+CScrollUI* CListUI::GetHorizontalScrollBar() const
 {
     return m_pList->GetHorizontalScrollBar();
 }
@@ -1375,7 +1375,7 @@ bool CListBodyUI::DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl
                         if( ::IntersectRect(&rcTemp, &rcPaint, &rcBottomLine) ) {
                             rcBottomLine.top += pListInfo->iHLineSize / 2;
                             rcBottomLine.bottom = rcBottomLine.top;
-                            CRenderEngine::DrawLine(hDC, rcBottomLine, pListInfo->iHLineSize, GetAdjustColor(pListInfo->dwHLineColor));
+                            CRenderUI::DrawLine(hDC, rcBottomLine, pListInfo->iHLineSize, GetAdjustColor(pListInfo->dwHLineColor));
                         }
                     }
                 }
@@ -1856,7 +1856,7 @@ void CListHeaderItemUI::PaintStatusImage(HDC hDC)
         if( !DrawImage(hDC, m_diSep) ) {
             if (m_dwSepColor != 0) {
                 RECT rcSepLine = { rcThumb.left + m_iSepWidth/2, rcThumb.top, rcThumb.left + m_iSepWidth/2, rcThumb.bottom};
-                CRenderEngine::DrawLine(hDC, rcSepLine, m_iSepWidth, GetAdjustColor(m_dwSepColor));
+                CRenderUI::DrawLine(hDC, rcSepLine, m_iSepWidth, GetAdjustColor(m_dwSepColor));
             }
         }
     }
@@ -1875,10 +1875,10 @@ void CListHeaderItemUI::PaintText(HDC hDC)
     if( m_sText.IsEmpty() ) return;
     int nLinks = 0;
     if( m_bShowHtml )
-        CRenderEngine::DrawHtmlText(hDC, m_pManager, rcText, m_sText, m_dwTextColor, \
+        CRenderUI::DrawHtmlText(hDC, m_pManager, rcText, m_sText, m_dwTextColor, \
         NULL, NULL, nLinks, m_iFont, m_uTextStyle);
     else
-        CRenderEngine::DrawText(hDC, m_pManager, rcText, m_sText, m_dwTextColor, \
+        CRenderUI::DrawText(hDC, m_pManager, rcText, m_sText, m_dwTextColor, \
         m_iFont, m_uTextStyle);
 }
 
@@ -1973,9 +1973,9 @@ void CListElementUI::Invalidate()
             rc.top += rcInset.top;
             rc.right -= rcInset.right;
             rc.bottom -= rcInset.bottom;
-            CScrollBarUI* pVerticalScrollBar = pParentContainer->GetVerticalScrollBar();
+            CScrollUI* pVerticalScrollBar = pParentContainer->GetVerticalScrollBar();
             if( pVerticalScrollBar && pVerticalScrollBar->IsVisible() ) rc.right -= pVerticalScrollBar->GetFixedWidth();
-            CScrollBarUI* pHorizontalScrollBar = pParentContainer->GetHorizontalScrollBar();
+            CScrollUI* pHorizontalScrollBar = pParentContainer->GetHorizontalScrollBar();
             if( pHorizontalScrollBar && pHorizontalScrollBar->IsVisible() ) rc.bottom -= pHorizontalScrollBar->GetFixedHeight();
 
             RECT invalidateRc = m_rcItem;
@@ -2098,7 +2098,7 @@ void CListElementUI::DrawItemBk(HDC hDC, const RECT& rcItem)
     }
 
     if ( iBackColor != 0 ) {
-        CRenderEngine::DrawColor(hDC, rcItem, GetAdjustColor(iBackColor));
+        CRenderUI::DrawColor(hDC, rcItem, GetAdjustColor(iBackColor));
     }
 
     if( !IsEnabled() ) {
@@ -2263,10 +2263,10 @@ SIZE CListLabelElementUI::EstimateSize(SIZE szAvailable)
                 RECT rcText = { 0, 0, 9999, m_cxyFixedLast.cy };
                 if( pInfo->bShowHtml ) {
                     int nLinks = 0;
-                    CRenderEngine::DrawHtmlText(m_pManager->GetPaintDC(), m_pManager, rcText, m_sText, 0, NULL, NULL, nLinks, pInfo->nFont, DT_CALCRECT | pInfo->uTextStyle & ~DT_RIGHT & ~DT_CENTER);
+                    CRenderUI::DrawHtmlText(m_pManager->GetPaintDC(), m_pManager, rcText, m_sText, 0, NULL, NULL, nLinks, pInfo->nFont, DT_CALCRECT | pInfo->uTextStyle & ~DT_RIGHT & ~DT_CENTER);
                 }
                 else {
-                    CRenderEngine::DrawText(m_pManager->GetPaintDC(), m_pManager, rcText, m_sText, 0, pInfo->nFont, DT_CALCRECT | pInfo->uTextStyle & ~DT_RIGHT & ~DT_CENTER);
+                    CRenderUI::DrawText(m_pManager->GetPaintDC(), m_pManager, rcText, m_sText, 0, pInfo->nFont, DT_CALCRECT | pInfo->uTextStyle & ~DT_RIGHT & ~DT_CENTER);
                 }
                 m_cxyFixedLast.cx = rcText.right - rcText.left + pInfo->rcTextPadding.left + pInfo->rcTextPadding.right;
             }
@@ -2280,10 +2280,10 @@ SIZE CListLabelElementUI::EstimateSize(SIZE szAvailable)
             rcText.right -= pInfo->rcTextPadding.right;
             if( pInfo->bShowHtml ) {
                 int nLinks = 0;
-                CRenderEngine::DrawHtmlText(m_pManager->GetPaintDC(), m_pManager, rcText, m_sText, 0, NULL, NULL, nLinks, pInfo->nFont, DT_CALCRECT | pInfo->uTextStyle & ~DT_RIGHT & ~DT_CENTER);
+                CRenderUI::DrawHtmlText(m_pManager->GetPaintDC(), m_pManager, rcText, m_sText, 0, NULL, NULL, nLinks, pInfo->nFont, DT_CALCRECT | pInfo->uTextStyle & ~DT_RIGHT & ~DT_CENTER);
             }
             else {
-                CRenderEngine::DrawText(m_pManager->GetPaintDC(), m_pManager, rcText, m_sText, 0, pInfo->nFont, DT_CALCRECT | pInfo->uTextStyle & ~DT_RIGHT & ~DT_CENTER);
+                CRenderUI::DrawText(m_pManager->GetPaintDC(), m_pManager, rcText, m_sText, 0, pInfo->nFont, DT_CALCRECT | pInfo->uTextStyle & ~DT_RIGHT & ~DT_CENTER);
             }
             m_cxyFixedLast.cy = rcText.bottom - rcText.top + pInfo->rcTextPadding.top + pInfo->rcTextPadding.bottom;
         }
@@ -2323,10 +2323,10 @@ void CListLabelElementUI::DrawItemText(HDC hDC, const RECT& rcItem)
     rcText.bottom -= pInfo->rcTextPadding.bottom;
 
     if( pInfo->bShowHtml )
-        CRenderEngine::DrawHtmlText(hDC, m_pManager, rcText, m_sText, iTextColor, \
+        CRenderUI::DrawHtmlText(hDC, m_pManager, rcText, m_sText, iTextColor, \
         NULL, NULL, nLinks, pInfo->nFont, pInfo->uTextStyle);
     else
-        CRenderEngine::DrawText(hDC, m_pManager, rcText, m_sText, iTextColor, \
+        CRenderUI::DrawText(hDC, m_pManager, rcText, m_sText, iTextColor, \
         pInfo->nFont, pInfo->uTextStyle);
 }
 
@@ -2521,10 +2521,10 @@ SIZE CListTextElementUI::EstimateSize(SIZE szAvailable)
                 RECT rcText = { 0, 0, 9999, m_cxyFixedLast.cy };
                 if( pInfo->bShowHtml ) {
                     int nLinks = 0;
-                    CRenderEngine::DrawHtmlText(m_pManager->GetPaintDC(), m_pManager, rcText, strText, 0, NULL, NULL, nLinks, pInfo->nFont, DT_CALCRECT | pInfo->uTextStyle & ~DT_RIGHT & ~DT_CENTER);
+                    CRenderUI::DrawHtmlText(m_pManager->GetPaintDC(), m_pManager, rcText, strText, 0, NULL, NULL, nLinks, pInfo->nFont, DT_CALCRECT | pInfo->uTextStyle & ~DT_RIGHT & ~DT_CENTER);
                 }
                 else {
-                    CRenderEngine::DrawText(m_pManager->GetPaintDC(), m_pManager, rcText, strText, 0, pInfo->nFont, DT_CALCRECT | pInfo->uTextStyle & ~DT_RIGHT & ~DT_CENTER);
+                    CRenderUI::DrawText(m_pManager->GetPaintDC(), m_pManager, rcText, strText, 0, pInfo->nFont, DT_CALCRECT | pInfo->uTextStyle & ~DT_RIGHT & ~DT_CENTER);
                 }
                 m_cxyFixedLast.cx = rcText.right - rcText.left + pInfo->rcTextPadding.left + pInfo->rcTextPadding.right;
             }
@@ -2538,10 +2538,10 @@ SIZE CListTextElementUI::EstimateSize(SIZE szAvailable)
             rcText.right -= pInfo->rcTextPadding.right;
             if( pInfo->bShowHtml ) {
                 int nLinks = 0;
-                CRenderEngine::DrawHtmlText(m_pManager->GetPaintDC(), m_pManager, rcText, strText, 0, NULL, NULL, nLinks, pInfo->nFont, DT_CALCRECT | pInfo->uTextStyle & ~DT_RIGHT & ~DT_CENTER);
+                CRenderUI::DrawHtmlText(m_pManager->GetPaintDC(), m_pManager, rcText, strText, 0, NULL, NULL, nLinks, pInfo->nFont, DT_CALCRECT | pInfo->uTextStyle & ~DT_RIGHT & ~DT_CENTER);
             }
             else {
-                CRenderEngine::DrawText(m_pManager->GetPaintDC(), m_pManager, rcText, strText, 0, pInfo->nFont, DT_CALCRECT | pInfo->uTextStyle & ~DT_RIGHT & ~DT_CENTER);
+                CRenderUI::DrawText(m_pManager->GetPaintDC(), m_pManager, rcText, strText, 0, pInfo->nFont, DT_CALCRECT | pInfo->uTextStyle & ~DT_RIGHT & ~DT_CENTER);
             }
             m_cxyFixedLast.cy = rcText.bottom - rcText.top + pInfo->rcTextPadding.top + pInfo->rcTextPadding.bottom;
         }
@@ -2575,7 +2575,7 @@ void CListTextElementUI::DrawItemText(HDC hDC, const RECT& rcItem)
             RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.bottom };
             if (pInfo->iVLineSize > 0 && i < pInfo->nColumns - 1) {
                 RECT rcLine = { rcItem.right - pInfo->iVLineSize / 2, rcItem.top, rcItem.right - pInfo->iVLineSize / 2, rcItem.bottom};
-                CRenderEngine::DrawLine(hDC, rcLine, pInfo->iVLineSize, GetAdjustColor(pInfo->dwVLineColor));
+                CRenderUI::DrawLine(hDC, rcLine, pInfo->iVLineSize, GetAdjustColor(pInfo->dwVLineColor));
                 rcItem.right -= pInfo->iVLineSize;
             }
 
@@ -2588,10 +2588,10 @@ void CListTextElementUI::DrawItemText(HDC hDC, const RECT& rcItem)
             if( pCallback ) strText = pCallback->GetItemText(this, m_iIndex, i);
             else strText.Assign(GetText(i));
             if( pInfo->bShowHtml )
-                CRenderEngine::DrawHtmlText(hDC, m_pManager, rcItem, strText.GetData(), iTextColor, \
+                CRenderUI::DrawHtmlText(hDC, m_pManager, rcItem, strText.GetData(), iTextColor, \
                 &m_rcLinks[m_nLinks], &m_sLinks[m_nLinks], nLinks, pInfo->nFont, pInfo->uTextStyle);
             else
-                CRenderEngine::DrawText(hDC, m_pManager, rcItem, strText.GetData(), iTextColor, \
+                CRenderUI::DrawText(hDC, m_pManager, rcItem, strText.GetData(), iTextColor, \
                 pInfo->nFont, pInfo->uTextStyle);
 
             m_nLinks += nLinks;
@@ -2610,10 +2610,10 @@ void CListTextElementUI::DrawItemText(HDC hDC, const RECT& rcItem)
         else if (m_aTexts.GetSize() > 0) strText.Assign(GetText(0));
         else strText = m_sText;
         if( pInfo->bShowHtml )
-            CRenderEngine::DrawHtmlText(hDC, m_pManager, rcItem, strText.GetData(), iTextColor, \
+            CRenderUI::DrawHtmlText(hDC, m_pManager, rcItem, strText.GetData(), iTextColor, \
             &m_rcLinks[m_nLinks], &m_sLinks[m_nLinks], nLinks, pInfo->nFont, pInfo->uTextStyle);
         else
-            CRenderEngine::DrawText(hDC, m_pManager, rcItem, strText.GetData(), iTextColor, \
+            CRenderUI::DrawText(hDC, m_pManager, rcItem, strText.GetData(), iTextColor, \
             pInfo->nFont, pInfo->uTextStyle);
 
         m_nLinks += nLinks;
@@ -2719,9 +2719,9 @@ void CListContainerElementUI::Invalidate()
             rc.top += rcInset.top;
             rc.right -= rcInset.right;
             rc.bottom -= rcInset.bottom;
-            CScrollBarUI* pVerticalScrollBar = pParentContainer->GetVerticalScrollBar();
+            CScrollUI* pVerticalScrollBar = pParentContainer->GetVerticalScrollBar();
             if( pVerticalScrollBar && pVerticalScrollBar->IsVisible() ) rc.right -= pVerticalScrollBar->GetFixedWidth();
-            CScrollBarUI* pHorizontalScrollBar = pParentContainer->GetHorizontalScrollBar();
+            CScrollUI* pHorizontalScrollBar = pParentContainer->GetHorizontalScrollBar();
             if( pHorizontalScrollBar && pHorizontalScrollBar->IsVisible() ) rc.bottom -= pHorizontalScrollBar->GetFixedHeight();
 
             RECT invalidateRc = m_rcItem;
@@ -2923,7 +2923,7 @@ void CListContainerElementUI::DrawItemBk(HDC hDC, const RECT& rcItem)
 		iBackColor = pInfo->dwDisabledBkColor;
 	}
 	if ( iBackColor != 0 ) {
-		CRenderEngine::DrawColor(hDC, m_rcItem, GetAdjustColor(iBackColor));
+		CRenderUI::DrawColor(hDC, m_rcItem, GetAdjustColor(iBackColor));
 	}
 
 	if( !IsEnabled() ) {
@@ -3035,7 +3035,7 @@ bool CListHBoxElementUI::DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStop
         RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.bottom };
         if (pInfo->iVLineSize > 0 && i < pInfo->nColumns - 1) {
             RECT rcLine = { rcItem.right - pInfo->iVLineSize / 2, rcItem.top, rcItem.right - pInfo->iVLineSize / 2, rcItem.bottom};
-            CRenderEngine::DrawLine(hDC, rcLine, pInfo->iVLineSize, GetAdjustColor(pInfo->dwVLineColor));
+            CRenderUI::DrawLine(hDC, rcLine, pInfo->iVLineSize, GetAdjustColor(pInfo->dwVLineColor));
         }
     }
     return CContainerUI::DoPaint(hDC, rcPaint, pStopControl);

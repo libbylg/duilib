@@ -1,6 +1,6 @@
 #include "Control/UICombo.h"
 #include "Core/UIManager.h"
-#include "Core/UIScrollBar.h"
+#include "Core/UIScroll.h"
 #include "Core/UIWindow.h"
 
 namespace DUILIB 
@@ -79,7 +79,7 @@ namespace DUILIB
                             if (::IntersectRect(&rcTemp, &rcPaint, &rcBottomLine)) {
                                 rcBottomLine.top += pListInfo->iHLineSize / 2;
                                 rcBottomLine.bottom = rcBottomLine.top;
-                                CRenderEngine::DrawLine(hDC, rcBottomLine, pListInfo->iHLineSize, GetAdjustColor(pListInfo->dwHLineColor));
+                                CRenderUI::DrawLine(hDC, rcBottomLine, pListInfo->iHLineSize, GetAdjustColor(pListInfo->dwHLineColor));
                             }
                         }
                     }
@@ -138,7 +138,7 @@ namespace DUILIB
 #endif
 
     public:
-        CPaintManagerUI m_pm;
+        CManagerUI m_pm;
         CComboUI* m_pOwner;
         CVerticalLayoutUI* m_pLayout;
         int m_iOldSel;
@@ -322,7 +322,7 @@ void CComboWnd::EnsureVisible(int iIndex)
     m_pLayout->FindSelectable(m_pOwner->GetCurSel(), false);
     RECT rcItem = m_pLayout->GetItemAt(iIndex)->GetPos();
     RECT rcList = m_pLayout->GetPos();
-    CScrollBarUI* pHorizontalScrollBar = m_pLayout->GetHorizontalScrollBar();
+    CScrollUI* pHorizontalScrollBar = m_pLayout->GetHorizontalScrollBar();
     if( pHorizontalScrollBar && pHorizontalScrollBar->IsVisible() ) rcList.bottom -= pHorizontalScrollBar->GetFixedHeight();
     int iPos = m_pLayout->GetScrollPos().cy;
     if( rcItem.top >= rcList.top && rcItem.bottom < rcList.bottom ) return;

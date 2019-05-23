@@ -73,7 +73,7 @@ namespace DUILIB
         CStringPtrMapUI m_MultiLanguageHash;
     };
 
-    class CPaintManagerUI;
+    class CManagerUI;
     class CControlUI;
 
     class DUILIB_API CRenderClip
@@ -94,7 +94,7 @@ namespace DUILIB
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    class DUILIB_API CRenderEngine
+    class DUILIB_API CRenderUI
     {
     public:
         static DWORD AdjustColor(DWORD dwColor, short H, short S, short L);
@@ -105,7 +105,7 @@ namespace DUILIB
         static void DrawImage(HDC hDC, HBITMAP hBitmap, const RECT& rc, const RECT& rcPaint, \
             const RECT& rcBmpPart, const RECT& rcScale9, bool alphaChannel, BYTE uFade = 255,
             bool hole = false, bool xtiled = false, bool ytiled = false);
-        static bool DrawImage(HDC hDC, CPaintManagerUI* pManager, const RECT& rcItem, const RECT& rcPaint,
+        static bool DrawImage(HDC hDC, CManagerUI* pManager, const RECT& rcItem, const RECT& rcPaint,
             struct TDRAWINFO_UI& drawInfo);
         static void DrawColor(HDC hDC, const RECT& rc, DWORD color);
         static void DrawGradient(HDC hDC, const RECT& rc, DWORD dwFirst, DWORD dwSecond, bool bVertical, int nSteps);
@@ -114,13 +114,13 @@ namespace DUILIB
         static void DrawLine(HDC hDC, const RECT& rc, int nSize, DWORD dwPenColor, int nStyle = PS_SOLID);
         static void DrawRect(HDC hDC, const RECT& rc, int nSize, DWORD dwPenColor, int nStyle = PS_SOLID);
         static void DrawRoundRect(HDC hDC, const RECT& rc, int width, int height, int nSize, DWORD dwPenColor, int nStyle = PS_SOLID);
-        static void DrawText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, LPCTSTR pstrText, \
+        static void DrawText(HDC hDC, CManagerUI* pManager, RECT& rc, LPCTSTR pstrText, \
             DWORD dwTextColor, int iFont, UINT uStyle);
-        static void DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, LPCTSTR pstrText,
+        static void DrawHtmlText(HDC hDC, CManagerUI* pManager, RECT& rc, LPCTSTR pstrText,
             DWORD dwTextColor, RECT* pLinks, CStringUI* sLinks, int& nLinkRects, int iDefaultFont, UINT uStyle);
-        static HBITMAP GenerateBitmap(CPaintManagerUI* pManager, RECT rc, CControlUI* pStopControl = NULL, DWORD dwFilterColor = 0);
-        static HBITMAP GenerateBitmap(CPaintManagerUI* pManager, CControlUI* pControl, RECT rc, DWORD dwFilterColor = 0);
-        static SIZE GetTextSize(HDC hDC, CPaintManagerUI* pManager, LPCTSTR pstrText, int iFont, UINT uStyle);
+        static HBITMAP GenerateBitmap(CManagerUI* pManager, RECT rc, CControlUI* pStopControl = NULL, DWORD dwFilterColor = 0);
+        static HBITMAP GenerateBitmap(CManagerUI* pManager, CControlUI* pControl, RECT rc, DWORD dwFilterColor = 0);
+        static SIZE GetTextSize(HDC hDC, CManagerUI* pManager, LPCTSTR pstrText, int iFont, UINT uStyle);
     };
 
 } // namespace DUILIB

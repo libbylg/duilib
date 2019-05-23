@@ -12,7 +12,7 @@ namespace DUILIB
     //
 
     class CControlUI;
-    class CPaintManagerUI;
+    class CManagerUI;
     struct TDRAWINFO_UI;
 
     typedef CControlUI* (CALLBACK* LPFINDCONTROLPROC_UI)(CControlUI*, LPVOID);
@@ -51,8 +51,8 @@ namespace DUILIB
         virtual HWND GetNativeWindow() const;
 
         virtual bool Activate();
-        virtual CPaintManagerUI* GetManager() const;
-        virtual void SetManager(CPaintManagerUI* pManager, CControlUI* pParent, bool bInit = true);
+        virtual CManagerUI* GetManager() const;
+        virtual void SetManager(CManagerUI* pManager, CControlUI* pParent, bool bInit = true);
         virtual CControlUI* GetParent() const;
         virtual CControlUI* GetCover() const;
         virtual void SetCover(CControlUI* pControl);
@@ -203,7 +203,7 @@ namespace DUILIB
         CEventSource OnPostPaint;
 
     protected:
-        CPaintManagerUI* m_pManager;
+        CManagerUI* m_pManager;
         CControlUI* m_pParent;
         CControlUI* m_pCover;
         CStringUI m_sVirtualWnd;

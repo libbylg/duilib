@@ -435,10 +435,10 @@ namespace DUILIB
 			clrColor = GetFocusedTextColor();
 
 		if( m_bShowHtml )
-			CRenderEngine::DrawHtmlText(hDC, m_pManager, rc, m_sText, clrColor, \
+			CRenderUI::DrawHtmlText(hDC, m_pManager, rc, m_sText, clrColor, \
 			NULL, NULL, nLinks, m_iFont, m_uTextStyle);
 		else
-			CRenderEngine::DrawText(hDC, m_pManager, rc, m_sText, clrColor, \
+			CRenderUI::DrawText(hDC, m_pManager, rc, m_sText, clrColor, \
 			m_iFont, m_uTextStyle);
 	}
 
@@ -478,7 +478,7 @@ namespace DUILIB
 
 			if (DrawImage(hDC, m_diHotFore)) return;
 			else if(m_dwHotBkColor != 0) {
-				CRenderEngine::DrawColor(hDC, m_rcPaint, GetAdjustColor(m_dwHotBkColor));
+				CRenderUI::DrawColor(hDC, m_rcPaint, GetAdjustColor(m_dwHotBkColor));
 				return;
 			}
 			else goto Label_ForeImage;

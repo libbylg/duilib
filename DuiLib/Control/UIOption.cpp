@@ -24,7 +24,7 @@ namespace DUILIB
 		return CButtonUI::GetInterface(pstrName);
 	}
 
-	void COptionUI::SetManager(CPaintManagerUI* pManager, CControlUI* pParent, bool bInit)
+	void COptionUI::SetManager(CManagerUI* pManager, CControlUI* pParent, bool bInit)
 	{
 		CControlUI::SetManager(pManager, pParent, bInit);
 		if( bInit && !m_sGroupName.IsEmpty() ) {
@@ -208,7 +208,7 @@ namespace DUILIB
 
 			if( DrawImage(hDC, m_diSelected) ) goto Label_ForeImage;
 			else if(m_dwSelectedBkColor != 0) {
-				CRenderEngine::DrawColor(hDC, m_rcPaint, GetAdjustColor(m_dwSelectedBkColor));
+				CRenderUI::DrawColor(hDC, m_rcPaint, GetAdjustColor(m_dwSelectedBkColor));
 				goto Label_ForeImage;
 			}	
 		}
@@ -241,10 +241,10 @@ Label_ForeImage:
 			rc.bottom -= m_rcTextPadding.bottom;
 
 			if( m_bShowHtml )
-				CRenderEngine::DrawHtmlText(hDC, m_pManager, rc, m_sText, IsEnabled()?m_dwTextColor:m_dwDisabledTextColor, \
+				CRenderUI::DrawHtmlText(hDC, m_pManager, rc, m_sText, IsEnabled()?m_dwTextColor:m_dwDisabledTextColor, \
 				NULL, NULL, nLinks, m_iFont, m_uTextStyle);
 			else
-				CRenderEngine::DrawText(hDC, m_pManager, rc, m_sText, IsEnabled()?m_dwTextColor:m_dwDisabledTextColor, \
+				CRenderUI::DrawText(hDC, m_pManager, rc, m_sText, IsEnabled()?m_dwTextColor:m_dwDisabledTextColor, \
 				m_iFont, m_uTextStyle);
 
 			m_dwTextColor = oldTextColor;

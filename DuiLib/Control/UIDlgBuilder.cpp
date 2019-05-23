@@ -3,7 +3,7 @@
 #include "Core/UIManager.h"
 #include "Core/UIContainer.h"
 #include "Core/UIWindow.h"
-#include "Core/UIScrollBar.h"
+#include "Core/UIScroll.h"
 
 #include "Control/UITreeView.h"
 #include "Control/UIList.h"
@@ -40,7 +40,7 @@ namespace DUILIB
     }
 
     CControlUI* CDialogBuilder::Create(STRINGorID xml, LPCTSTR type, IDialogBuilderCallback* pCallback,
-        CPaintManagerUI* pManager, CControlUI* pParent)
+        CManagerUI* pManager, CControlUI* pParent)
     {
         //资源ID为0-65535，两个字节；字符串指针为4个字节
         //字符串以<开头认为是XML字符串，否则认为是XML文件
@@ -52,16 +52,16 @@ namespace DUILIB
                 if (!m_xml.LoadFromFile(xml.m_lpstr)) return NULL;
             }
         } else {
-            HRSRC hResource = ::FindResource(CPaintManagerUI::GetResourceDll(), xml.m_lpstr, type);
+            HRSRC hResource = ::FindResource(CManagerUI::GetResourceDll(), xml.m_lpstr, type);
             if (hResource == NULL) return NULL;
-            HGLOBAL hGlobal = ::LoadResource(CPaintManagerUI::GetResourceDll(), hResource);
+            HGLOBAL hGlobal = ::LoadResource(CManagerUI::GetResourceDll(), hResource);
             if (hGlobal == NULL) {
                 FreeResource(hResource);
                 return NULL;
             }
 
             m_pCallback = pCallback;
-            if (!m_xml.LoadFromMem((BYTE*)::LockResource(hGlobal), ::SizeofResource(CPaintManagerUI::GetResourceDll(), hResource))) return NULL;
+            if (!m_xml.LoadFromMem((BYTE*)::LockResource(hGlobal), ::SizeofResource(CManagerUI::GetResourceDll(), hResource))) return NULL;
             ::FreeResource(hResource);
             m_pstrtype = type;
         }
@@ -69,10 +69,10 @@ namespace DUILIB
         return Create(pCallback, pManager, pParent);
     }
 
-    CControlUI* CDialogBuilder::Create(IDialogBuilderCallback* pCallback, CPaintManagerUI* pManager, CControlUI* pParent)
+    CControlUI* CDialogBuilder::Create(IDialogBuilderCallback* pCallback, CManagerUI* pManager, CControlUI* pParent)
     {
         m_pCallback = pCallback;
-        CMarkupNode root = m_xml.GetRoot();
+        CMarkupNodeUI root = m_xml.GetRoot();
         if (!root.IsValid()) return NULL;
 
         if (pManager) {
@@ -81,7 +81,7 @@ namespace DUILIB
             LPCTSTR pstrName = NULL;
             LPCTSTR pstrValue = NULL;
             LPTSTR pstr = NULL;
-            for (CMarkupNode node = root.GetChild(); node.IsValid(); node = node.GetSibling()) {
+            for (CMarkupNodeUI node = root.GetChild(); node.IsValid(); node = node.GetSibling()) {
                 pstrClass = node.GetName();
                 if (_tcsicmp(pstrClass, _T("Image")) == 0) {
                     nAttributes = node.GetAttributeCount();
@@ -192,7 +192,7 @@ namespace DUILIB
         return _Parse(&root, pParent, pManager);
     }
 
-    CMarkup* CDialogBuilder::GetMarkup()
+    CMarkupUI* CDialogBuilder::GetMarkup()
     {
         return &m_xml;
     }
@@ -207,11 +207,11 @@ namespace DUILIB
         return m_xml.GetLastErrorLocation(pstrSource, cchMax);
     }
 
-    CControlUI* CDialogBuilder::_Parse(CMarkupNode * pRoot, CControlUI * pParent, CPaintManagerUI * pManager)
+    CControlUI* CDialogBuilder::_Parse(CMarkupNodeUI * pRoot, CControlUI * pParent, CManagerUI * pManager)
     {
         IContainerUI* pContainer = NULL;
         CControlUI* pReturn = NULL;
-        for (CMarkupNode node = pRoot->GetChild(); node.IsValid(); node = node.GetSibling()) {
+        for (CMarkupNodeUI node = pRoot->GetChild(); node.IsValid(); node = node.GetSibling()) {
             LPCTSTR pstrClass = node.GetName();
             if (_tcsicmp(pstrClass, _T("Image")) == 0 || _tcsicmp(pstrClass, _T("Font")) == 0 \
                 || _tcsicmp(pstrClass, _T("Default")) == 0
@@ -334,7 +334,7 @@ namespace DUILIB
                     case 9:
                         if (_tcsicmp(pstrClass, DUI_CTR_CONTAINER) == 0)             pControl = new CContainerUI;
                         else if (_tcsicmp(pstrClass, DUI_CTR_TABLAYOUT) == 0)        pControl = new CTabLayoutUI;
-                        else if (_tcsicmp(pstrClass, DUI_CTR_SCROLLBAR) == 0)        pControl = new CScrollBarUI;
+                        else if (_tcsicmp(pstrClass, DUI_CTR_SCROLLBAR) == 0)        pControl = new CScrollUI;
                         break;
                     case 10:
                         if (_tcsicmp(pstrClass, DUI_CTR_LISTHEADER) == 0)            pControl = new CListHeaderUI;
@@ -362,7 +362,7 @@ namespace DUILIB
                 }
                 // User-supplied control factory
                 if (pControl == NULL) {
-                    CPtrArrayUI* pPlugins = CPaintManagerUI::GetPlugins();
+                    CPtrArrayUI* pPlugins = CManagerUI::GetPlugins();
                     LPCREATECONTROL lpCreateControl = NULL;
                     for (int i = 0; i < pPlugins->GetSize(); ++i) {
                         lpCreateControl = (LPCREATECONTROL)pPlugins->GetAt(i);

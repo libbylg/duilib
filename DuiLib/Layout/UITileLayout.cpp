@@ -1,5 +1,5 @@
 #include "Layout/UITileLayout.h"
-#include "Core/UIScrollBar.h"
+#include "Core/UIScroll.h"
 
 namespace DUILIB
 {

@@ -1,5 +1,5 @@
 #include "Control/UIRichEdit.h"
-#include "Core/UIScrollBar.h"
+#include "Core/UIScroll.h"
 
 
 // These constants are for backward compatibility. They are the 
@@ -427,8 +427,8 @@ int CTxtWinHost::TxReleaseDC(HDC hdc)
 
 BOOL CTxtWinHost::TxShowScrollBar(INT fnBar, BOOL fShow)
 {
-    CScrollBarUI* pVerticalScrollBar = m_re->GetVerticalScrollBar();
-    CScrollBarUI* pHorizontalScrollBar = m_re->GetHorizontalScrollBar();
+    CScrollUI* pVerticalScrollBar = m_re->GetVerticalScrollBar();
+    CScrollUI* pHorizontalScrollBar = m_re->GetHorizontalScrollBar();
     if( fnBar == SB_VERT && pVerticalScrollBar ) {
         pVerticalScrollBar->SetVisible(fShow == TRUE);
     }
@@ -462,8 +462,8 @@ BOOL CTxtWinHost::TxEnableScrollBar (INT fuSBFlags, INT fuArrowflags)
 
 BOOL CTxtWinHost::TxSetScrollRange(INT fnBar, LONG nMinPos, INT nMaxPos, BOOL fRedraw)
 {
-    CScrollBarUI* pVerticalScrollBar = m_re->GetVerticalScrollBar();
-    CScrollBarUI* pHorizontalScrollBar = m_re->GetHorizontalScrollBar();
+    CScrollUI* pVerticalScrollBar = m_re->GetVerticalScrollBar();
+    CScrollUI* pHorizontalScrollBar = m_re->GetHorizontalScrollBar();
     if( fnBar == SB_VERT && pVerticalScrollBar ) {
         if( nMaxPos - nMinPos - rcClient.bottom + rcClient.top <= 0 ) {
             pVerticalScrollBar->SetVisible(false);
@@ -487,8 +487,8 @@ BOOL CTxtWinHost::TxSetScrollRange(INT fnBar, LONG nMinPos, INT nMaxPos, BOOL fR
 
 BOOL CTxtWinHost::TxSetScrollPos (INT fnBar, INT nPos, BOOL fRedraw)
 {
-    CScrollBarUI* pVerticalScrollBar = m_re->GetVerticalScrollBar();
-    CScrollBarUI* pHorizontalScrollBar = m_re->GetHorizontalScrollBar();
+    CScrollUI* pVerticalScrollBar = m_re->GetVerticalScrollBar();
+    CScrollUI* pHorizontalScrollBar = m_re->GetHorizontalScrollBar();
     if( fnBar == SB_VERT && pVerticalScrollBar ) {
         pVerticalScrollBar->SetScrollPos(nPos);
     }
@@ -2200,7 +2200,7 @@ bool CRichEditUI::DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl
 		::GetCaretPos(&ptCaret);
 		if( ::PtInRect(&m_rcItem, ptCaret) ) {
 			RECT rcCaret = { ptCaret.x, ptCaret.y, ptCaret.x, ptCaret.y + m_pTwh->GetCaretHeight() };
-			CRenderEngine::DrawLine(hDC, rcCaret, m_pTwh->GetCaretWidth(), 0xFF000000);
+			CRenderUI::DrawLine(hDC, rcCaret, m_pTwh->GetCaretWidth(), 0xFF000000);
 		}
 	}
 

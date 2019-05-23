@@ -44,11 +44,11 @@ namespace DUILIB
     typedef CControlUI* (*LPCREATECONTROL)(LPCTSTR pstrType);
 
 
-    class DUILIB_API CPaintManagerUI
+    class DUILIB_API CManagerUI
     {
     public:
-        CPaintManagerUI();
-        ~CPaintManagerUI();
+        CManagerUI();
+        ~CManagerUI();
 
     public:
         void Init(HWND hWnd, LPCTSTR pstrName = NULL);
@@ -115,7 +115,7 @@ namespace DUILIB
         static bool GetHSL(short* H, short* S, short* L);
         static void SetHSL(bool bUseHSL, short H, short S, short L); // H:0~360, S:0~200, L:0~200 
         static void ReloadSkin();
-        static CPaintManagerUI* GetPaintManager(LPCTSTR pstrName);
+        static CManagerUI* GetPaintManager(LPCTSTR pstrName);
         static CPtrArrayUI* GetPaintManagers();
         static bool LoadPlugin(LPCTSTR pstrModuleName);
         static CPtrArrayUI* GetPlugins();

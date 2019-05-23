@@ -205,10 +205,10 @@ namespace DUILIB
                     RECT rcText = { 0, 0, 9999, m_cxyFixedLast.cy };
                     if( m_bShowHtml ) {
                         int nLinks = 0;
-                        CRenderEngine::DrawHtmlText(m_pManager->GetPaintDC(), m_pManager, rcText, m_sText, 0, NULL, NULL, nLinks, m_iFont, DT_CALCRECT | m_uTextStyle & ~DT_RIGHT & ~DT_CENTER);
+                        CRenderUI::DrawHtmlText(m_pManager->GetPaintDC(), m_pManager, rcText, m_sText, 0, NULL, NULL, nLinks, m_iFont, DT_CALCRECT | m_uTextStyle & ~DT_RIGHT & ~DT_CENTER);
                     }
                     else {
-                        CRenderEngine::DrawText(m_pManager->GetPaintDC(), m_pManager, rcText, m_sText, 0, m_iFont, DT_CALCRECT | m_uTextStyle & ~DT_RIGHT & ~DT_CENTER);
+                        CRenderUI::DrawText(m_pManager->GetPaintDC(), m_pManager, rcText, m_sText, 0, m_iFont, DT_CALCRECT | m_uTextStyle & ~DT_RIGHT & ~DT_CENTER);
                     }
                     m_cxyFixedLast.cx = rcText.right - rcText.left + m_rcTextPadding.left + m_rcTextPadding.right;
                 }
@@ -222,10 +222,10 @@ namespace DUILIB
                 rcText.right -= m_rcTextPadding.right;
                 if( m_bShowHtml ) {
                     int nLinks = 0;
-                    CRenderEngine::DrawHtmlText(m_pManager->GetPaintDC(), m_pManager, rcText, m_sText, 0, NULL, NULL, nLinks, m_iFont, DT_CALCRECT | m_uTextStyle & ~DT_RIGHT & ~DT_CENTER);
+                    CRenderUI::DrawHtmlText(m_pManager->GetPaintDC(), m_pManager, rcText, m_sText, 0, NULL, NULL, nLinks, m_iFont, DT_CALCRECT | m_uTextStyle & ~DT_RIGHT & ~DT_CENTER);
                 }
                 else {
-                    CRenderEngine::DrawText(m_pManager->GetPaintDC(), m_pManager, rcText, m_sText, 0, m_iFont, DT_CALCRECT | m_uTextStyle & ~DT_RIGHT & ~DT_CENTER);
+                    CRenderUI::DrawText(m_pManager->GetPaintDC(), m_pManager, rcText, m_sText, 0, m_iFont, DT_CALCRECT | m_uTextStyle & ~DT_RIGHT & ~DT_CENTER);
                 }
                 m_cxyFixedLast.cy = rcText.bottom - rcText.top + m_rcTextPadding.top + m_rcTextPadding.bottom;
             }
@@ -364,18 +364,18 @@ namespace DUILIB
 			int nLinks = 0;
 			if( IsEnabled() ) {
 				if( m_bShowHtml )
-					CRenderEngine::DrawHtmlText(hDC, m_pManager, rc, m_sText, m_dwTextColor, \
+					CRenderUI::DrawHtmlText(hDC, m_pManager, rc, m_sText, m_dwTextColor, \
 					NULL, NULL, nLinks, m_iFont, m_uTextStyle);
 				else
-					CRenderEngine::DrawText(hDC, m_pManager, rc, m_sText, m_dwTextColor, \
+					CRenderUI::DrawText(hDC, m_pManager, rc, m_sText, m_dwTextColor, \
 					m_iFont, m_uTextStyle);
 			}
 			else {
 				if( m_bShowHtml )
-					CRenderEngine::DrawHtmlText(hDC, m_pManager, rc, m_sText, m_dwDisabledTextColor, \
+					CRenderUI::DrawHtmlText(hDC, m_pManager, rc, m_sText, m_dwDisabledTextColor, \
 					NULL, NULL, nLinks, m_iFont, m_uTextStyle);
 				else
-					CRenderEngine::DrawText(hDC, m_pManager, rc, m_sText, m_dwDisabledTextColor, \
+					CRenderUI::DrawText(hDC, m_pManager, rc, m_sText, m_dwDisabledTextColor, \
 					m_iFont, m_uTextStyle);
 			}
 		}

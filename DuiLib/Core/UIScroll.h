@@ -10,10 +10,10 @@ namespace DUILIB
 
     class CContainerUI;
 
-	class DUILIB_API CScrollBarUI : public CControlUI
+	class DUILIB_API CScrollUI : public CControlUI
 	{
 	public:
-		CScrollBarUI();
+		CScrollUI();
 
 		LPCTSTR GetClass() const;
 		LPVOID GetInterface(LPCTSTR pstrName);
