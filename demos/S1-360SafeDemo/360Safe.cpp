@@ -234,7 +234,7 @@ public:
 	}
 
 public:
-	CPaintManagerUI m_pm;
+	CManagerUI m_pm;
 
 private:
 	CButtonUI* m_pCloseBtn;
@@ -247,9 +247,9 @@ private:
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpCmdLine*/, int nCmdShow)
 {
-	CPaintManagerUI::SetInstance(hInstance);
-	CPaintManagerUI::SetResourcePath(CPaintManagerUI::GetInstancePath() + _T("skin"));
-	CPaintManagerUI::SetResourceZip(_T("360SafeRes.zip"));
+	CManagerUI::SetInstance(hInstance);
+	CManagerUI::SetResourcePath(CManagerUI::GetInstancePath() + _T("skin"));
+	CManagerUI::SetResourceZip(_T("360SafeRes.zip"));
 
 	HRESULT Hr = ::CoInitialize(NULL);
 	if( FAILED(Hr) ) return 0;
@@ -260,7 +260,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
 	pFrame->CenterWindow();
 	::ShowWindow(*pFrame, SW_SHOW);
 
-	CPaintManagerUI::MessageLoop();
+	CManagerUI::MessageLoop();
 
 	::CoUninitialize();
 	return 0;

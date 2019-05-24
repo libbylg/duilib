@@ -232,16 +232,16 @@ namespace DUILIB
         return Create(hwndParent, pstrWindowName, dwStyle, dwExStyle, 0, 0, 0, 0, NULL);
     }
 
-    HWND CWindowUI::Create(HWND hwndParent, LPCTSTR pstrName, DWORD dwStyle, DWORD dwExStyle, const RECT rc, HMENU hMenu)
+    HWND CWindowUI::Create(HWND hwndParent, LPCTSTR pstrWindowName, DWORD dwStyle, DWORD dwExStyle, const RECT rc, HMENU hMenu)
     {
-        return Create(hwndParent, pstrName, dwStyle, dwExStyle, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, hMenu);
+        return Create(hwndParent, pstrWindowName, dwStyle, dwExStyle, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, hMenu);
     }
 
-    HWND CWindowUI::Create(HWND hwndParent, LPCTSTR pstrName, DWORD dwStyle, DWORD dwExStyle, int x, int y, int cx, int cy, HMENU hMenu)
+    HWND CWindowUI::Create(HWND hwndParent, LPCTSTR pstrWindowName, DWORD dwStyle, DWORD dwExStyle, int x, int y, int cx, int cy, HMENU hMenu)
     {
         if (GetSuperClassName() != NULL && !RegisterSuperclass()) return NULL;
         if (GetSuperClassName() == NULL && !RegisterWindowClass()) return NULL;
-        m_hWnd = ::CreateWindowEx(dwExStyle, GetWindowClassName(), pstrName, dwStyle, x, y, cx, cy, hwndParent, hMenu, CManagerUI::GetInstance(), this);
+        m_hWnd = ::CreateWindowEx(dwExStyle, GetWindowClassName(), pstrWindowName, dwStyle, x, y, cx, cy, hwndParent, hMenu, CManagerUI::GetInstance(), this);
         ASSERT(m_hWnd != NULL);
         return m_hWnd;
     }

@@ -2,6 +2,11 @@
 //
 
 #include "stdafx.h"
+#include "Core/UIWindow.h"
+#include "Core/UIManager.h"
+#include "Control/UISlider.h"
+#include "Control/UIDlgBuilder.h"
+#include "Utils/WndShadow.h"
 
 #ifndef _DWMAPI_H_
 typedef struct DWM_BLURBEHIND
@@ -306,7 +311,7 @@ private:
 };
 
 
-class CFrameWindowWnd : public CWindowWnd, public INotifyUI, public CDwm, public CDPI
+class CFrameWindowWnd : public CWindowUI, public INotifyUI, public CDwm, public CDPI
 {
 public:
     CFrameWindowWnd() : m_pWndShadow(NULL) { };
@@ -317,37 +322,37 @@ public:
     void Init() { }
 
     bool OnHChanged(void* param) {
-        TNotifyUI* pMsg = (TNotifyUI*)param;
+        TNOTIFY_UI* pMsg = (TNOTIFY_UI*)param;
         if( pMsg->sType == _T("valuechanged") ) {
             short H, S, L;
-            CPaintManagerUI::GetHSL(&H, &S, &L);
-            CPaintManagerUI::SetHSL(true, (static_cast<CSliderUI*>(pMsg->pSender))->GetValue(), S, L);
+            CManagerUI::GetHSL(&H, &S, &L);
+            CManagerUI::SetHSL(true, (static_cast<CSliderUI*>(pMsg->pSender))->GetValue(), S, L);
         }
         return true;
     }
 
     bool OnSChanged(void* param) {
-        TNotifyUI* pMsg = (TNotifyUI*)param;
+        TNOTIFY_UI* pMsg = (TNOTIFY_UI*)param;
         if( pMsg->sType == _T("valuechanged") ) {
             short H, S, L;
-            CPaintManagerUI::GetHSL(&H, &S, &L);
-            CPaintManagerUI::SetHSL(true, H, (static_cast<CSliderUI*>(pMsg->pSender))->GetValue(), L);
+            CManagerUI::GetHSL(&H, &S, &L);
+            CManagerUI::SetHSL(true, H, (static_cast<CSliderUI*>(pMsg->pSender))->GetValue(), L);
         }
         return true;
     }
 
     bool OnLChanged(void* param) {
-        TNotifyUI* pMsg = (TNotifyUI*)param;
+        TNOTIFY_UI* pMsg = (TNOTIFY_UI*)param;
         if( pMsg->sType == _T("valuechanged") ) {
             short H, S, L;
-            CPaintManagerUI::GetHSL(&H, &S, &L);
-            CPaintManagerUI::SetHSL(true, H, S, (static_cast<CSliderUI*>(pMsg->pSender))->GetValue());
+            CManagerUI::GetHSL(&H, &S, &L);
+            CManagerUI::SetHSL(true, H, S, (static_cast<CSliderUI*>(pMsg->pSender))->GetValue());
         }
         return true;
     }
 
     bool OnAlphaChanged(void* param) {
-        TNotifyUI* pMsg = (TNotifyUI*)param;
+        TNOTIFY_UI* pMsg = (TNOTIFY_UI*)param;
         if( pMsg->sType == _T("valuechanged") ) {
             m_pm.SetOpacity((static_cast<CSliderUI*>(pMsg->pSender))->GetValue());
         }
@@ -366,22 +371,22 @@ public:
         if( pSilder ) pSilder->OnNotify += MakeDelegate(this, &CFrameWindowWnd::OnLChanged);
     }
 
-    void Notify(TNotifyUI& msg)
+    void Notify(TNOTIFY_UI& msg)
     {
         if( msg.sType == _T("windowinit") ) OnPrepare();
         else if( msg.sType == _T("click") ) {
             if( msg.pSender->GetName() == _T("insertimagebtn") ) {
-                CRichEditUI* pRich = static_cast<CRichEditUI*>(m_pm.FindControl(_T("testrichedit")));
-                if( pRich ) {
-                    pRich->RemoveAll();
-                }
+                //CRichEditUI* pRich = static_cast<CRichEditUI*>(m_pm.FindControl(_T("testrichedit")));
+                //if( pRich ) {
+                //    pRich->RemoveAll();
+                //}
             }
             else if( msg.pSender->GetName() == _T("changeskinbtn") ) {
-                if( CPaintManagerUI::GetResourcePath() == CPaintManagerUI::GetInstancePath() )
-                    CPaintManagerUI::SetResourcePath(CPaintManagerUI::GetInstancePath() + _T("skin\\FlashRes"));
+                if( CManagerUI::GetResourcePath() == CManagerUI::GetInstancePath() )
+                    CManagerUI::SetResourcePath(CManagerUI::GetInstancePath() + _T("skin\\FlashRes"));
                 else
-                    CPaintManagerUI::SetResourcePath(CPaintManagerUI::GetInstancePath());
-                CPaintManagerUI::ReloadSkin();
+                    CManagerUI::SetResourcePath(CManagerUI::GetInstancePath());
+                CManagerUI::ReloadSkin();
             }
         }
     }
@@ -425,19 +430,19 @@ public:
         }
         LRESULT lRes = 0;
         if( m_pm.MessageHandler(uMsg, wParam, lParam, lRes) ) return lRes;
-        return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+        return CWindowUI::HandleMessage(uMsg, wParam, lParam);
     }
 
 public:
-    CPaintManagerUI m_pm;
+    CManagerUI m_pm;
     CWndShadow* m_pWndShadow;
 };
 
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpCmdLine*/, int nCmdShow)
 {
-    CPaintManagerUI::SetInstance(hInstance);
-    CPaintManagerUI::SetResourcePath(CPaintManagerUI::GetInstancePath());
+    CManagerUI::SetInstance(hInstance);
+    CManagerUI::SetResourcePath(CManagerUI::GetInstancePath());
 
     HRESULT Hr = ::CoInitialize(NULL);
     if( FAILED(Hr) ) return 0;
@@ -449,7 +454,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
     pFrame->Create(NULL, _T("这是一个最简单的测试用exe，修改test1.xml就可以看到效果"), UI_WNDSTYLE_FRAME|WS_CLIPCHILDREN, WS_EX_WINDOWEDGE);
     pFrame->CenterWindow();
     pFrame->ShowWindow(true);
-    CPaintManagerUI::MessageLoop();
+    CManagerUI::MessageLoop();
 
     ::CoUninitialize();
     return 0;
