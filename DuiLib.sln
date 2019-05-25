@@ -11,7 +11,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestApp1", "demos\S0-TestAp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demos", "demos", "{9B39BD4D-3159-4D07-B0FA-5DE2B1643EED}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "myeditor", "demos\myeditor\myeditor.vcxproj", "{35E7429E-074A-4B60-9534-ECA1D7DC93C2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "myeditor", "demos\SB-myeditor\myeditor.vcxproj", "{35E7429E-074A-4B60-9534-ECA1D7DC93C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

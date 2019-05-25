@@ -4,6 +4,7 @@
 #include "framework.h"
 #include "myeditor.h"
 #include "Core/UIManager.h"
+#include "Utils/Utils.h"
 using namespace DUILIB;
 
 #define MAX_LOADSTRING 100
@@ -29,11 +30,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    g_pFramework = new CMyFramework();
-    g_pFramework->Create();
-
     CManagerUI* g_pManager = new CManagerUI();
     g_pManager->SetInstance(hInstance);
+
+    g_pFramework = new CMyFramework();
+    g_pFramework->Create(NULL, _T("111"), 0, 0);
+    g_pFramework->ShowWindow();
+
+    g_pManager->MessageLoop();
 }
 
 

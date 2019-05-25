@@ -16,9 +16,13 @@
 using namespace DUILIB;
 
 
-class CMyFramework : CWindowUI
+class CMyFramework : public CWindowUI
 {
-
+public:
+    virtual LPCTSTR GetWindowClassName() const
+    {
+        return _T("CMyFramework");
+    }
 };
 
 

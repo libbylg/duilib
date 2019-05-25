@@ -101,11 +101,11 @@ namespace DUILIB
         const CStringUI& operator=(const TCHAR ch);
         const CStringUI& operator=(LPCTSTR pstr);
 #ifdef _UNICODE
-        const CStringUI& CStringUI::operator=(LPCSTR lpStr);
-        const CStringUI& CStringUI::operator+=(LPCSTR lpStr);
+        const CStringUI& operator=(LPCSTR lpStr);
+        const CStringUI& operator+=(LPCSTR lpStr);
 #else
-        const CStringUI& CStringUI::operator=(LPCWSTR lpwStr);
-        const CStringUI& CStringUI::operator+=(LPCWSTR lpwStr);
+        const CStringUI& operator=(LPCWSTR lpwStr);
+        const CStringUI& operator+=(LPCWSTR lpwStr);
 #endif
         CStringUI operator+(const CStringUI& src) const;
         CStringUI operator+(LPCTSTR pstr) const;
