@@ -30,13 +30,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    CManagerUI* g_pManager = new CManagerUI();
+    g_pManager = new CManagerUI();
+    g_pFramework = new CMyFramework();
     g_pManager->SetInstance(hInstance);
 
-    g_pFramework = new CMyFramework();
     g_pFramework->Create(NULL, _T("111"), 0, 0);
 
     g_pManager->Init(g_pFramework->GetHWND());
+    g_pManager->AttachDialog(g_pFramework);
 
     g_pFramework->ShowWindow();
 

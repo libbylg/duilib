@@ -15,7 +15,7 @@ public:
 	UINT GetClassStyle() const { return CS_DBLCLKS; };
 	void OnFinalMessage(HWND /*hWnd*/) { delete this; };
 
-	void Init() {
+	void OnInited() {
 		m_pCloseBtn = static_cast<CButtonUI*>(m_pm.FindControl(_T("closebtn")));
 		m_pMaxBtn = static_cast<CButtonUI*>(m_pm.FindControl(_T("maxbtn")));
 		m_pRestoreBtn = static_cast<CButtonUI*>(m_pm.FindControl(_T("restorebtn")));
@@ -63,7 +63,7 @@ public:
 		}
 	}
 
-	LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+	LRESULT OnCreated(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 	{
 		LONG styleValue = ::GetWindowLong(*this, GWL_STYLE);
 		styleValue &= ~WS_CAPTION;
@@ -77,7 +77,7 @@ public:
 		m_pm.AttachDialog(pRoot);
 		m_pm.AddNotifier(this);
 
-		Init();
+		OnInited();
 		return 0;
 	}
 
@@ -215,7 +215,7 @@ public:
 		LRESULT lRes = 0;
 		BOOL bHandled = TRUE;
 		switch( uMsg ) {
-		case WM_CREATE:        lRes = OnCreate(uMsg, wParam, lParam, bHandled); break;
+		case WM_CREATE:        lRes = OnCreated(uMsg, wParam, lParam, bHandled); break;
 		case WM_CLOSE:         lRes = OnClose(uMsg, wParam, lParam, bHandled); break;
 		case WM_DESTROY:       lRes = OnDestroy(uMsg, wParam, lParam, bHandled); break;
 		case WM_NCACTIVATE:    lRes = OnNcActivate(uMsg, wParam, lParam, bHandled); break;
