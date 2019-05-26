@@ -42,8 +42,8 @@ extern ZRESULT CloseZipU(HZIP hz);
 #endif
 extern ZRESULT GetZipItemA(HZIP hz, int index, ZIPENTRY *ze);
 extern ZRESULT GetZipItemW(HZIP hz, int index, ZIPENTRYW *ze);
-extern ZRESULT FindZipItemA(HZIP hz, const TCHAR *name, bool ic, int *index, ZIPENTRY *ze);
-extern ZRESULT FindZipItemW(HZIP hz, const TCHAR *name, bool ic, int *index, ZIPENTRYW *ze);
+extern ZRESULT FindZipItemA(HZIP hz, const TCHAR *name, BOOL ic, int *index, ZIPENTRY *ze);
+extern ZRESULT FindZipItemW(HZIP hz, const TCHAR *name, BOOL ic, int *index, ZIPENTRYW *ze);
 extern ZRESULT UnzipItem(HZIP hz, int index, void *dst, unsigned int len, DWORD flags);
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -71,9 +71,9 @@ namespace DUILIB
         return CMarkupNodeUI(m_pOwner, iPos);
     }
 
-    bool CMarkupNodeUI::HasSiblings() const
+    BOOL CMarkupNodeUI::HasSiblings() const
     {
-        if (m_pOwner == NULL) return false;
+        if (m_pOwner == NULL) return FALSE;
         ULONG iPos = m_pOwner->m_pElements[m_iPos].iNext;
         return iPos > 0;
     }
@@ -99,9 +99,9 @@ namespace DUILIB
         return CMarkupNodeUI();
     }
 
-    bool CMarkupNodeUI::HasChildren() const
+    BOOL CMarkupNodeUI::HasChildren() const
     {
-        if (m_pOwner == NULL) return false;
+        if (m_pOwner == NULL) return FALSE;
         return m_pOwner->m_pElements[m_iPos].iChild != 0;
     }
 
@@ -113,7 +113,7 @@ namespace DUILIB
         return CMarkupNodeUI(m_pOwner, iPos);
     }
 
-    bool CMarkupNodeUI::IsValid() const
+    BOOL CMarkupNodeUI::IsValid() const
     {
         return m_pOwner != NULL;
     }
@@ -156,26 +156,26 @@ namespace DUILIB
         return _T("");
     }
 
-    bool CMarkupNodeUI::GetAttributeValue(int iIndex, LPTSTR pstrValue, SIZE_T cchMax)
+    BOOL CMarkupNodeUI::GetAttributeValue(int iIndex, LPTSTR pstrValue, SIZE_T cchMax)
     {
-        if (m_pOwner == NULL) return false;
+        if (m_pOwner == NULL) return FALSE;
         if (m_nAttributes == 0) _MapAttributes();
-        if (iIndex < 0 || iIndex >= m_nAttributes) return false;
+        if (iIndex < 0 || iIndex >= m_nAttributes) return FALSE;
         _tcsncpy(pstrValue, m_pOwner->m_pstrXML + m_aAttributes[iIndex].iValue, cchMax);
-        return true;
+        return TRUE;
     }
 
-    bool CMarkupNodeUI::GetAttributeValue(LPCTSTR pstrName, LPTSTR pstrValue, SIZE_T cchMax)
+    BOOL CMarkupNodeUI::GetAttributeValue(LPCTSTR pstrName, LPTSTR pstrValue, SIZE_T cchMax)
     {
-        if (m_pOwner == NULL) return false;
+        if (m_pOwner == NULL) return FALSE;
         if (m_nAttributes == 0) _MapAttributes();
         for (int i = 0; i < m_nAttributes; i++) {
             if (_tcscmp(m_pOwner->m_pstrXML + m_aAttributes[i].iName, pstrName) == 0) {
                 _tcsncpy(pstrValue, m_pOwner->m_pstrXML + m_aAttributes[i].iValue, cchMax);
-                return true;
+                return TRUE;
             }
         }
-        return false;
+        return FALSE;
     }
 
     int CMarkupNodeUI::GetAttributeCount()
@@ -185,21 +185,21 @@ namespace DUILIB
         return m_nAttributes;
     }
 
-    bool CMarkupNodeUI::HasAttributes()
+    BOOL CMarkupNodeUI::HasAttributes()
     {
-        if (m_pOwner == NULL) return false;
+        if (m_pOwner == NULL) return FALSE;
         if (m_nAttributes == 0) _MapAttributes();
         return m_nAttributes > 0;
     }
 
-    bool CMarkupNodeUI::HasAttribute(LPCTSTR pstrName)
+    BOOL CMarkupNodeUI::HasAttribute(LPCTSTR pstrName)
     {
-        if (m_pOwner == NULL) return false;
+        if (m_pOwner == NULL) return FALSE;
         if (m_nAttributes == 0) _MapAttributes();
         for (int i = 0; i < m_nAttributes; i++) {
-            if (_tcscmp(m_pOwner->m_pstrXML + m_aAttributes[i].iName, pstrName) == 0) return true;
+            if (_tcscmp(m_pOwner->m_pstrXML + m_aAttributes[i].iName, pstrName) == 0) return TRUE;
         }
-        return false;
+        return FALSE;
     }
 
     void CMarkupNodeUI::_MapAttributes()
@@ -232,7 +232,7 @@ namespace DUILIB
         m_pstrXML = NULL;
         m_pElements = NULL;
         m_nElements = 0;
-        m_bPreserveWhitespace = true;
+        m_bPreserveWhitespace = TRUE;
         if (pstrXML != NULL) Load(pstrXML);
     }
 
@@ -241,28 +241,28 @@ namespace DUILIB
         Release();
     }
 
-    bool CMarkupUI::IsValid() const
+    BOOL CMarkupUI::IsValid() const
     {
         return m_pElements != NULL;
     }
 
-    void CMarkupUI::SetPreserveWhitespace(bool bPreserve)
+    void CMarkupUI::SetPreserveWhitespace(BOOL bPreserve)
     {
         m_bPreserveWhitespace = bPreserve;
     }
 
-    bool CMarkupUI::Load(LPCTSTR pstrXML)
+    BOOL CMarkupUI::Load(LPCTSTR pstrXML)
     {
         Release();
         SIZE_T cchLen = _tcslen(pstrXML) + 1;
         m_pstrXML = static_cast<LPTSTR>(malloc(cchLen * sizeof(TCHAR)));
         ::CopyMemory(m_pstrXML, pstrXML, cchLen * sizeof(TCHAR));
-        bool bRes = _Parse();
+        BOOL bRes = _Parse();
         if (!bRes) Release();
         return bRes;
     }
 
-    bool CMarkupUI::LoadFromMem(BYTE * pByte, DWORD dwSize, int encoding)
+    BOOL CMarkupUI::LoadFromMem(BYTE * pByte, DWORD dwSize, int encoding)
     {
 #ifdef _UNICODE
         if (encoding == XMLFILE_ENCODING_UTF8) {
@@ -351,12 +351,12 @@ namespace DUILIB
         }
 #endif // _UNICODE
 
-        bool bRes = _Parse();
+        BOOL bRes = _Parse();
         if (!bRes) Release();
         return bRes;
     }
 
-    bool CMarkupUI::LoadFromFile(LPCTSTR pstrFilename, int encoding)
+    BOOL CMarkupUI::LoadFromFile(LPCTSTR pstrFilename, int encoding)
     {
         Release();
         CStringUI sFile = CManagerUI::GetResourcePath();
@@ -378,7 +378,7 @@ namespace DUILIB
                 Release();
                 return _Failed(_T("Could not read file"));
             }
-            bool ret = LoadFromMem(pByte, dwSize, encoding);
+            BOOL ret = LoadFromMem(pByte, dwSize, encoding);
             delete[] pByte;
 
             return ret;
@@ -390,7 +390,7 @@ namespace DUILIB
             if (hz == NULL) return _Failed(_T("Error opening zip file"));
             ZIPENTRY ze;
             int i;
-            if (FindZipItem(hz, pstrFilename, true, &i, &ze) != 0) return _Failed(_T("Could not find ziped file"));
+            if (FindZipItem(hz, pstrFilename, TRUE, &i, &ze) != 0) return _Failed(_T("Could not find ziped file"));
             DWORD dwSize = ze.unc_size;
             if (dwSize == 0) return _Failed(_T("File is empty"));
             if (dwSize > 4096 * 1024) return _Failed(_T("File too large"));
@@ -402,7 +402,7 @@ namespace DUILIB
                 return _Failed(_T("Could not unzip file"));
             }
             if (!CManagerUI::IsCachedResourceZip()) CloseZip(hz);
-            bool ret = LoadFromMem(pByte, dwSize, encoding);
+            BOOL ret = LoadFromMem(pByte, dwSize, encoding);
             delete[] pByte;
 
             return ret;
@@ -434,7 +434,7 @@ namespace DUILIB
         return CMarkupNodeUI(this, 1);
     }
 
-    bool CMarkupUI::_Parse()
+    BOOL CMarkupUI::_Parse()
     {
         _ReserveElement(); // Reserve index 0 for errors
         ::ZeroMemory(m_szErrorMsg, sizeof(m_szErrorMsg));
@@ -443,15 +443,15 @@ namespace DUILIB
         return _Parse(pstrXML, 0);
     }
 
-    bool CMarkupUI::_Parse(LPTSTR & pstrText, ULONG iParent)
+    BOOL CMarkupUI::_Parse(LPTSTR & pstrText, ULONG iParent)
     {
         _SkipWhitespace(pstrText);
         ULONG iPrevious = 0;
         for (; ; ) {
-            if (*pstrText == _T('\0') && iParent <= 1) return true;
+            if (*pstrText == _T('\0') && iParent <= 1) return TRUE;
             _SkipWhitespace(pstrText);
             if (*pstrText != _T('<')) return _Failed(_T("Expected start tag"), pstrText);
-            if (pstrText[1] == _T('/')) return true;
+            if (pstrText[1] == _T('/')) return TRUE;
             *pstrText++ = _T('\0');
             _SkipWhitespace(pstrText);
             // Skip comment or processing directive
@@ -479,7 +479,7 @@ namespace DUILIB
             LPTSTR pstrNameEnd = pstrText;
             if (*pstrText == _T('\0')) return _Failed(_T("Error parsing element name"), pstrText);
             // Parse attributes
-            if (!_ParseAttributes(pstrText)) return false;
+            if (!_ParseAttributes(pstrText)) return FALSE;
             _SkipWhitespace(pstrText);
             if (pstrText[0] == _T('/') && pstrText[1] == _T('>')) {
                 pEl->iData = pstrText - m_pstrXML;
@@ -490,12 +490,12 @@ namespace DUILIB
                 // Parse node data
                 pEl->iData = ++pstrText - m_pstrXML;
                 LPTSTR pstrDest = pstrText;
-                if (!_ParseData(pstrText, pstrDest, _T('<'))) return false;
+                if (!_ParseData(pstrText, pstrDest, _T('<'))) return FALSE;
                 // Determine type of next element
-                if (*pstrText == _T('\0') && iParent <= 1) return true;
+                if (*pstrText == _T('\0') && iParent <= 1) return TRUE;
                 if (*pstrText != _T('<')) return _Failed(_T("Expected end-tag start"), pstrText);
                 if (pstrText[0] == _T('<') && pstrText[1] != _T('/')) {
-                    if (!_Parse(pstrText, iPos)) return false;
+                    if (!_Parse(pstrText, iPos)) return FALSE;
                 }
                 if (pstrText[0] == _T('<') && pstrText[1] == _T('/')) {
                     *pstrDest = _T('\0');
@@ -546,9 +546,9 @@ namespace DUILIB
         while (*pstr != _T('\0') && (*pstr == _T('_') || *pstr == _T(':') || _istalnum(*pstr))) pstr = ::CharNext(pstr);
     }
 
-    bool CMarkupUI::_ParseAttributes(LPTSTR & pstrText)
+    BOOL CMarkupUI::_ParseAttributes(LPTSTR & pstrText)
     {
-        if (*pstrText == _T('>')) return true;
+        if (*pstrText == _T('>')) return TRUE;
         *pstrText++ = _T('\0');
         _SkipWhitespace(pstrText);
         while (*pstrText != _T('\0') && *pstrText != _T('>') && *pstrText != _T('/')) {
@@ -561,17 +561,17 @@ namespace DUILIB
             _SkipWhitespace(pstrText);
             if (*pstrText++ != _T('\"')) return _Failed(_T("Expected attribute value"), pstrText);
             LPTSTR pstrDest = pstrText;
-            if (!_ParseData(pstrText, pstrDest, _T('\"'))) return false;
+            if (!_ParseData(pstrText, pstrDest, _T('\"'))) return FALSE;
             if (*pstrText == _T('\0')) return _Failed(_T("Error while parsing attribute string"), pstrText);
             *pstrDest = _T('\0');
             if (pstrText != pstrDest) * pstrText = _T(' ');
             pstrText++;
             _SkipWhitespace(pstrText);
         }
-        return true;
+        return TRUE;
     }
 
-    bool CMarkupUI::_ParseData(LPTSTR & pstrText, LPTSTR & pstrDest, char cEnd)
+    BOOL CMarkupUI::_ParseData(LPTSTR & pstrText, LPTSTR & pstrDest, char cEnd)
     {
         while (*pstrText != _T('\0') && *pstrText != cEnd) {
             if (*pstrText == _T('&')) {
@@ -596,7 +596,7 @@ namespace DUILIB
         // over a value that has been transformed.
         LPTSTR pstrFill = pstrDest + 1;
         while (pstrFill < pstrText)* pstrFill++ = _T(' ');
-        return true;
+        return TRUE;
     }
 
     void CMarkupUI::_ParseMetaChar(LPTSTR & pstrText, LPTSTR & pstrDest)
@@ -621,14 +621,14 @@ namespace DUILIB
         }
     }
 
-    bool CMarkupUI::_Failed(LPCTSTR pstrError, LPCTSTR pstrLocation)
+    BOOL CMarkupUI::_Failed(LPCTSTR pstrError, LPCTSTR pstrLocation)
     {
         // Register last error
         TRACE(_T("XML Error: %s"), pstrError);
         if (pstrLocation != NULL) TRACE(pstrLocation);
         _tcsncpy(m_szErrorMsg, pstrError, (sizeof(m_szErrorMsg) / sizeof(m_szErrorMsg[0])) - 1);
         _tcsncpy(m_szErrorXML, pstrLocation != NULL?pstrLocation:_T(""), lengthof(m_szErrorXML) - 1);
-        return false; // Always return 'false'
+        return FALSE; // Always return 'FALSE'
     }
 
 } // namespace DUILIB

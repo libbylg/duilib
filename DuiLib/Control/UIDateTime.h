@@ -21,20 +21,20 @@ namespace DUILIB
 		SYSTEMTIME& GetTime();
 		void SetTime(SYSTEMTIME* pst);
 
-		void SetReadOnly(bool bReadOnly);
-		bool IsReadOnly() const;
+		void SetReadOnly(BOOL bReadOnly);
+		BOOL IsReadOnly() const;
 
 		void UpdateText();
 
-        void SetPos(RECT rc, bool bNeedInvalidate = true);
-        void Move(SIZE szOffset, bool bNeedInvalidate = true);
+        void SetPos(RECT rc, BOOL bNeedInvalidate = TRUE);
+        void Move(SIZE szOffset, BOOL bNeedInvalidate = TRUE);
 
 		void DoEvent(TEVENT_UI& event);
 
 	protected:
 		SYSTEMTIME m_sysTime;
 		int        m_nDTUpdateFlag;
-		bool       m_bReadOnly;
+		BOOL       m_bReadOnly;
 
 		CDateTimeWnd* m_pWindow;
 	};

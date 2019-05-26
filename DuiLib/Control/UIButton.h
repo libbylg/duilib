@@ -14,8 +14,8 @@ namespace DUILIB
 		LPVOID GetInterface(LPCTSTR pstrName);
 		UINT GetControlFlags() const;
 
-		bool Activate();
-		void SetEnabled(bool bEnable = true);
+		BOOL Activate();
+		void SetEnabled(BOOL bEnable = TRUE);
 		void DoEvent(TEVENT_UI& event);
 
 		LPCTSTR GetNormalImage();

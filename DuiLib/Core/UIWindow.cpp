@@ -118,25 +118,25 @@ namespace DUILIB
         return pMsgTypeEntry;
     }
 
-    bool CNotifyPump::AddVirtualWnd(CStringUI strName, CNotifyPump * pObject)
+    BOOL CNotifyPump::AddVirtualWnd(CStringUI strName, CNotifyPump * pObject)
     {
         if (m_VirtualWndMap.Find(strName) == NULL) {
             m_VirtualWndMap.Insert(strName.GetData(), (LPVOID)pObject);
-            return true;
+            return TRUE;
         }
-        return false;
+        return FALSE;
     }
 
-    bool CNotifyPump::RemoveVirtualWnd(CStringUI strName)
+    BOOL CNotifyPump::RemoveVirtualWnd(CStringUI strName)
     {
         if (m_VirtualWndMap.Find(strName) != NULL) {
             m_VirtualWndMap.Remove(strName);
-            return true;
+            return TRUE;
         }
-        return false;
+        return FALSE;
     }
 
-    bool CNotifyPump::LoopDispatch(struct TNOTIFY_UI& msg)
+    BOOL CNotifyPump::LoopDispatch(struct TNOTIFY_UI& msg)
     {
         const DUI_MSGMAP_ENTRY* lpEntry = NULL;
         const DUI_MSGMAP* pMessageMap = NULL;
@@ -156,13 +156,13 @@ namespace DUILIB
                 goto LDispatch;
             }
         }
-        return false;
+        return FALSE;
 
     LDispatch:
         union DuiMessageMapFunctions mmf;
         mmf.pfn = lpEntry->pfn;
 
-        bool bRet = false;
+        BOOL bRet = FALSE;
         int nSig;
         nSig = lpEntry->nSig;
         switch (nSig) {
@@ -171,11 +171,11 @@ namespace DUILIB
                 break;
             case UISIG_lwl:
                 (this->*mmf.pfn_Notify_lwl)(msg.wParam, msg.lParam);
-                bRet = true;
+                bRet = TRUE;
                 break;
             case UISIG_vn:
                 (this->*mmf.pfn_Notify_vn)(msg);
-                bRet = true;
+                bRet = TRUE;
                 break;
         }
         return bRet;
@@ -188,7 +188,7 @@ namespace DUILIB
             for (int i = 0; i < m_VirtualWndMap.GetSize(); i++) {
                 if (LPCTSTR key = m_VirtualWndMap.GetAt(i)) {
                     if (_tcsicmp(key, msg.sVirtualWnd.GetData()) == 0) {
-                        CNotifyPump* pObject = static_cast<CNotifyPump*>(m_VirtualWndMap.Find(key, false));
+                        CNotifyPump* pObject = static_cast<CNotifyPump*>(m_VirtualWndMap.Find(key, FALSE));
                         if (pObject && pObject->LoopDispatch(msg))
                             return;
                     }
@@ -203,7 +203,7 @@ namespace DUILIB
 
     //////////////////////////////////////////////////////////////////////////
     ///
-    CWindowUI::CWindowUI() : m_hWnd(NULL), m_OldWndProc(::DefWindowProc), m_bSubclassed(false)
+    CWindowUI::CWindowUI() : m_hWnd(NULL), m_OldWndProc(::DefWindowProc), m_bSubclassed(FALSE)
     {
     }
 
@@ -252,7 +252,7 @@ namespace DUILIB
         ASSERT(m_hWnd == NULL);
         m_OldWndProc = SubclassWindow(hWnd, __WndProc);
         if (m_OldWndProc == NULL) return NULL;
-        m_bSubclassed = true;
+        m_bSubclassed = TRUE;
         m_hWnd = hWnd;
         ::SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LPARAM>(this));
         return m_hWnd;
@@ -265,10 +265,10 @@ namespace DUILIB
         if (!m_bSubclassed) return;
         SubclassWindow(m_hWnd, m_OldWndProc);
         m_OldWndProc = ::DefWindowProc;
-        m_bSubclassed = false;
+        m_bSubclassed = FALSE;
     }
 
-    void CWindowUI::ShowWindow(bool bShow /*= true*/, bool bTakeFocus /*= false*/)
+    void CWindowUI::ShowWindow(BOOL bShow /*= TRUE*/, BOOL bTakeFocus /*= FALSE*/)
     {
         ASSERT(::IsWindow(m_hWnd));
         if (!::IsWindow(m_hWnd)) return;
@@ -358,7 +358,7 @@ namespace DUILIB
         ::SendMessage(m_hWnd, WM_SETICON, (WPARAM)FALSE, (LPARAM)hIcon);
     }
 
-    bool CWindowUI::RegisterWindowClass()
+    BOOL CWindowUI::RegisterWindowClass()
     {
         WNDCLASS wc = {0};
         wc.style = GetClassStyle();
@@ -376,7 +376,7 @@ namespace DUILIB
         return ret != NULL || ::GetLastError() == ERROR_CLASS_ALREADY_EXISTS;
     }
 
-    bool CWindowUI::RegisterSuperclass()
+    BOOL CWindowUI::RegisterSuperclass()
     {
         // Get the class information from an existing
         // window so we can subclass it later on...

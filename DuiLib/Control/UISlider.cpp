@@ -3,7 +3,7 @@
 
 namespace DUILIB
 {
-	CSliderUI::CSliderUI() : m_uButtonState(0), m_nStep(1), m_bImmMode(false)
+	CSliderUI::CSliderUI() : m_uButtonState(0), m_nStep(1), m_bImmMode(FALSE)
 	{
 		m_uTextStyle = DT_SINGLELINE | DT_CENTER;
 		m_szThumb.cx = m_szThumb.cy = 10;
@@ -26,7 +26,7 @@ namespace DUILIB
 		return CProgressUI::GetInterface(pstrName);
 	}
 
-	void CSliderUI::SetEnabled(bool bEnable)
+	void CSliderUI::SetEnabled(BOOL bEnable)
 	{
 		CControlUI::SetEnabled(bEnable);
 		if( !IsEnabled() ) {
@@ -63,12 +63,12 @@ namespace DUILIB
 		}
 	}
 
-	bool CSliderUI::IsImmMode() const
+	BOOL CSliderUI::IsImmMode() const
 	{
 		return m_bImmMode;
 	}
 
-	void CSliderUI::SetImmMode(bool bImmMode)
+	void CSliderUI::SetImmMode(BOOL bImmMode)
 	{
 		m_bImmMode = bImmMode;
 	}
@@ -259,7 +259,7 @@ namespace DUILIB
 		else if( _tcscmp(pstrName, _T("step")) == 0 ) {
 			SetChangeStep(_ttoi(pstrValue));
 		}
-		else if( _tcscmp(pstrName, _T("imm")) == 0 ) SetImmMode(_tcscmp(pstrValue, _T("true")) == 0);
+		else if( _tcscmp(pstrName, _T("imm")) == 0 ) SetImmMode(_tcscmp(pstrValue, _T("TRUE")) == 0);
 		else CProgressUI::SetAttribute(pstrName, pstrValue);
 	}
 

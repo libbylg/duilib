@@ -158,7 +158,7 @@ namespace DUILIB
 		left = top = right = bottom = 0;
 	}
 
-	bool CRectUI::IsNull() const
+	BOOL CRectUI::IsNull() const
 	{
 		return (left == 0 && right == 0 && top == 0 && bottom == 0); 
 	}
@@ -240,12 +240,12 @@ namespace DUILIB
 		m_nCount = iSize;
 	}
 
-	bool CPtrArrayUI::IsEmpty() const
+	BOOL CPtrArrayUI::IsEmpty() const
 	{
 		return m_nCount == 0;
 	}
 
-	bool CPtrArrayUI::Add(LPVOID pData)
+	BOOL CPtrArrayUI::Add(LPVOID pData)
 	{
 		if( ++m_nCount >= m_nAllocated) {
 			int nAllocated = m_nAllocated * 2;
@@ -257,17 +257,17 @@ namespace DUILIB
 			}
 			else {
 				--m_nCount;
-				return false;
+				return FALSE;
 			}
 		}
 		m_ppVoid[m_nCount - 1] = pData;
-		return true;
+		return TRUE;
 	}
 
-	bool CPtrArrayUI::InsertAt(int iIndex, LPVOID pData)
+	BOOL CPtrArrayUI::InsertAt(int iIndex, LPVOID pData)
 	{
 		if( iIndex == m_nCount ) return Add(pData);
-		if( iIndex < 0 || iIndex > m_nCount ) return false;
+		if( iIndex < 0 || iIndex > m_nCount ) return FALSE;
 		if( ++m_nCount >= m_nAllocated) {
 			int nAllocated = m_nAllocated * 2;
 			if( nAllocated == 0 ) nAllocated = 11;
@@ -278,27 +278,27 @@ namespace DUILIB
 			}
 			else {
 				--m_nCount;
-				return false;
+				return FALSE;
 			}
 		}
 		memmove(&m_ppVoid[iIndex + 1], &m_ppVoid[iIndex], (m_nCount - iIndex - 1) * sizeof(LPVOID));
 		m_ppVoid[iIndex] = pData;
-		return true;
+		return TRUE;
 	}
 
-	bool CPtrArrayUI::SetAt(int iIndex, LPVOID pData)
+	BOOL CPtrArrayUI::SetAt(int iIndex, LPVOID pData)
 	{
-		if( iIndex < 0 || iIndex >= m_nCount ) return false;
+		if( iIndex < 0 || iIndex >= m_nCount ) return FALSE;
 		m_ppVoid[iIndex] = pData;
-		return true;
+		return TRUE;
 	}
 
-    bool CPtrArrayUI::Remove(int iIndex, int iCount)
+    BOOL CPtrArrayUI::Remove(int iIndex, int iCount)
     {
-        if( iIndex < 0 || iCount <= 0 || iIndex + iCount > m_nCount ) return false;
+        if( iIndex < 0 || iCount <= 0 || iIndex + iCount > m_nCount ) return FALSE;
         if (iIndex + iCount < m_nCount) ::CopyMemory(m_ppVoid + iIndex, m_ppVoid + iIndex + iCount, (m_nCount - iIndex - iCount) * sizeof(LPVOID));
         m_nCount -= iCount;
-        return true;
+        return TRUE;
     }
 
 	int CPtrArrayUI::Find(LPVOID pData) const
@@ -355,12 +355,12 @@ namespace DUILIB
 		m_nCount = 0;  // NOTE: We keep the memory in place
 	}
 
-	bool CValArrayUI::IsEmpty() const
+	BOOL CValArrayUI::IsEmpty() const
 	{
 		return m_nCount == 0;
 	}
 
-	bool CValArrayUI::Add(LPCVOID pData)
+	BOOL CValArrayUI::Add(LPCVOID pData)
 	{
 		if( ++m_nCount >= m_nAllocated) {
 			int nAllocated = m_nAllocated * 2;
@@ -372,19 +372,19 @@ namespace DUILIB
 			}
 			else {
 				--m_nCount;
-				return false;
+				return FALSE;
 			}
 		}
 		::CopyMemory(m_pVoid + ((m_nCount - 1) * m_iElementSize), pData, m_iElementSize);
-		return true;
+		return TRUE;
 	}
 
-	bool CValArrayUI::Remove(int iIndex, int iCount)
+	BOOL CValArrayUI::Remove(int iIndex, int iCount)
 	{
-        if( iIndex < 0 || iCount <= 0 || iIndex + iCount > m_nCount ) return false;
+        if( iIndex < 0 || iCount <= 0 || iIndex + iCount > m_nCount ) return FALSE;
         if (iIndex + iCount < m_nCount) ::CopyMemory(m_pVoid + (iIndex * m_iElementSize), m_pVoid + (iIndex + iCount) * m_iElementSize, (m_nCount - iIndex - iCount) * m_iElementSize);
         m_nCount -= iCount;
-		return true;
+		return TRUE;
 	}
 
 	int CValArrayUI::GetSize() const
@@ -499,7 +499,7 @@ namespace DUILIB
 		m_pstr[cchMax] = _T('\0');
 	}
 
-	bool CStringUI::IsEmpty() const 
+	BOOL CStringUI::IsEmpty() const 
 	{ 
 		return m_pstr[0] == _T('\0'); 
 	}
@@ -667,12 +667,12 @@ namespace DUILIB
 		return *this;
 	}
 
-	bool CStringUI::operator == (LPCTSTR str) const { return (Compare(str) == 0); };
-	bool CStringUI::operator != (LPCTSTR str) const { return (Compare(str) != 0); };
-	bool CStringUI::operator <= (LPCTSTR str) const { return (Compare(str) <= 0); };
-	bool CStringUI::operator <  (LPCTSTR str) const { return (Compare(str) <  0); };
-	bool CStringUI::operator >= (LPCTSTR str) const { return (Compare(str) >= 0); };
-	bool CStringUI::operator >  (LPCTSTR str) const { return (Compare(str) >  0); };
+	BOOL CStringUI::operator == (LPCTSTR str) const { return (Compare(str) == 0); };
+	BOOL CStringUI::operator != (LPCTSTR str) const { return (Compare(str) != 0); };
+	BOOL CStringUI::operator <= (LPCTSTR str) const { return (Compare(str) <= 0); };
+	BOOL CStringUI::operator <  (LPCTSTR str) const { return (Compare(str) <  0); };
+	BOOL CStringUI::operator >= (LPCTSTR str) const { return (Compare(str) >= 0); };
+	BOOL CStringUI::operator >  (LPCTSTR str) const { return (Compare(str) >  0); };
 
 	void CStringUI::SetAt(int nIndex, TCHAR ch)
 	{
@@ -877,7 +877,7 @@ namespace DUILIB
 		m_nCount = 0;
 	}
 
-	LPVOID CStringPtrMapUI::Find(LPCTSTR key, bool optimize) const
+	LPVOID CStringPtrMapUI::Find(LPCTSTR key, BOOL optimize) const
 	{
 		if( m_nBuckets == 0 || GetSize() == 0 ) return NULL;
 
@@ -902,10 +902,10 @@ namespace DUILIB
 		return NULL;
 	}
 
-	bool CStringPtrMapUI::Insert(LPCTSTR key, LPVOID pData)
+	BOOL CStringPtrMapUI::Insert(LPCTSTR key, LPVOID pData)
 	{
-		if( m_nBuckets == 0 ) return false;
-		if( Find(key) ) return false;
+		if( m_nBuckets == 0 ) return FALSE;
+		if( Find(key) ) return FALSE;
 
 		// Add first in bucket
 		UINT slot = HashKey(key) % m_nBuckets;
@@ -918,7 +918,7 @@ namespace DUILIB
 			pItem->pNext->pPrev = pItem;
 		m_aT[slot] = pItem;
 		m_nCount++;
-		return true;
+		return TRUE;
 	}
 
 	LPVOID CStringPtrMapUI::Set(LPCTSTR key, LPVOID pData)
@@ -941,9 +941,9 @@ namespace DUILIB
 		return NULL;
 	}
 
-	bool CStringPtrMapUI::Remove(LPCTSTR key)
+	BOOL CStringPtrMapUI::Remove(LPCTSTR key)
 	{
-		if( m_nBuckets == 0 || GetSize() == 0 ) return false;
+		if( m_nBuckets == 0 || GetSize() == 0 ) return FALSE;
 
 		UINT slot = HashKey(key) % m_nBuckets;
 		TITEM** ppItem = &m_aT[slot];
@@ -955,12 +955,12 @@ namespace DUILIB
 					(*ppItem)->pPrev = pKill->pPrev;
 				delete pKill;
 				m_nCount--;
-				return true;
+				return TRUE;
 			}
 			ppItem = &((*ppItem)->pNext);
 		}
 
-		return false;
+		return FALSE;
 	}
 
 	int CStringPtrMapUI::GetSize() const
@@ -978,7 +978,7 @@ namespace DUILIB
 
 	LPCTSTR CStringPtrMapUI::GetAt(int iIndex) const
 	{
-		if( m_nBuckets == 0 || GetSize() == 0 ) return false;
+		if( m_nBuckets == 0 || GetSize() == 0 ) return FALSE;
 
 		int pos = 0;
 		int len = m_nBuckets;

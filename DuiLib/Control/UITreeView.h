@@ -22,31 +22,31 @@ namespace DUILIB
 		LPVOID	GetInterface(LPCTSTR pstrName);
 		void	DoEvent(TEVENT_UI& event);
 		void	Invalidate();
-		bool	Select(bool bSelect = true, bool bTriggerEvent=true);
+		BOOL	Select(BOOL bSelect = TRUE, BOOL bTriggerEvent=TRUE);
 
-		bool	Add(CControlUI* _pTreeNodeUI);
-		bool	AddAt(CControlUI* pControl, int iIndex);
+		BOOL	Add(CControlUI* _pTreeNodeUI);
+		BOOL	AddAt(CControlUI* pControl, int iIndex);
 
-		void	SetVisibleTag(bool _IsVisible);
-		bool	GetVisibleTag();
+		void	SetVisibleTag(BOOL _IsVisible);
+		BOOL	GetVisibleTag();
 		void	SetItemText(LPCTSTR pstrValue);
 		CStringUI	GetItemText();
-		void	CheckBoxSelected(bool _Selected);
-		bool	IsCheckBoxSelected() const;
-		bool	IsHasChild() const;
+		void	CheckBoxSelected(BOOL _Selected);
+		BOOL	IsCheckBoxSelected() const;
+		BOOL	IsHasChild() const;
 		long	GetTreeLevel() const;
-		bool	AddChildNode(CTreeNodeUI* _pTreeNodeUI);
-		bool	RemoveAt(CTreeNodeUI* _pTreeNodeUI);
+		BOOL	AddChildNode(CTreeNodeUI* _pTreeNodeUI);
+		BOOL	RemoveAt(CTreeNodeUI* _pTreeNodeUI);
 		void	SetParentNode(CTreeNodeUI* _pParentTreeNode);
 		CTreeNodeUI* GetParentNode();
 		long	GetCountChild();
 		void	SetTreeView(CTreeViewUI* _CTreeViewUI);
 		CTreeViewUI* GetTreeView();
 		CTreeNodeUI* GetChildNode(int _nIndex);
-		void	SetVisibleFolderBtn(bool _IsVisibled);
-		bool	GetVisibleFolderBtn();
-		void	SetVisibleCheckBtn(bool _IsVisibled);
-		bool	GetVisibleCheckBtn();
+		void	SetVisibleFolderBtn(BOOL _IsVisibled);
+		BOOL	GetVisibleFolderBtn();
+		void	SetVisibleCheckBtn(BOOL _IsVisibled);
+		BOOL	GetVisibleCheckBtn();
 		void	SetItemTextColor(DWORD _dwItemTextColor);
 		DWORD	GetItemTextColor() const;
 		void	SetItemHotTextColor(DWORD _dwItemHotTextColor);
@@ -75,8 +75,8 @@ namespace DUILIB
 
 	private:
 		long	m_iTreeLavel;
-		bool	m_bIsVisable;
-		bool	m_bIsCheckBox;
+		BOOL	m_bIsVisable;
+		BOOL	m_bIsCheckBox;
 		DWORD	m_dwItemTextColor;
 		DWORD	m_dwItemHotTextColor;
 		DWORD	m_dwSelItemTextColor;
@@ -103,25 +103,25 @@ namespace DUILIB
 	public:
 		virtual LPCTSTR GetClass() const;
 		virtual LPVOID	GetInterface(LPCTSTR pstrName);
-        virtual bool Add(CControlUI* pControl);
-        virtual bool AddAt(CControlUI* pControl, int iIndex);
-        virtual bool Remove(CControlUI* pControl, bool bDoNotDestroy=false);
-        virtual bool RemoveAt(int iIndex, bool bDoNotDestroy=false);
+        virtual BOOL Add(CControlUI* pControl);
+        virtual BOOL AddAt(CControlUI* pControl, int iIndex);
+        virtual BOOL Remove(CControlUI* pControl, BOOL bDoNotDestroy=FALSE);
+        virtual BOOL RemoveAt(int iIndex, BOOL bDoNotDestroy=FALSE);
         virtual void RemoveAll();
 
         long AddAt(CTreeNodeUI* pControl, int iIndex);
-        bool AddAt(CTreeNodeUI* pControl,CTreeNodeUI* _IndexNode);
+        BOOL AddAt(CTreeNodeUI* pControl,CTreeNodeUI* _IndexNode);
 
-		virtual bool OnCheckBoxChanged(void* param);
-		virtual bool OnFolderChanged(void* param);
-		virtual bool OnDBClickItem(void* param);
-		virtual bool SetItemCheckBox(bool _Selected,CTreeNodeUI* _TreeNode = NULL);
-		virtual void SetItemExpand(bool _Expanded,CTreeNodeUI* _TreeNode = NULL);
+		virtual BOOL OnCheckBoxChanged(void* param);
+		virtual BOOL OnFolderChanged(void* param);
+		virtual BOOL OnDBClickItem(void* param);
+		virtual BOOL SetItemCheckBox(BOOL _Selected,CTreeNodeUI* _TreeNode = NULL);
+		virtual void SetItemExpand(BOOL _Expanded,CTreeNodeUI* _TreeNode = NULL);
 		virtual void Notify(TNOTIFY_UI& msg);
-		virtual void SetVisibleFolderBtn(bool _IsVisibled);
-		virtual bool GetVisibleFolderBtn();
-		virtual void SetVisibleCheckBtn(bool _IsVisibled);
-		virtual bool GetVisibleCheckBtn();
+		virtual void SetVisibleFolderBtn(BOOL _IsVisibled);
+		virtual BOOL GetVisibleFolderBtn();
+		virtual void SetVisibleCheckBtn(BOOL _IsVisibled);
+		virtual BOOL GetVisibleCheckBtn();
 		virtual void SetItemMinWidth(UINT _ItemMinWidth);
 		virtual UINT GetItemMinWidth();
 		virtual void SetItemTextColor(DWORD _dwItemTextColor);
@@ -132,8 +132,8 @@ namespace DUILIB
 		virtual void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 	private:
 		UINT m_uItemMinWidth;
-		bool m_bVisibleFolderBtn;
-		bool m_bVisibleCheckBtn;
+		BOOL m_bVisibleFolderBtn;
+		BOOL m_bVisibleCheckBtn;
 	};
 }
 

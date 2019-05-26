@@ -18,17 +18,17 @@ namespace DUILIB
 		LPCTSTR	GetClass() const;
 		LPVOID	GetInterface(LPCTSTR pstrName);
 		void	DoInit() override;
-		bool	DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
+		BOOL	DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
 		void	DoEvent(TEVENT_UI& event);
-		void	SetVisible(bool bVisible = true );
+		void	SetVisible(BOOL bVisible = TRUE );
 		void	SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 		void	SetBkImage(LPCTSTR pStrImage);
 		LPCTSTR GetBkImage();
 
-		void	SetAutoPlay(bool bIsAuto = true );
-		bool	IsAutoPlay() const;
-		void	SetAutoSize(bool bIsAuto = true );
-		bool	IsAutoSize() const;
+		void	SetAutoPlay(BOOL bIsAuto = TRUE );
+		BOOL	IsAutoPlay() const;
+		void	SetAutoSize(BOOL bIsAuto = TRUE );
+		BOOL	IsAutoSize() const;
 		void	PlayGif();
 		void	PauseGif();
 		void	StopGif();
@@ -47,9 +47,9 @@ namespace DUILIB
 		Gdiplus::PropertyItem*	m_pPropertyItem;	// 帧与帧之间间隔时间
 
 		CStringUI		m_sBkImage;
-		bool			m_bIsAutoPlay;				// 是否自动播放gif
-		bool			m_bIsAutoSize;				// 是否自动根据图片设置大小
-		bool			m_bIsPlaying;
+		BOOL			m_bIsAutoPlay;				// 是否自动播放gif
+		BOOL			m_bIsAutoSize;				// 是否自动根据图片设置大小
+		BOOL			m_bIsPlaying;
 
 	};
 }

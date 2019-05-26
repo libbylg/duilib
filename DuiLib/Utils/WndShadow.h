@@ -34,9 +34,9 @@ namespace DUILIB
 
         enum ShadowStatus
         {
-            SS_ENABLED = 1,	// Shadow is enabled, if not, the following one is always false
+            SS_ENABLED = 1,	// Shadow is enabled, if not, the following one is always FALSE
             SS_VISABLE = 1 << 1,	// Shadow window is visible
-            SS_PARENTVISIBLE = 1 << 2	// Parent window is visible, if not, the above one is always false
+            SS_PARENTVISIBLE = 1 << 2	// Parent window is visible, if not, the above one is always FALSE
         };
         BYTE m_Status;
 
@@ -52,8 +52,8 @@ namespace DUILIB
         // Restore last parent window size, used to determine the update strategy when parent window is resized
         LPARAM m_WndSize;
 
-        // Set this to true if the shadow should not be update until next WM_PAINT is received
-        bool m_bUpdate;
+        // Set this to TRUE if the shadow should not be update until next WM_PAINT is received
+        BOOL m_bUpdate;
 
         COLORREF m_Color;	// Color of shadow
 
@@ -62,21 +62,21 @@ namespace DUILIB
         RECT m_rcHoleOffset;
 
     public:
-        static bool Initialize(HINSTANCE hInstance);
+        static BOOL Initialize(HINSTANCE hInstance);
 
         HWND GetHWND() const;
         operator HWND() const;
         void Create(HWND hParentWnd);
 
         // 使用图片只需要调用这个方法(rcHoleOffset作用是修复圆角显示空白的bug)
-        bool SetImage(LPCTSTR image, RECT rcCorner, RECT rcHoleOffset);
+        BOOL SetImage(LPCTSTR image, RECT rcCorner, RECT rcHoleOffset);
 
         // 使用颜色可以使用如下几个方法
-        bool SetSize(int NewSize = 0);
-        bool SetSharpness(unsigned int NewSharpness = 5);
-        bool SetDarkness(unsigned int NewDarkness = 200);
-        bool SetPosition(int NewXOffset = 5, int NewYOffset = 5);
-        bool SetColor(COLORREF NewColor = 0);
+        BOOL SetSize(int NewSize = 0);
+        BOOL SetSharpness(unsigned int NewSharpness = 5);
+        BOOL SetDarkness(unsigned int NewDarkness = 200);
+        BOOL SetPosition(int NewXOffset = 5, int NewYOffset = 5);
+        BOOL SetColor(COLORREF NewColor = 0);
 
     protected:
         static LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

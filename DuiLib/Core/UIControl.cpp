@@ -10,17 +10,17 @@ CControlUI::CControlUI() :
 m_pManager(NULL), 
 m_pParent(NULL), 
 m_pCover(NULL),
-m_bUpdateNeeded(true),
-m_bMenuUsed(false),
-m_bAsyncNotify(false),
-m_bVisible(true), 
-m_bInternVisible(true),
-m_bFocused(false),
-m_bEnabled(true),
-m_bMouseEnabled(true),
-m_bKeyboardEnabled(true),
-m_bFloat(false),
-m_bSetPos(false),
+m_bUpdateNeeded(TRUE),
+m_bMenuUsed(FALSE),
+m_bAsyncNotify(FALSE),
+m_bVisible(TRUE), 
+m_bInternVisible(TRUE),
+m_bFocused(FALSE),
+m_bEnabled(TRUE),
+m_bMouseEnabled(TRUE),
+m_bKeyboardEnabled(TRUE),
+m_bFloat(FALSE),
+m_bSetPos(FALSE),
 m_chShortcut('\0'),
 m_pTag(NULL),
 m_dwBackColor(0),
@@ -28,7 +28,7 @@ m_dwBackColor2(0),
 m_dwBackColor3(0),
 m_dwBorderColor(0),
 m_dwFocusBorderColor(0),
-m_bColorHSL(false),
+m_bColorHSL(FALSE),
 m_nBorderStyle(PS_SOLID),
 m_nTooltipWidth(300)
 {
@@ -97,11 +97,11 @@ HWND CControlUI::GetNativeWindow() const
 	return NULL;
 }
 
-bool CControlUI::Activate()
+BOOL CControlUI::Activate()
 {
-    if( !IsVisible() ) return false;
-    if( !IsEnabled() ) return false;
-    return true;
+    if( !IsVisible() ) return FALSE;
+    if( !IsEnabled() ) return FALSE;
+    return TRUE;
 }
 
 CManagerUI* CControlUI::GetManager() const
@@ -109,7 +109,7 @@ CManagerUI* CControlUI::GetManager() const
     return m_pManager;
 }
 
-void CControlUI::SetManager(CManagerUI* pManager, CControlUI* pParent, bool bInit)
+void CControlUI::SetManager(CManagerUI* pManager, CControlUI* pParent, BOOL bInit)
 {
     if( m_pCover != NULL ) m_pCover->SetManager(pManager, this, bInit);
     m_pManager = pManager;
@@ -135,7 +135,7 @@ void CControlUI::SetCover(CControlUI *pControl)
     if( m_pCover != NULL ) {
         m_pManager->InitControls(m_pCover, this);
         if( IsVisible() ) NeedUpdate();
-        else pControl->SetInternVisible(false);
+        else pControl->SetInternVisible(FALSE);
     }
 }
 
@@ -235,12 +235,12 @@ void CControlUI::SetFocusBorderColor(DWORD dwBorderColor)
     Invalidate();
 }
 
-bool CControlUI::IsColorHSL() const
+BOOL CControlUI::IsColorHSL() const
 {
     return m_bColorHSL;
 }
 
-void CControlUI::SetColorHSL(bool bColorHSL)
+void CControlUI::SetColorHSL(BOOL bColorHSL)
 {
     if( m_bColorHSL == bColorHSL ) return;
 
@@ -276,7 +276,7 @@ void CControlUI::SetBorderRound(SIZE cxyRound)
     Invalidate();
 }
 
-bool CControlUI::DrawImage(HDC hDC, TDRAWINFO_UI& drawInfo)
+BOOL CControlUI::DrawImage(HDC hDC, TDRAWINFO_UI& drawInfo)
 {
 	return CRenderUI::DrawImage(hDC, m_pManager, m_rcItem, m_rcPaint, drawInfo);
 }
@@ -305,7 +305,7 @@ RECT CControlUI::GetClientPos() const
 	return m_rcItem;
 }
 
-void CControlUI::SetPos(RECT rc, bool bNeedInvalidate)
+void CControlUI::SetPos(RECT rc, BOOL bNeedInvalidate)
 {
     if( rc.right < rc.left ) rc.right = rc.left;
     if( rc.bottom < rc.top ) rc.bottom = rc.top;
@@ -337,12 +337,12 @@ void CControlUI::SetPos(RECT rc, bool bNeedInvalidate)
     if( m_pManager == NULL ) return;
 
     if( !m_bSetPos ) {
-        m_bSetPos = true;
+        m_bSetPos = TRUE;
         if( OnSize ) OnSize(this);
-        m_bSetPos = false;
+        m_bSetPos = FALSE;
     }
     
-    m_bUpdateNeeded = false;
+    m_bUpdateNeeded = FALSE;
 
 	if( bNeedInvalidate && IsVisible() ) {
 		invalidateRc.Join(m_rcItem);
@@ -370,7 +370,7 @@ void CControlUI::SetPos(RECT rc, bool bNeedInvalidate)
             rcCtrl.top = (LONG)(height*rcPercent.top) + szXY.cy;
             rcCtrl.right = (LONG)(width*rcPercent.right) + szXY.cx + sz.cx;
             rcCtrl.bottom = (LONG)(height*rcPercent.bottom) + szXY.cy + sz.cy;
-            m_pCover->SetPos(rcCtrl, false);
+            m_pCover->SetPos(rcCtrl, FALSE);
         }
         else {
             SIZE sz = { rc.right - rc.left, rc.bottom - rc.top };
@@ -379,12 +379,12 @@ void CControlUI::SetPos(RECT rc, bool bNeedInvalidate)
             if( sz.cy < m_pCover->GetMinHeight() ) sz.cy = m_pCover->GetMinHeight();
             if( sz.cy > m_pCover->GetMaxHeight() ) sz.cy = m_pCover->GetMaxHeight();
             RECT rcCtrl = { rc.left, rc.top, rc.left + sz.cx, rc.top + sz.cy };
-            m_pCover->SetPos(rcCtrl, false);
+            m_pCover->SetPos(rcCtrl, FALSE);
         }
     }
 }
 
-void CControlUI::Move(SIZE szOffset, bool bNeedInvalidate)
+void CControlUI::Move(SIZE szOffset, BOOL bNeedInvalidate)
 {
 	CRectUI invalidateRc = m_rcItem;
 	m_rcItem.left += szOffset.cx;
@@ -406,7 +406,7 @@ void CControlUI::Move(SIZE szOffset, bool bNeedInvalidate)
 		m_pManager->Invalidate(invalidateRc);
 	}
 
-    if( m_pCover != NULL && m_pCover->IsVisible() ) m_pCover->Move(szOffset, false);
+    if( m_pCover != NULL && m_pCover->IsVisible() ) m_pCover->Move(szOffset, FALSE);
 }
 
 int CControlUI::GetWidth() const
@@ -577,12 +577,12 @@ void CControlUI::SetShortcut(TCHAR ch)
     m_chShortcut = ch;
 }
 
-bool CControlUI::IsContextMenuUsed() const
+BOOL CControlUI::IsContextMenuUsed() const
 {
     return m_bMenuUsed;
 }
 
-void CControlUI::SetContextMenuUsed(bool bMenuUsed)
+void CControlUI::SetContextMenuUsed(BOOL bMenuUsed)
 {
     m_bMenuUsed = bMenuUsed;
 }
@@ -607,18 +607,18 @@ void CControlUI::SetTag(UINT_PTR pTag)
     m_pTag = pTag;
 }
 
-bool CControlUI::IsVisible() const
+BOOL CControlUI::IsVisible() const
 {
     return m_bVisible && m_bInternVisible;
 }
 
-void CControlUI::SetVisible(bool bVisible)
+void CControlUI::SetVisible(BOOL bVisible)
 {
     if( m_bVisible == bVisible ) return;
 
-    bool v = IsVisible();
+    BOOL v = IsVisible();
     m_bVisible = bVisible;
-    if( m_bFocused ) m_bFocused = false;
+    if( m_bFocused ) m_bFocused = FALSE;
 	if (!bVisible && m_pManager && m_pManager->GetFocus() == this) {
 		m_pManager->SetFocus(NULL) ;
 	}
@@ -629,7 +629,7 @@ void CControlUI::SetVisible(bool bVisible)
     if( m_pCover != NULL ) m_pCover->SetInternVisible(IsVisible());
 }
 
-void CControlUI::SetInternVisible(bool bVisible)
+void CControlUI::SetInternVisible(BOOL bVisible)
 {
     m_bInternVisible = bVisible;
 	if (!bVisible && m_pManager && m_pManager->GetFocus() == this) {
@@ -639,12 +639,12 @@ void CControlUI::SetInternVisible(bool bVisible)
     if( m_pCover != NULL ) m_pCover->SetInternVisible(IsVisible());
 }
 
-bool CControlUI::IsEnabled() const
+BOOL CControlUI::IsEnabled() const
 {
     return m_bEnabled;
 }
 
-void CControlUI::SetEnabled(bool bEnabled)
+void CControlUI::SetEnabled(BOOL bEnabled)
 {
     if( m_bEnabled == bEnabled ) return;
 
@@ -652,41 +652,41 @@ void CControlUI::SetEnabled(bool bEnabled)
     Invalidate();
 }
 
-bool CControlUI::IsMouseEnabled() const
+BOOL CControlUI::IsMouseEnabled() const
 {
     return m_bMouseEnabled;
 }
 
-void CControlUI::SetMouseEnabled(bool bEnabled)
+void CControlUI::SetMouseEnabled(BOOL bEnabled)
 {
     m_bMouseEnabled = bEnabled;
 }
 
-bool CControlUI::IsKeyboardEnabled() const
+BOOL CControlUI::IsKeyboardEnabled() const
 {
 	return m_bKeyboardEnabled ;
 }
-void CControlUI::SetKeyboardEnabled(bool bEnabled)
+void CControlUI::SetKeyboardEnabled(BOOL bEnabled)
 {
 	m_bKeyboardEnabled = bEnabled ; 
 }
 
-bool CControlUI::IsFocused() const
+BOOL CControlUI::IsFocused() const
 {
     return m_bFocused;
 }
 
 void CControlUI::SetFocus()
 {
-    if( m_pManager != NULL ) m_pManager->SetFocus(this, false);
+    if( m_pManager != NULL ) m_pManager->SetFocus(this, FALSE);
 }
 
-bool CControlUI::IsFloat() const
+BOOL CControlUI::IsFloat() const
 {
     return m_bFloat;
 }
 
-void CControlUI::SetFloat(bool bFloat)
+void CControlUI::SetFloat(BOOL bFloat)
 {
     if( m_bFloat == bFloat ) return;
 
@@ -714,11 +714,11 @@ LPCTSTR CControlUI::GetCustomAttribute(LPCTSTR pstrName) const
 	return NULL;
 }
 
-bool CControlUI::RemoveCustomAttribute(LPCTSTR pstrName)
+BOOL CControlUI::RemoveCustomAttribute(LPCTSTR pstrName)
 {
 	if( pstrName == NULL || pstrName[0] == _T('\0') ) return NULL;
 	CStringUI* pCostomAttr = static_cast<CStringUI*>(m_mCustomAttrHash.Find(pstrName));
-	if( !pCostomAttr ) return false;
+	if( !pCostomAttr ) return FALSE;
 
 	delete pCostomAttr;
 	return m_mCustomAttrHash.Remove(pstrName);
@@ -748,7 +748,7 @@ CControlUI* CControlUI::FindControl(LPFINDCONTROLPROC_UI Proc, LPVOID pData, UIN
         if( (uFlags & UIFIND_HITTEST) == 0 || IsMouseEnabled() ) pResult = Proc(this, pData);
     }
     if( pResult == NULL && m_pCover != NULL ) {
-        /*if( (uFlags & UIFIND_HITTEST) == 0 || true)*/ pResult = m_pCover->FindControl(Proc, pData, uFlags);
+        /*if( (uFlags & UIFIND_HITTEST) == 0 || TRUE)*/ pResult = m_pCover->FindControl(Proc, pData, uFlags);
     }
     if( pResult == NULL && (uFlags & UIFIND_ME_FIRST) == 0 ) {
         if( (uFlags & UIFIND_HITTEST) == 0 || IsMouseEnabled() ) pResult = Proc(this, pData);
@@ -778,7 +778,7 @@ void CControlUI::Invalidate()
     if( m_pManager != NULL ) m_pManager->Invalidate(invalidateRc);
 }
 
-bool CControlUI::IsUpdateNeeded() const
+BOOL CControlUI::IsUpdateNeeded() const
 {
     return m_bUpdateNeeded;
 }
@@ -786,7 +786,7 @@ bool CControlUI::IsUpdateNeeded() const
 void CControlUI::NeedUpdate()
 {
     if( !IsVisible() ) return;
-    m_bUpdateNeeded = true;
+    m_bUpdateNeeded = TRUE;
     Invalidate();
 
     if( m_pManager != NULL ) m_pManager->NeedUpdate();
@@ -838,13 +838,13 @@ void CControlUI::DoEvent(struct TEVENT_UI& event)
     }
     if( event.Type == UIEVENT_SETFOCUS ) 
     {
-        m_bFocused = true;
+        m_bFocused = TRUE;
         Invalidate();
         return;
     }
     if( event.Type == UIEVENT_KILLFOCUS ) 
     {
-        m_bFocused = false;
+        m_bFocused = FALSE;
         Invalidate();
         return;
     }
@@ -867,7 +867,7 @@ void CControlUI::DoEvent(struct TEVENT_UI& event)
 void CControlUI::SetVirtualWnd(LPCTSTR pstrValue)
 {
 	m_sVirtualWnd = pstrValue;
-	m_pManager->UsedVirtualWnd(true);
+	m_pManager->UsedVirtualWnd(TRUE);
 }
 
 CStringUI CControlUI::GetVirtualWnd() const
@@ -951,7 +951,7 @@ void CControlUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
         DWORD clrColor = _tcstoul(pstrValue, &pstr, 16);
         SetFocusBorderColor(clrColor);
     }
-    else if( _tcscmp(pstrName, _T("colorhsl")) == 0 ) SetColorHSL(_tcscmp(pstrValue, _T("true")) == 0);
+    else if( _tcscmp(pstrName, _T("colorhsl")) == 0 ) SetColorHSL(_tcscmp(pstrValue, _T("TRUE")) == 0);
 	else if( _tcscmp(pstrName, _T("bordersize")) == 0 ) {
 		CStringUI nValue = pstrValue;
 		if(nValue.Find(',') < 0)
@@ -989,14 +989,14 @@ void CControlUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
     else if( _tcscmp(pstrName, _T("tooltip")) == 0 ) SetToolTip(pstrValue);
     else if( _tcscmp(pstrName, _T("userdata")) == 0 ) SetUserData(pstrValue);
     else if( _tcscmp(pstrName, _T("tag")) == 0 ) SetTag(_ttoi(pstrValue));
-    else if( _tcscmp(pstrName, _T("enabled")) == 0 ) SetEnabled(_tcscmp(pstrValue, _T("true")) == 0);
-    else if( _tcscmp(pstrName, _T("mouse")) == 0 ) SetMouseEnabled(_tcscmp(pstrValue, _T("true")) == 0);
-	else if( _tcscmp(pstrName, _T("keyboard")) == 0 ) SetKeyboardEnabled(_tcscmp(pstrValue, _T("true")) == 0);
-    else if( _tcscmp(pstrName, _T("visible")) == 0 ) SetVisible(_tcscmp(pstrValue, _T("true")) == 0);
+    else if( _tcscmp(pstrName, _T("enabled")) == 0 ) SetEnabled(_tcscmp(pstrValue, _T("TRUE")) == 0);
+    else if( _tcscmp(pstrName, _T("mouse")) == 0 ) SetMouseEnabled(_tcscmp(pstrValue, _T("TRUE")) == 0);
+	else if( _tcscmp(pstrName, _T("keyboard")) == 0 ) SetKeyboardEnabled(_tcscmp(pstrValue, _T("TRUE")) == 0);
+    else if( _tcscmp(pstrName, _T("visible")) == 0 ) SetVisible(_tcscmp(pstrValue, _T("TRUE")) == 0);
     else if( _tcscmp(pstrName, _T("float")) == 0 ) {
 		CStringUI nValue = pstrValue;
 		if(nValue.Find(',') < 0) {
-			SetFloat(_tcscmp(pstrValue, _T("true")) == 0);
+			SetFloat(_tcscmp(pstrValue, _T("TRUE")) == 0);
 		}
 		else {
 			struct TPERCENTINFO_UI piFloatPercent = { 0 };
@@ -1006,18 +1006,18 @@ void CControlUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
 			piFloatPercent.right = _tcstod(pstr + 1, &pstr);  ASSERT(pstr);
 			piFloatPercent.bottom = _tcstod(pstr + 1, &pstr); ASSERT(pstr);
 			SetFloatPercent(piFloatPercent);
-			SetFloat(true);
+			SetFloat(TRUE);
 		}
 	}
     else if( _tcscmp(pstrName, _T("shortcut")) == 0 ) SetShortcut(pstrValue[0]);
-    else if( _tcscmp(pstrName, _T("menu")) == 0 ) SetContextMenuUsed(_tcscmp(pstrValue, _T("true")) == 0);
+    else if( _tcscmp(pstrName, _T("menu")) == 0 ) SetContextMenuUsed(_tcscmp(pstrValue, _T("TRUE")) == 0);
 	else if( _tcscmp(pstrName, _T("virtualwnd")) == 0 ) SetVirtualWnd(pstrValue);
 	else {
 		AddCustomAttribute(pstrName, pstrValue);
 	}
 }
 
-CStringUI CControlUI::GetAttributeList(bool bIgnoreDefault)
+CStringUI CControlUI::GetAttributeList(BOOL bIgnoreDefault)
 {
 	return _T("");
 }
@@ -1057,19 +1057,19 @@ SIZE CControlUI::EstimateSize(SIZE szAvailable)
     return m_cxyFixed;
 }
 
-bool CControlUI::Paint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl)
+BOOL CControlUI::Paint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl)
 {
-	if (pStopControl == this) return false;
-	if( !::IntersectRect(&m_rcPaint, &rcPaint, &m_rcItem) ) return true;
+	if (pStopControl == this) return FALSE;
+	if( !::IntersectRect(&m_rcPaint, &rcPaint, &m_rcItem) ) return TRUE;
 	if( OnPaint ) {
-		if( !OnPaint(this) ) return true;
+		if( !OnPaint(this) ) return TRUE;
 	}
-	if (!DoPaint(hDC, rcPaint, pStopControl)) return false;
+	if (!DoPaint(hDC, rcPaint, pStopControl)) return FALSE;
     if( m_pCover != NULL ) return m_pCover->Paint(hDC, rcPaint);
-    return true;
+    return TRUE;
 }
 
-bool CControlUI::DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl)
+BOOL CControlUI::DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl)
 {
     // 绘制循序：背景颜色->背景图->状态图->文本->边框
     if( m_cxyBorderRound.cx > 0 || m_cxyBorderRound.cy > 0 ) {
@@ -1088,7 +1088,7 @@ bool CControlUI::DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl)
         PaintText(hDC);
         PaintBorder(hDC);
     }
-    return true;
+    return TRUE;
 }
 
 void CControlUI::PaintBkColor(HDC hDC)
@@ -1098,13 +1098,13 @@ void CControlUI::PaintBkColor(HDC hDC)
             if( m_dwBackColor3 != 0 ) {
                 RECT rc = m_rcItem;
                 rc.bottom = (rc.bottom + rc.top) / 2;
-                CRenderUI::DrawGradient(hDC, rc, GetAdjustColor(m_dwBackColor), GetAdjustColor(m_dwBackColor2), true, 8);
+                CRenderUI::DrawGradient(hDC, rc, GetAdjustColor(m_dwBackColor), GetAdjustColor(m_dwBackColor2), TRUE, 8);
                 rc.top = rc.bottom;
                 rc.bottom = m_rcItem.bottom;
-                CRenderUI::DrawGradient(hDC, rc, GetAdjustColor(m_dwBackColor2), GetAdjustColor(m_dwBackColor3), true, 8);
+                CRenderUI::DrawGradient(hDC, rc, GetAdjustColor(m_dwBackColor2), GetAdjustColor(m_dwBackColor3), TRUE, 8);
             }
             else 
-                CRenderUI::DrawGradient(hDC, m_rcItem, GetAdjustColor(m_dwBackColor), GetAdjustColor(m_dwBackColor2), true, 16);
+                CRenderUI::DrawGradient(hDC, m_rcItem, GetAdjustColor(m_dwBackColor), GetAdjustColor(m_dwBackColor2), TRUE, 16);
         }
         else if( m_dwBackColor >= 0xFF000000 ) CRenderUI::DrawColor(hDC, m_rcPaint, GetAdjustColor(m_dwBackColor));
         else CRenderUI::DrawColor(hDC, m_rcItem, GetAdjustColor(m_dwBackColor));

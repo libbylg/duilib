@@ -4,7 +4,7 @@
 
 namespace DUILIB
 {
-	COptionUI::COptionUI() : m_bSelected(false), m_dwSelectedBkColor(0), m_dwSelectedTextColor(0)
+	COptionUI::COptionUI() : m_bSelected(FALSE), m_dwSelectedBkColor(0), m_dwSelectedTextColor(0)
 	{
 	}
 
@@ -24,7 +24,7 @@ namespace DUILIB
 		return CButtonUI::GetInterface(pstrName);
 	}
 
-	void COptionUI::SetManager(CManagerUI* pManager, CControlUI* pParent, bool bInit)
+	void COptionUI::SetManager(CManagerUI* pManager, CControlUI* pParent, BOOL bInit)
 	{
 		CControlUI::SetManager(pManager, pParent, bInit);
 		if( bInit && !m_sGroupName.IsEmpty() ) {
@@ -59,12 +59,12 @@ namespace DUILIB
 		Selected(m_bSelected);
 	}
 
-	bool COptionUI::IsSelected() const
+	BOOL COptionUI::IsSelected() const
 	{
 		return m_bSelected;
 	}
 
-	void COptionUI::Selected(bool bSelected, bool bTriggerEvent)
+	void COptionUI::Selected(BOOL bSelected, BOOL bTriggerEvent)
 	{
 		if( m_bSelected == bSelected ) return;
 		m_bSelected = bSelected;
@@ -78,7 +78,7 @@ namespace DUILIB
 					for( int i = 0; i < aOptionGroup->GetSize(); i++ ) {
 						COptionUI* pControl = static_cast<COptionUI*>(aOptionGroup->GetAt(i));
 						if( pControl != this ) {
-							pControl->Selected(false, bTriggerEvent);
+							pControl->Selected(FALSE, bTriggerEvent);
 						}
 					}
 					if (bTriggerEvent) m_pManager->SendNotify(this, DUI_MSGTYPE_SELECTCHANGED);
@@ -92,16 +92,16 @@ namespace DUILIB
 		Invalidate();
 	}
 
-	bool COptionUI::Activate()
+	BOOL COptionUI::Activate()
 	{
-		if( !CButtonUI::Activate() ) return false;
-		if( !m_sGroupName.IsEmpty() ) Selected(true);
+		if( !CButtonUI::Activate() ) return FALSE;
+		if( !m_sGroupName.IsEmpty() ) Selected(TRUE);
 		else Selected(!m_bSelected);
 
-		return true;
+		return TRUE;
 	}
 
-	void COptionUI::SetEnabled(bool bEnable)
+	void COptionUI::SetEnabled(BOOL bEnable)
 	{
 		CControlUI::SetEnabled(bEnable);
 		if( !IsEnabled() ) {
@@ -179,7 +179,7 @@ namespace DUILIB
 	void COptionUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
 	{
 		if( _tcscmp(pstrName, _T("group")) == 0 ) SetGroup(pstrValue);
-		else if( _tcscmp(pstrName, _T("selected")) == 0 ) Selected(_tcscmp(pstrValue, _T("true")) == 0);
+		else if( _tcscmp(pstrName, _T("selected")) == 0 ) Selected(_tcscmp(pstrValue, _T("TRUE")) == 0);
 		else if( _tcscmp(pstrName, _T("selectedimage")) == 0 ) SetSelectedImage(pstrValue);
 		else if( _tcscmp(pstrName, _T("selectedhotimage")) == 0 ) SetSelectedHotImage(pstrValue);
 		else if( _tcscmp(pstrName, _T("foreimage")) == 0 ) SetForeImage(pstrValue);

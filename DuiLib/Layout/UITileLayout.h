@@ -13,7 +13,7 @@ namespace DUILIB
 		LPCTSTR GetClass() const;
 		LPVOID GetInterface(LPCTSTR pstrName);
 
-		void SetPos(RECT rc, bool bNeedInvalidate = true);
+		void SetPos(RECT rc, BOOL bNeedInvalidate = TRUE);
 
 		int GetFixedColumns() const;
 		void SetFixedColumns(int iColums);
@@ -33,7 +33,7 @@ namespace DUILIB
 
 		int m_nColumnsFixed;
 		int m_iChildVPadding;
-		bool m_bIgnoreItemPadding;
+		BOOL m_bIgnoreItemPadding;
 	};
 }
 #endif // __UITILELAYOUT_H__

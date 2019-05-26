@@ -30,12 +30,12 @@ namespace DUILIB
 
 		CEditUI* m_pOwner;
 		HBRUSH m_hBkBrush;
-		bool m_bInit;
-		bool m_bDrawCaret;
+		BOOL m_bInit;
+		BOOL m_bDrawCaret;
 	};
 
 
-	CEditWnd::CEditWnd() : m_pOwner(NULL), m_hBkBrush(NULL), m_bInit(false), m_bDrawCaret(false)
+	CEditWnd::CEditWnd() : m_pOwner(NULL), m_hBkBrush(NULL), m_bInit(FALSE), m_bDrawCaret(FALSE)
 	{
 	}
 
@@ -64,8 +64,8 @@ namespace DUILIB
 		Edit_SetText(m_hWnd, m_pOwner->GetText());
 		Edit_SetModify(m_hWnd, FALSE);
 		SendMessage(EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELPARAM(0, 0));
-		Edit_Enable(m_hWnd, m_pOwner->IsEnabled() == true);
-		Edit_SetReadOnly(m_hWnd, m_pOwner->IsReadOnly() == true);
+		Edit_Enable(m_hWnd, m_pOwner->IsEnabled() == TRUE);
+		Edit_SetReadOnly(m_hWnd, m_pOwner->IsReadOnly() == TRUE);
 
 		//Styls
 		::ShowWindow(m_hWnd, SW_SHOWNOACTIVATE);
@@ -80,7 +80,7 @@ namespace DUILIB
 			Edit_SetSel(m_hWnd, nSize, nSize);
 		}
 
-		m_bInit = true;    
+		m_bInit = TRUE;    
 	}
 
 	RECT CEditWnd::CalPos()
@@ -247,8 +247,8 @@ namespace DUILIB
 	//
 	//
 
-	CEditUI::CEditUI() : m_pWindow(NULL), m_uMaxChar(255), m_bReadOnly(false), 
-		m_bPasswordMode(false), m_cPasswordChar(_T('*')), m_bAutoSelAll(false), m_uButtonState(0), 
+	CEditUI::CEditUI() : m_pWindow(NULL), m_uMaxChar(255), m_bReadOnly(FALSE), 
+		m_bPasswordMode(FALSE), m_cPasswordChar(_T('*')), m_bAutoSelAll(FALSE), m_uButtonState(0), 
 		m_dwEditbkColor(0xFFFFFFFF), m_iWindowStyls(0)
 	{
 		SetTextPadding(CRectUI(4, 3, 4, 3));
@@ -377,7 +377,7 @@ namespace DUILIB
 		CLabelUI::DoEvent(event);
 	}
 
-	void CEditUI::SetEnabled(bool bEnable)
+	void CEditUI::SetEnabled(BOOL bEnable)
 	{
 		CControlUI::SetEnabled(bEnable);
 		if( !IsEnabled() ) {
@@ -403,7 +403,7 @@ namespace DUILIB
 		return m_uMaxChar;
 	}
 
-	void CEditUI::SetReadOnly(bool bReadOnly)
+	void CEditUI::SetReadOnly(BOOL bReadOnly)
 	{
 		if( m_bReadOnly == bReadOnly ) return;
 
@@ -412,12 +412,12 @@ namespace DUILIB
 		Invalidate();
 	}
 
-	bool CEditUI::IsReadOnly() const
+	BOOL CEditUI::IsReadOnly() const
 	{
 		return m_bReadOnly;
 	}
 
-	void CEditUI::SetNumberOnly(bool bNumberOnly)
+	void CEditUI::SetNumberOnly(BOOL bNumberOnly)
 	{
 		if( bNumberOnly )
 		{
@@ -429,9 +429,9 @@ namespace DUILIB
 		}
 	}
 
-	bool CEditUI::IsNumberOnly() const
+	BOOL CEditUI::IsNumberOnly() const
 	{
-		return m_iWindowStyls&ES_NUMBER ? true:false;
+		return m_iWindowStyls&ES_NUMBER ? TRUE:FALSE;
 	}
 
 	int CEditUI::GetWindowStyls() const 
@@ -445,14 +445,14 @@ namespace DUILIB
 		return m_pWindow->GetHWND();
 	}
 
-	void CEditUI::SetPasswordMode(bool bPasswordMode)
+	void CEditUI::SetPasswordMode(BOOL bPasswordMode)
 	{
 		if( m_bPasswordMode == bPasswordMode ) return;
 		m_bPasswordMode = bPasswordMode;
 		Invalidate();
 	}
 
-	bool CEditUI::IsPasswordMode() const
+	BOOL CEditUI::IsPasswordMode() const
 	{
 		return m_bPasswordMode;
 	}
@@ -470,12 +470,12 @@ namespace DUILIB
 		return m_cPasswordChar;
 	}
 
-	bool CEditUI::IsAutoSelAll()
+	BOOL CEditUI::IsAutoSelAll()
 	{
 		return m_bAutoSelAll;
 	}
 
-	void CEditUI::SetAutoSelAll(bool bAutoSelAll)
+	void CEditUI::SetAutoSelAll(BOOL bAutoSelAll)
 	{
 		m_bAutoSelAll = bAutoSelAll;
 	}
@@ -557,7 +557,7 @@ namespace DUILIB
 		if( m_pWindow != NULL ) Edit_ReplaceSel(*m_pWindow, lpszReplace);
 	}
 
-	void CEditUI::SetPos(RECT rc, bool bNeedInvalidate)
+	void CEditUI::SetPos(RECT rc, BOOL bNeedInvalidate)
 	{
 		CControlUI::SetPos(rc, bNeedInvalidate);
 		if( m_pWindow != NULL ) {
@@ -570,7 +570,7 @@ namespace DUILIB
 		}
 	}
 
-	void CEditUI::Move(SIZE szOffset, bool bNeedInvalidate)
+	void CEditUI::Move(SIZE szOffset, BOOL bNeedInvalidate)
 	{
 		CControlUI::Move(szOffset, bNeedInvalidate);
 		if( m_pWindow != NULL ) {
@@ -583,13 +583,13 @@ namespace DUILIB
 		}
 	}
 
-	void CEditUI::SetVisible(bool bVisible)
+	void CEditUI::SetVisible(BOOL bVisible)
 	{
 		CControlUI::SetVisible(bVisible);
 		if( !IsVisible() && m_pWindow != NULL ) m_pManager->SetFocus(NULL);
 	}
 
-	void CEditUI::SetInternVisible(bool bVisible)
+	void CEditUI::SetInternVisible(BOOL bVisible)
 	{
 		if( !IsVisible() && m_pWindow != NULL ) m_pManager->SetFocus(NULL);
 	}
@@ -602,10 +602,10 @@ namespace DUILIB
 
 	void CEditUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
 	{
-		if( _tcscmp(pstrName, _T("readonly")) == 0 ) SetReadOnly(_tcscmp(pstrValue, _T("true")) == 0);
-		else if( _tcscmp(pstrName, _T("numberonly")) == 0 ) SetNumberOnly(_tcscmp(pstrValue, _T("true")) == 0);
-		else if( _tcscmp(pstrName, _T("password")) == 0 ) SetPasswordMode(_tcscmp(pstrValue, _T("true")) == 0);
-		else if( _tcscmp(pstrName, _T("autoselall")) == 0 ) SetAutoSelAll(_tcscmp(pstrValue, _T("true")) == 0);	
+		if( _tcscmp(pstrName, _T("readonly")) == 0 ) SetReadOnly(_tcscmp(pstrValue, _T("TRUE")) == 0);
+		else if( _tcscmp(pstrName, _T("numberonly")) == 0 ) SetNumberOnly(_tcscmp(pstrValue, _T("TRUE")) == 0);
+		else if( _tcscmp(pstrName, _T("password")) == 0 ) SetPasswordMode(_tcscmp(pstrValue, _T("TRUE")) == 0);
+		else if( _tcscmp(pstrName, _T("autoselall")) == 0 ) SetAutoSelAll(_tcscmp(pstrValue, _T("TRUE")) == 0);	
 		else if( _tcscmp(pstrName, _T("maxchar")) == 0 ) SetMaxChar(_ttoi(pstrValue));
 		else if( _tcscmp(pstrName, _T("normalimage")) == 0 ) SetNormalImage(pstrValue);
 		else if( _tcscmp(pstrName, _T("hotimage")) == 0 ) SetHotImage(pstrValue);

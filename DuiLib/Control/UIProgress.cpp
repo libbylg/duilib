@@ -2,7 +2,7 @@
 
 namespace DUILIB
 {
-	CProgressUI::CProgressUI() : m_bHorizontal(true), m_nMin(0), m_nMax(100), m_nValue(0)
+	CProgressUI::CProgressUI() : m_bHorizontal(TRUE), m_nMin(0), m_nMax(100), m_nValue(0)
 	{
 		m_uTextStyle = DT_SINGLELINE | DT_CENTER;
 		SetFixedHeight(12);
@@ -19,12 +19,12 @@ namespace DUILIB
 		return CLabelUI::GetInterface(pstrName);
 	}
 
-	bool CProgressUI::IsHorizontal()
+	BOOL CProgressUI::IsHorizontal()
 	{
 		return m_bHorizontal;
 	}
 
-	void CProgressUI::SetHorizontal(bool bHorizontal)
+	void CProgressUI::SetHorizontal(BOOL bHorizontal)
 	{
 		if( m_bHorizontal == bHorizontal ) return;
 
@@ -83,7 +83,7 @@ namespace DUILIB
 	void CProgressUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
 	{
 		if( _tcscmp(pstrName, _T("foreimage")) == 0 ) SetForeImage(pstrValue);
-		else if( _tcscmp(pstrName, _T("hor")) == 0 ) SetHorizontal(_tcscmp(pstrValue, _T("true")) == 0);
+		else if( _tcscmp(pstrName, _T("hor")) == 0 ) SetHorizontal(_tcscmp(pstrValue, _T("TRUE")) == 0);
 		else if( _tcscmp(pstrName, _T("min")) == 0 ) SetMinValue(_ttoi(pstrValue));
 		else if( _tcscmp(pstrName, _T("max")) == 0 ) SetMaxValue(_ttoi(pstrValue));
 		else if( _tcscmp(pstrName, _T("value")) == 0 ) SetValue(_ttoi(pstrValue));

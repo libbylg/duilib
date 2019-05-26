@@ -44,4 +44,5 @@ Pkg
 *.opensdf
 *.lastbuildstate
 *.unsuccessfulbuild
+*.vcxproj.FileListAbsolute.txt
 

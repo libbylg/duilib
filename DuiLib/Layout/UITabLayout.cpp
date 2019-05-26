@@ -19,9 +19,9 @@ namespace DUILIB
 		return CContainerUI::GetInterface(pstrName);
 	}
 
-	bool CTabLayoutUI::Add(CControlUI* pControl)
+	BOOL CTabLayoutUI::Add(CControlUI* pControl)
 	{
-		bool ret = CContainerUI::Add(pControl);
+		BOOL ret = CContainerUI::Add(pControl);
 		if( !ret ) return ret;
 
 		if(m_iCurSel == -1 && pControl->IsVisible())
@@ -30,15 +30,15 @@ namespace DUILIB
 		}
 		else
 		{
-			pControl->SetVisible(false);
+			pControl->SetVisible(FALSE);
 		}
 
 		return ret;
 	}
 
-	bool CTabLayoutUI::AddAt(CControlUI* pControl, int iIndex)
+	BOOL CTabLayoutUI::AddAt(CControlUI* pControl, int iIndex)
 	{
-		bool ret = CContainerUI::AddAt(pControl, iIndex);
+		BOOL ret = CContainerUI::AddAt(pControl, iIndex);
 		if( !ret ) return ret;
 
 		if(m_iCurSel == -1 && pControl->IsVisible())
@@ -51,26 +51,26 @@ namespace DUILIB
 		}
 		else
 		{
-			pControl->SetVisible(false);
+			pControl->SetVisible(FALSE);
 		}
 
 		return ret;
 	}
 
-	bool CTabLayoutUI::Remove(CControlUI* pControl, bool bDoNotDestroy)
+	BOOL CTabLayoutUI::Remove(CControlUI* pControl, BOOL bDoNotDestroy)
 	{
-		if( pControl == NULL) return false;
+		if( pControl == NULL) return FALSE;
 
 		int index = GetItemIndex(pControl);
-		bool ret = CContainerUI::Remove(pControl, bDoNotDestroy);
-		if( !ret ) return false;
+		BOOL ret = CContainerUI::Remove(pControl, bDoNotDestroy);
+		if( !ret ) return FALSE;
 
 		if( m_iCurSel == index)
 		{
 			if( GetCount() > 0 )
 			{
 				m_iCurSel=0;
-				GetItemAt(m_iCurSel)->SetVisible(true);
+				GetItemAt(m_iCurSel)->SetVisible(TRUE);
 			}
 			else
 				m_iCurSel=-1;
@@ -96,20 +96,20 @@ namespace DUILIB
 		return m_iCurSel;
 	}
 
-	bool CTabLayoutUI::SelectItem(int iIndex,  bool bTriggerEvent)
+	BOOL CTabLayoutUI::SelectItem(int iIndex,  BOOL bTriggerEvent)
 	{
-		if( iIndex < 0 || iIndex >= m_items.GetSize() ) return false;
-		if( iIndex == m_iCurSel ) return true;
+		if( iIndex < 0 || iIndex >= m_items.GetSize() ) return FALSE;
+		if( iIndex == m_iCurSel ) return TRUE;
 
 		int iOldSel = m_iCurSel;
 		m_iCurSel = iIndex;
 		for( int it = 0; it < m_items.GetSize(); it++ )
 		{
 			if( it == iIndex ) {
-				GetItemAt(it)->SetVisible(true);
+				GetItemAt(it)->SetVisible(TRUE);
 				GetItemAt(it)->SetFocus();
 			}
-			else GetItemAt(it)->SetVisible(false);
+			else GetItemAt(it)->SetVisible(FALSE);
 		}
 		NeedParentUpdate();
 
@@ -117,14 +117,14 @@ namespace DUILIB
 			m_pManager->SetNextTabControl();
 			if (bTriggerEvent) m_pManager->SendNotify(this, DUI_MSGTYPE_TABSELECT, m_iCurSel, iOldSel);
 		}
-		return true;
+		return TRUE;
 	}
 
-	bool CTabLayoutUI::SelectItem(CControlUI* pControl, bool bTriggerEvent)
+	BOOL CTabLayoutUI::SelectItem(CControlUI* pControl, BOOL bTriggerEvent)
 	{
 		int iIndex=GetItemIndex(pControl);
 		if (iIndex==-1)
-			return false;
+			return FALSE;
 		else
 			return SelectItem(iIndex, bTriggerEvent);
 	}
@@ -135,7 +135,7 @@ namespace DUILIB
 		return CContainerUI::SetAttribute(pstrName, pstrValue);
 	}
 
-	void CTabLayoutUI::SetPos(RECT rc, bool bNeedInvalidate)
+	void CTabLayoutUI::SetPos(RECT rc, BOOL bNeedInvalidate)
 	{
 		CControlUI::SetPos(rc, bNeedInvalidate);
 		rc = m_rcItem;
@@ -178,7 +178,7 @@ namespace DUILIB
 			if( sz.cy > pControl->GetMaxHeight() ) sz.cy = pControl->GetMaxHeight();
 
 			RECT rcCtrl = { rc.left, rc.top, rc.left + sz.cx, rc.top + sz.cy};
-			pControl->SetPos(rcCtrl, false);
+			pControl->SetPos(rcCtrl, FALSE);
 		}
 	}
 }

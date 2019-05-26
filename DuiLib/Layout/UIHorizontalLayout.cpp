@@ -5,7 +5,7 @@
 
 namespace DUILIB
 {
-	CHorizontalLayoutUI::CHorizontalLayoutUI() : m_iSepWidth(0), m_uButtonState(0), m_bImmMode(false)
+	CHorizontalLayoutUI::CHorizontalLayoutUI() : m_iSepWidth(0), m_uButtonState(0), m_bImmMode(FALSE)
 	{
 		m_ptLastMouse.x = m_ptLastMouse.y = 0;
 		::ZeroMemory(&m_rcNewPos, sizeof(m_rcNewPos));
@@ -28,7 +28,7 @@ namespace DUILIB
 		else return 0;
 	}
 
-	void CHorizontalLayoutUI::SetPos(RECT rc, bool bNeedInvalidate)
+	void CHorizontalLayoutUI::SetPos(RECT rc, BOOL bNeedInvalidate)
 	{
 		CControlUI::SetPos(rc, bNeedInvalidate);
 		rc = m_rcItem;
@@ -165,7 +165,7 @@ namespace DUILIB
 					iPosY -= m_pVerticalScrollBar->GetScrollPos();
 				}
 				RECT rcCtrl = { iPosX + rcPadding.left, iPosY - sz.cy/2, iPosX + sz.cx + rcPadding.left, iPosY + sz.cy - sz.cy/2 };
-				pControl->SetPos(rcCtrl, false);
+				pControl->SetPos(rcCtrl, FALSE);
 			}
 			else if (iChildAlign == DT_BOTTOM) {
 				int iPosY = rc.bottom;
@@ -174,7 +174,7 @@ namespace DUILIB
 					iPosY -= m_pVerticalScrollBar->GetScrollPos();
 				}
 				RECT rcCtrl = { iPosX + rcPadding.left, iPosY - rcPadding.bottom - sz.cy, iPosX + sz.cx + rcPadding.left, iPosY - rcPadding.bottom };
-				pControl->SetPos(rcCtrl, false);
+				pControl->SetPos(rcCtrl, FALSE);
 			}
 			else {
 				int iPosY = rc.top;
@@ -182,7 +182,7 @@ namespace DUILIB
 					iPosY -= m_pVerticalScrollBar->GetScrollPos();
 				}
 				RECT rcCtrl = { iPosX + rcPadding.left, iPosY + rcPadding.top, iPosX + sz.cx + rcPadding.left, iPosY + sz.cy + rcPadding.top };
-				pControl->SetPos(rcCtrl, false);
+				pControl->SetPos(rcCtrl, FALSE);
 			}
 
 			iPosX += sz.cx + m_iChildPadding + rcPadding.left + rcPadding.right;
@@ -198,7 +198,7 @@ namespace DUILIB
 	void CHorizontalLayoutUI::DoPostPaint(HDC hDC, const RECT& rcPaint)
 	{
 		if( (m_uButtonState & UISTATE_CAPTURED) != 0 && !m_bImmMode ) {
-			RECT rcSeparator = GetThumbRect(true);
+			RECT rcSeparator = GetThumbRect(TRUE);
 			CRenderUI::DrawColor(hDC, rcSeparator, 0xAA000000);
 		}
 	}
@@ -213,7 +213,7 @@ namespace DUILIB
 		return m_iSepWidth;
 	}
 
-	void CHorizontalLayoutUI::SetSepImmMode(bool bImmediately)
+	void CHorizontalLayoutUI::SetSepImmMode(BOOL bImmediately)
 	{
 		if( m_bImmMode == bImmediately ) return;
 		if( (m_uButtonState & UISTATE_CAPTURED) != 0 && !m_bImmMode && m_pManager != NULL ) {
@@ -223,7 +223,7 @@ namespace DUILIB
 		m_bImmMode = bImmediately;
 	}
 
-	bool CHorizontalLayoutUI::IsSepImmMode() const
+	BOOL CHorizontalLayoutUI::IsSepImmMode() const
 	{
 		return m_bImmMode;
 	}
@@ -231,7 +231,7 @@ namespace DUILIB
 	void CHorizontalLayoutUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
 	{
 		if( _tcscmp(pstrName, _T("sepwidth")) == 0 ) SetSepWidth(_ttoi(pstrValue));
-		else if( _tcscmp(pstrName, _T("sepimm")) == 0 ) SetSepImmMode(_tcscmp(pstrValue, _T("true")) == 0);
+		else if( _tcscmp(pstrName, _T("sepimm")) == 0 ) SetSepImmMode(_tcscmp(pstrValue, _T("TRUE")) == 0);
 		else CContainerUI::SetAttribute(pstrName, pstrValue);
 	}
 
@@ -240,7 +240,7 @@ namespace DUILIB
 		if( m_iSepWidth != 0 ) {
 			if( event.Type == UIEVENT_BUTTONDOWN && IsEnabled() )
 			{
-				RECT rcSeparator = GetThumbRect(false);
+				RECT rcSeparator = GetThumbRect(FALSE);
 				if( ::PtInRect(&rcSeparator, event.ptMouse) ) {
 					m_uButtonState |= UISTATE_CAPTURED;
 					m_ptLastMouse = event.ptMouse;
@@ -292,7 +292,7 @@ namespace DUILIB
 						}
 					}
 
-					CRectUI rcInvalidate = GetThumbRect(true);
+					CRectUI rcInvalidate = GetThumbRect(TRUE);
 					m_rcNewPos = rc;
 					m_cxyFixed.cx = m_rcNewPos.right - m_rcNewPos.left;
 
@@ -301,8 +301,8 @@ namespace DUILIB
 						NeedParentUpdate();
 					}
 					else {
-						rcInvalidate.Join(GetThumbRect(true));
-						rcInvalidate.Join(GetThumbRect(false));
+						rcInvalidate.Join(GetThumbRect(TRUE));
+						rcInvalidate.Join(GetThumbRect(FALSE));
 						if( m_pManager ) m_pManager->Invalidate(rcInvalidate);
 					}
 					return;
@@ -310,7 +310,7 @@ namespace DUILIB
 			}
 			if( event.Type == UIEVENT_SETCURSOR )
 			{
-				RECT rcSeparator = GetThumbRect(false);
+				RECT rcSeparator = GetThumbRect(FALSE);
 				if( IsEnabled() && ::PtInRect(&rcSeparator, event.ptMouse) ) {
 					::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZEWE)));
 					return;
@@ -320,7 +320,7 @@ namespace DUILIB
 		CContainerUI::DoEvent(event);
 	}
 
-	RECT CHorizontalLayoutUI::GetThumbRect(bool bUseNew) const
+	RECT CHorizontalLayoutUI::GetThumbRect(BOOL bUseNew) const
 	{
 		if( (m_uButtonState & UISTATE_CAPTURED) != 0 && bUseNew) {
 			if( m_iSepWidth >= 0 ) return CRectUI(m_rcNewPos.right - m_iSepWidth, m_rcNewPos.top, m_rcNewPos.right, m_rcNewPos.bottom);

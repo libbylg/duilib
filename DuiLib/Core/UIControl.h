@@ -50,9 +50,9 @@ namespace DUILIB
         virtual UINT GetControlFlags() const;
         virtual HWND GetNativeWindow() const;
 
-        virtual bool Activate();
+        virtual BOOL Activate();
         virtual CManagerUI* GetManager() const;
-        virtual void SetManager(CManagerUI* pManager, CControlUI* pParent, bool bInit = true);
+        virtual void SetManager(CManagerUI* pManager, CControlUI* pParent, BOOL bInit = TRUE);
         virtual CControlUI* GetParent() const;
         virtual CControlUI* GetCover() const;
         virtual void SetCover(CControlUI* pControl);
@@ -72,11 +72,11 @@ namespace DUILIB
         void SetBkImage(LPCTSTR pStrImage);
         DWORD GetFocusBorderColor() const;
         void SetFocusBorderColor(DWORD dwBorderColor);
-        bool IsColorHSL() const;
-        void SetColorHSL(bool bColorHSL);
+        BOOL IsColorHSL() const;
+        void SetColorHSL(BOOL bColorHSL);
         SIZE GetBorderRound() const;
         void SetBorderRound(SIZE cxyRound);
-        bool DrawImage(HDC hDC, TDRAWINFO_UI& drawInfo);
+        BOOL DrawImage(HDC hDC, TDRAWINFO_UI& drawInfo);
 
         //边框相关
         DWORD GetBorderColor() const;
@@ -92,8 +92,8 @@ namespace DUILIB
         virtual RECT GetRelativePos() const; // 相对(父控件)位置
         virtual RECT GetClientPos() const; // 客户区域（除去scrollbar和inset）
         // 只有控件为float的时候，外部调用SetPos和Move才是有效的，位置参数是相对父控件的位置
-        virtual void SetPos(RECT rc, bool bNeedInvalidate = true);
-        virtual void Move(SIZE szOffset, bool bNeedInvalidate = true);
+        virtual void SetPos(RECT rc, BOOL bNeedInvalidate = TRUE);
+        virtual void Move(SIZE szOffset, BOOL bNeedInvalidate = TRUE);
         virtual int GetWidth() const;
         virtual int GetHeight() const;
         virtual int GetX() const;
@@ -101,7 +101,7 @@ namespace DUILIB
         virtual RECT GetPadding() const;
         virtual void SetPadding(RECT rcPadding); // 设置外边距，由上层窗口绘制
         virtual SIZE GetFixedXY() const;         // 实际大小位置使用GetPos获取，这里得到的是预设的参考值
-        virtual void SetFixedXY(SIZE szXY);      // 仅float为true时有效
+        virtual void SetFixedXY(SIZE szXY);      // 仅float为TRUE时有效
         virtual struct TPERCENTINFO_UI GetFloatPercent() const;
         virtual void SetFloatPercent(struct TPERCENTINFO_UI piFloatPercent);
         virtual int GetFixedWidth() const;       // 实际大小位置使用GetPos获取，这里得到的是预设的参考值
@@ -128,8 +128,8 @@ namespace DUILIB
         virtual void SetShortcut(TCHAR ch);
 
         // 菜单
-        virtual bool IsContextMenuUsed() const;
-        virtual void SetContextMenuUsed(bool bMenuUsed);
+        virtual BOOL IsContextMenuUsed() const;
+        virtual void SetContextMenuUsed(BOOL bMenuUsed);
 
         // 用户属性
         virtual const CStringUI& GetUserData(); // 辅助函数，供用户使用
@@ -138,30 +138,30 @@ namespace DUILIB
         virtual void SetTag(UINT_PTR pTag); // 辅助函数，供用户使用
 
         // 一些重要的属性
-        virtual bool IsVisible() const;
-        virtual void SetVisible(bool bVisible = true);
-        virtual void SetInternVisible(bool bVisible = true); // 仅供内部调用，有些UI拥有窗口句柄，需要重写此函数
-        virtual bool IsEnabled() const;
-        virtual void SetEnabled(bool bEnable = true);
-        virtual bool IsMouseEnabled() const;
-        virtual void SetMouseEnabled(bool bEnable = true);
-        virtual bool IsKeyboardEnabled() const;
-        virtual void SetKeyboardEnabled(bool bEnable = true);
-        virtual bool IsFocused() const;
+        virtual BOOL IsVisible() const;
+        virtual void SetVisible(BOOL bVisible = TRUE);
+        virtual void SetInternVisible(BOOL bVisible = TRUE); // 仅供内部调用，有些UI拥有窗口句柄，需要重写此函数
+        virtual BOOL IsEnabled() const;
+        virtual void SetEnabled(BOOL bEnable = TRUE);
+        virtual BOOL IsMouseEnabled() const;
+        virtual void SetMouseEnabled(BOOL bEnable = TRUE);
+        virtual BOOL IsKeyboardEnabled() const;
+        virtual void SetKeyboardEnabled(BOOL bEnable = TRUE);
+        virtual BOOL IsFocused() const;
         virtual void SetFocus();
-        virtual bool IsFloat() const;
-        virtual void SetFloat(bool bFloat = true);
+        virtual BOOL IsFloat() const;
+        virtual void SetFloat(BOOL bFloat = TRUE);
 
         // 自定义(未处理的)属性
         void AddCustomAttribute(LPCTSTR pstrName, LPCTSTR pstrAttr);
         LPCTSTR GetCustomAttribute(LPCTSTR pstrName) const;
-        bool RemoveCustomAttribute(LPCTSTR pstrName);
+        BOOL RemoveCustomAttribute(LPCTSTR pstrName);
         void RemoveAllCustomAttribute();
 
         virtual CControlUI* FindControl(LPFINDCONTROLPROC_UI Proc, LPVOID pData, UINT uFlags);
 
         void Invalidate();
-        bool IsUpdateNeeded() const;
+        BOOL IsUpdateNeeded() const;
         void NeedUpdate();
         void NeedParentUpdate();
         DWORD GetAdjustColor(DWORD dwColor);
@@ -174,13 +174,13 @@ namespace DUILIB
 
         virtual CStringUI GetAttribute(LPCTSTR pstrName);
         virtual void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
-        virtual CStringUI GetAttributeList(bool bIgnoreDefault = true);
+        virtual CStringUI GetAttributeList(BOOL bIgnoreDefault = TRUE);
         virtual void SetAttributeList(LPCTSTR pstrList);
 
         virtual SIZE EstimateSize(SIZE szAvailable);
 
-        virtual bool Paint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl = NULL); // 返回要不要继续绘制
-        virtual bool DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
+        virtual BOOL Paint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl = NULL); // 返回要不要继续绘制
+        virtual BOOL DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
         virtual void PaintBkColor(HDC hDC);
         virtual void PaintBkImage(HDC hDC);
         virtual void PaintStatusImage(HDC hDC);
@@ -208,24 +208,24 @@ namespace DUILIB
         CControlUI* m_pCover;
         CStringUI m_sVirtualWnd;
         CStringUI m_sName;
-        bool m_bUpdateNeeded;
-        bool m_bMenuUsed;
-        bool m_bAsyncNotify;
+        BOOL m_bUpdateNeeded;
+        BOOL m_bMenuUsed;
+        BOOL m_bAsyncNotify;
         RECT m_rcItem;
         RECT m_rcPadding;
         SIZE m_cXY;
         SIZE m_cxyFixed;
         SIZE m_cxyMin;
         SIZE m_cxyMax;
-        bool m_bVisible;
-        bool m_bInternVisible;
-        bool m_bEnabled;
-        bool m_bMouseEnabled;
-        bool m_bKeyboardEnabled;
-        bool m_bFocused;
-        bool m_bFloat;
+        BOOL m_bVisible;
+        BOOL m_bInternVisible;
+        BOOL m_bEnabled;
+        BOOL m_bMouseEnabled;
+        BOOL m_bKeyboardEnabled;
+        BOOL m_bFocused;
+        BOOL m_bFloat;
         struct TPERCENTINFO_UI m_piFloatPercent;
-        bool m_bSetPos; // 防止SetPos循环调用
+        BOOL m_bSetPos; // 防止SetPos循环调用
 
         CStringUI m_sText;
         CStringUI m_sToolTip;
@@ -240,7 +240,7 @@ namespace DUILIB
         TDRAWINFO_UI m_diFore;
         DWORD m_dwBorderColor;
         DWORD m_dwFocusBorderColor;
-        bool m_bColorHSL;
+        BOOL m_bColorHSL;
         int m_nBorderStyle;
         int m_nTooltipWidth;
         SIZE m_cxyBorderRound;

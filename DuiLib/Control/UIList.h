@@ -29,7 +29,7 @@ namespace DUILIB
         DWORD dwTextColor;
         DWORD dwBkColor;
         TDRAWINFO_UI diBk;
-        bool bAlternateBk;
+        BOOL bAlternateBk;
         DWORD dwSelectedTextColor;
         DWORD dwSelectedBkColor;
         TDRAWINFO_UI diSelected;
@@ -43,8 +43,8 @@ namespace DUILIB
         DWORD dwHLineColor;
         int iVLineSize;
         DWORD dwVLineColor;
-        bool bShowHtml;
-        bool bMultiExpandable;
+        BOOL bShowHtml;
+        BOOL bMultiExpandable;
     } TListInfoUI;
 
 
@@ -62,9 +62,9 @@ namespace DUILIB
     public:
         virtual TListInfoUI* GetListInfo() = 0;
         virtual int GetCurSel() const = 0;
-        virtual bool SelectItem(int iIndex, bool bTakeFocus = false, bool bTriggerEvent = true) = 0;
+        virtual BOOL SelectItem(int iIndex, BOOL bTakeFocus = FALSE, BOOL bTriggerEvent = TRUE) = 0;
         virtual void DoEvent(TEVENT_UI& event) = 0;
-        virtual bool ExpandItem(int iIndex, bool bExpand = true) = 0;
+        virtual BOOL ExpandItem(int iIndex, BOOL bExpand = TRUE) = 0;
         virtual int GetExpandedItem() const = 0;
     };
 
@@ -86,10 +86,10 @@ namespace DUILIB
         virtual void SetDrawIndex(int iIndex) = 0;
         virtual IListOwnerUI* GetOwner() = 0;
         virtual void SetOwner(CControlUI* pOwner) = 0;
-        virtual bool IsSelected() const = 0;
-        virtual bool Select(bool bSelect = true, bool bTriggerEvent = true) = 0;
-        virtual bool IsExpanded() const = 0;
-        virtual bool Expand(bool bExpand = true) = 0;
+        virtual BOOL IsSelected() const = 0;
+        virtual BOOL Select(BOOL bSelect = TRUE, BOOL bTriggerEvent = TRUE) = 0;
+        virtual BOOL IsExpanded() const = 0;
+        virtual BOOL Expand(BOOL bExpand = TRUE) = 0;
         virtual void DrawItemText(HDC hDC, const RECT& rcItem) = 0;
     };
 
@@ -109,20 +109,20 @@ namespace DUILIB
         UINT GetControlFlags() const;
         LPVOID GetInterface(LPCTSTR pstrName);
 
-        bool GetScrollSelect();
-        void SetScrollSelect(bool bScrollSelect);
+        BOOL GetScrollSelect();
+        void SetScrollSelect(BOOL bScrollSelect);
         int GetCurSel() const;
-        bool SelectItem(int iIndex, bool bTakeFocus = false, bool bTriggerEvent = true);
+        BOOL SelectItem(int iIndex, BOOL bTakeFocus = FALSE, BOOL bTriggerEvent = TRUE);
 
         CControlUI* GetItemAt(int iIndex) const;
         int GetItemIndex(CControlUI* pControl) const;
-        bool SetItemIndex(CControlUI* pControl, int iIndex);
-        bool SetMultiItemIndex(CControlUI* pStartControl, int iCount, int iNewStartIndex);
+        BOOL SetItemIndex(CControlUI* pControl, int iIndex);
+        BOOL SetMultiItemIndex(CControlUI* pStartControl, int iCount, int iNewStartIndex);
         int GetCount() const;
-        bool Add(CControlUI* pControl);
-        bool AddAt(CControlUI* pControl, int iIndex);
-        bool Remove(CControlUI* pControl, bool bDoNotDestroy = false);
-        bool RemoveAt(int iIndex, bool bDoNotDestroy = false);
+        BOOL Add(CControlUI* pControl);
+        BOOL AddAt(CControlUI* pControl, int iIndex);
+        BOOL Remove(CControlUI* pControl, BOOL bDoNotDestroy = FALSE);
+        BOOL RemoveAt(int iIndex, BOOL bDoNotDestroy = FALSE);
         void RemoveAll();
 
         void EnsureVisible(int iIndex);
@@ -149,8 +149,8 @@ namespace DUILIB
         void SetItemBkColor(DWORD dwBkColor);
         LPCTSTR GetItemBkImage() const;
         void SetItemBkImage(LPCTSTR pStrImage);
-        bool IsAlternateBk() const;
-        void SetAlternateBk(bool bAlternateBk);
+        BOOL IsAlternateBk() const;
+        void SetAlternateBk(BOOL bAlternateBk);
         DWORD GetSelectedItemTextColor() const;
         void SetSelectedItemTextColor(DWORD dwTextColor);
         DWORD GetSelectedItemBkColor() const;
@@ -177,15 +177,15 @@ namespace DUILIB
         void SetItemVLineSize(int iSize);
         DWORD GetItemVLineColor() const;
         void SetItemVLineColor(DWORD dwLineColor);
-        bool IsItemShowHtml();
-        void SetItemShowHtml(bool bShowHtml = true);
+        BOOL IsItemShowHtml();
+        void SetItemShowHtml(BOOL bShowHtml = TRUE);
 
-        void SetMultiExpanding(bool bMultiExpandable);
+        void SetMultiExpanding(BOOL bMultiExpandable);
         int GetExpandedItem() const;
-        bool ExpandItem(int iIndex, bool bExpand = true);
+        BOOL ExpandItem(int iIndex, BOOL bExpand = TRUE);
 
-        void SetPos(RECT rc, bool bNeedInvalidate = true);
-        void Move(SIZE szOffset, bool bNeedInvalidate = true);
+        void SetPos(RECT rc, BOOL bNeedInvalidate = TRUE);
+        void Move(SIZE szOffset, BOOL bNeedInvalidate = TRUE);
         void DoEvent(TEVENT_UI& event);
         void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
@@ -207,13 +207,13 @@ namespace DUILIB
         void PageRight();
         void HomeLeft();
         void EndRight();
-        void EnableScrollBar(bool bEnableVertical = true, bool bEnableHorizontal = false);
+        void EnableScrollBar(BOOL bEnableVertical = TRUE, BOOL bEnableHorizontal = FALSE);
         virtual CScrollUI* GetVerticalScrollBar() const;
         virtual CScrollUI* GetHorizontalScrollBar() const;
-        bool SortItems(PULVCompareFunc pfnCompare, UINT_PTR dwData);
+        BOOL SortItems(PULVCompareFunc pfnCompare, UINT_PTR dwData);
 
     protected:
-        bool m_bScrollSelect;
+        BOOL m_bScrollSelect;
         int m_iCurSel;
         int m_iExpandedItem;
         IListCallbackUI* m_pCallback;
@@ -249,10 +249,10 @@ namespace DUILIB
         LPVOID GetInterface(LPCTSTR pstrName);
         UINT GetControlFlags() const;
 
-        void SetEnabled(bool bEnable = true);
+        void SetEnabled(BOOL bEnable = TRUE);
 
-        bool IsDragable() const;
-        void SetDragable(bool bDragable);
+        BOOL IsDragable() const;
+        void SetDragable(BOOL bDragable);
         DWORD GetSepWidth() const;
         void SetSepWidth(int iWidth);
         DWORD GetTextStyle() const;
@@ -264,8 +264,8 @@ namespace DUILIB
         void SetTextPadding(RECT rc);
         RECT GetTextPadding() const;
         void SetFont(int index);
-        bool IsShowHtml();
-        void SetShowHtml(bool bShowHtml = true);
+        BOOL IsShowHtml();
+        void SetShowHtml(BOOL bShowHtml = TRUE);
         LPCTSTR GetNormalImage() const;
         void SetNormalImage(LPCTSTR pStrImage);
         LPCTSTR GetHotImage() const;
@@ -287,14 +287,14 @@ namespace DUILIB
 
     protected:
         POINT ptLastMouse;
-        bool m_bDragable;
+        BOOL m_bDragable;
         UINT m_uButtonState;
         int m_iSepWidth;
         DWORD m_dwTextColor;
         DWORD m_dwSepColor;
         int m_iFont;
         UINT m_uTextStyle;
-        bool m_bShowHtml;
+        BOOL m_bShowHtml;
         RECT m_rcTextPadding;
         TDRAWINFO_UI m_diNormal;
         TDRAWINFO_UI m_diHot;
@@ -316,7 +316,7 @@ namespace DUILIB
         UINT GetControlFlags() const;
         LPVOID GetInterface(LPCTSTR pstrName);
 
-        void SetEnabled(bool bEnable = true);
+        void SetEnabled(BOOL bEnable = TRUE);
 
         int GetIndex() const;
         void SetIndex(int iIndex);
@@ -325,15 +325,15 @@ namespace DUILIB
 
         IListOwnerUI* GetOwner();
         void SetOwner(CControlUI* pOwner);
-        void SetVisible(bool bVisible = true);
+        void SetVisible(BOOL bVisible = TRUE);
 
-        bool IsSelected() const;
-        bool Select(bool bSelect = true, bool bTriggerEvent = true);
-        bool IsExpanded() const;
-        bool Expand(bool bExpand = true);
+        BOOL IsSelected() const;
+        BOOL Select(BOOL bSelect = TRUE, BOOL bTriggerEvent = TRUE);
+        BOOL IsExpanded() const;
+        BOOL Expand(BOOL bExpand = TRUE);
 
         void Invalidate(); // 直接CControl::Invalidate会导致滚动条刷新，重写减少刷新区域
-        bool Activate();
+        BOOL Activate();
 
         void DoEvent(TEVENT_UI& event);
         void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
@@ -343,7 +343,7 @@ namespace DUILIB
     protected:
         int m_iIndex;
         int m_iDrawIndex;
-        bool m_bSelected;
+        BOOL m_bSelected;
         UINT m_uButtonState;
         IListOwnerUI* m_pOwner;
     };
@@ -368,13 +368,13 @@ namespace DUILIB
 
         void DoEvent(TEVENT_UI& event);
         SIZE EstimateSize(SIZE szAvailable);
-        bool DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
+        BOOL DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
 
         void DrawItemText(HDC hDC, const RECT& rcItem);
 
     protected:
         SIZE    m_cxyFixedLast;
-        bool    m_bNeedEstimateSize;
+        BOOL    m_bNeedEstimateSize;
 
         SIZE    m_szAvailableLast;
         UINT    m_uFixedHeightLast;
@@ -439,22 +439,22 @@ namespace DUILIB
 
         IListOwnerUI* GetOwner();
         void SetOwner(CControlUI* pOwner);
-        void SetVisible(bool bVisible = true);
-        void SetEnabled(bool bEnable = true);
+        void SetVisible(BOOL bVisible = TRUE);
+        void SetEnabled(BOOL bEnable = TRUE);
 
-        bool IsSelected() const;
-        bool Select(bool bSelect = true, bool bTriggerEvent = true);
-        bool IsExpandable() const;
-        void SetExpandable(bool bExpandable);
-        bool IsExpanded() const;
-        bool Expand(bool bExpand = true);
+        BOOL IsSelected() const;
+        BOOL Select(BOOL bSelect = TRUE, BOOL bTriggerEvent = TRUE);
+        BOOL IsExpandable() const;
+        void SetExpandable(BOOL bExpandable);
+        BOOL IsExpanded() const;
+        BOOL Expand(BOOL bExpand = TRUE);
 
         void Invalidate(); // 直接CControl::Invalidate会导致滚动条刷新，重写减少刷新区域
-        bool Activate();
+        BOOL Activate();
 
         void DoEvent(TEVENT_UI& event);
         void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
-        bool DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
+        BOOL DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
 
         void DrawItemText(HDC hDC, const RECT& rcItem);
         void DrawItemBk(HDC hDC, const RECT& rcItem);
@@ -464,9 +464,9 @@ namespace DUILIB
     protected:
         int m_iIndex;
         int m_iDrawIndex;
-        bool m_bSelected;
-        bool m_bExpandable;
-        bool m_bExpand;
+        BOOL m_bSelected;
+        BOOL m_bExpandable;
+        BOOL m_bExpand;
         UINT m_uButtonState;
         IListOwnerUI* m_pOwner;
     };
@@ -482,8 +482,8 @@ namespace DUILIB
         LPCTSTR GetClass() const;
         LPVOID GetInterface(LPCTSTR pstrName);
 
-        void SetPos(RECT rc, bool bNeedInvalidate = true);
-        bool DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
+        void SetPos(RECT rc, BOOL bNeedInvalidate = TRUE);
+        BOOL DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
     };
 
 } // namespace DUILIB

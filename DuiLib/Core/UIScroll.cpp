@@ -6,7 +6,7 @@
 namespace DUILIB
 {
     CScrollUI::CScrollUI() :
-        m_bHorizontal(false),
+        m_bHorizontal(FALSE),
         m_nRange(100),
         m_nScrollPos(0),
         m_nLineSize(SCROLLBAR_LINESIZE),
@@ -21,8 +21,8 @@ namespace DUILIB
         m_uButton2State(0),
         m_dwThumbColor(0),
         m_uThumbState(0),
-        m_bShowButton1(true),
-        m_bShowButton2(true)
+        m_bShowButton1(TRUE),
+        m_bShowButton2(TRUE)
     {
         m_cxyFixed.cx = DEFAULT_SCROLLBAR_SIZE;
         ptLastMouse.x = ptLastMouse.y = 0;
@@ -52,16 +52,16 @@ namespace DUILIB
         m_pOwner = pOwner;
     }
 
-    void CScrollUI::SetVisible(bool bVisible)
+    void CScrollUI::SetVisible(BOOL bVisible)
     {
         if (m_bVisible == bVisible) return;
 
-        bool v = IsVisible();
+        BOOL v = IsVisible();
         m_bVisible = bVisible;
-        if (m_bFocused) m_bFocused = false;
+        if (m_bFocused) m_bFocused = FALSE;
     }
 
-    void CScrollUI::SetEnabled(bool bEnable)
+    void CScrollUI::SetEnabled(BOOL bEnable)
     {
         CControlUI::SetEnabled(bEnable);
         if (!IsEnabled()) {
@@ -77,12 +77,12 @@ namespace DUILIB
         else CControlUI::SetFocus();
     }
 
-    bool CScrollUI::IsHorizontal()
+    BOOL CScrollUI::IsHorizontal()
     {
         return m_bHorizontal;
     }
 
-    void CScrollUI::SetHorizontal(bool bHorizontal)
+    void CScrollUI::SetHorizontal(BOOL bHorizontal)
     {
         if (m_bHorizontal == bHorizontal) return;
 
@@ -114,7 +114,7 @@ namespace DUILIB
         m_nRange = nRange;
         if (m_nRange < 0) m_nRange = 0;
         if (m_nScrollPos > m_nRange) m_nScrollPos = m_nRange;
-        SetPos(m_rcItem, true);
+        SetPos(m_rcItem, TRUE);
     }
 
     int CScrollUI::GetScrollPos() const
@@ -122,7 +122,7 @@ namespace DUILIB
         return m_nScrollPos;
     }
 
-    void CScrollUI::SetScrollPos(int nPos, bool bTriggerEvent)
+    void CScrollUI::SetScrollPos(int nPos, BOOL bTriggerEvent)
     {
         if (m_nScrollPos == nPos) return;
 
@@ -138,10 +138,10 @@ namespace DUILIB
         }
         if (m_nScrollPos > m_nRange) m_nScrollPos = m_nRange;
 
-        SetPos(m_rcItem, true);
+        SetPos(m_rcItem, TRUE);
 
         if (bTriggerEvent && m_pManager != NULL)
-            m_pManager->SendNotify(this, DUI_MSGTYPE_SCROLL, m_nScrollPos, iOldScrollPos, true, false);
+            m_pManager->SendNotify(this, DUI_MSGTYPE_SCROLL, m_nScrollPos, iOldScrollPos, TRUE, FALSE);
     }
 
     int CScrollUI::GetLineSize() const
@@ -165,15 +165,15 @@ namespace DUILIB
         if (iUnit >= 0) m_nScrollUnit = iUnit;
     }
 
-    bool CScrollUI::GetShowButton1()
+    BOOL CScrollUI::GetShowButton1()
     {
         return m_bShowButton1;
     }
 
-    void CScrollUI::SetShowButton1(bool bShow)
+    void CScrollUI::SetShowButton1(BOOL bShow)
     {
         m_bShowButton1 = bShow;
-        SetPos(m_rcItem, true);
+        SetPos(m_rcItem, TRUE);
     }
 
     DWORD CScrollUI::GetButton1Color() const
@@ -240,15 +240,15 @@ namespace DUILIB
         Invalidate();
     }
 
-    bool CScrollUI::GetShowButton2()
+    BOOL CScrollUI::GetShowButton2()
     {
         return m_bShowButton2;
     }
 
-    void CScrollUI::SetShowButton2(bool bShow)
+    void CScrollUI::SetShowButton2(BOOL bShow)
     {
         m_bShowButton2 = bShow;
-        SetPos(m_rcItem, true);
+        SetPos(m_rcItem, TRUE);
     }
 
     DWORD CScrollUI::GetButton2Color() const
@@ -483,7 +483,7 @@ namespace DUILIB
         Invalidate();
     }
 
-    void CScrollUI::SetPos(RECT rc, bool bNeedInvalidate)
+    void CScrollUI::SetPos(RECT rc, BOOL bNeedInvalidate)
     {
         CControlUI::SetPos(rc, bNeedInvalidate);
         rc = m_rcItem;
@@ -871,17 +871,17 @@ namespace DUILIB
         else if (_tcscmp(pstrName, _T("bkhotimage")) == 0) SetBkHotImage(pstrValue);
         else if (_tcscmp(pstrName, _T("bkpushedimage")) == 0) SetBkPushedImage(pstrValue);
         else if (_tcscmp(pstrName, _T("bkdisabledimage")) == 0) SetBkDisabledImage(pstrValue);
-        else if (_tcscmp(pstrName, _T("hor")) == 0) SetHorizontal(_tcscmp(pstrValue, _T("true")) == 0);
+        else if (_tcscmp(pstrName, _T("hor")) == 0) SetHorizontal(_tcscmp(pstrValue, _T("TRUE")) == 0);
         else if (_tcscmp(pstrName, _T("linesize")) == 0) SetLineSize(_ttoi(pstrValue));
         else if (_tcscmp(pstrName, _T("range")) == 0) SetScrollRange(_ttoi(pstrValue));
         else if (_tcscmp(pstrName, _T("value")) == 0) SetScrollPos(_ttoi(pstrValue));
         else if (_tcscmp(pstrName, _T("scrollunit")) == 0) SetScrollUnit(_ttoi(pstrValue));
-        else if (_tcscmp(pstrName, _T("showbutton1")) == 0) SetShowButton1(_tcscmp(pstrValue, _T("true")) == 0);
-        else if (_tcscmp(pstrName, _T("showbutton2")) == 0) SetShowButton2(_tcscmp(pstrValue, _T("true")) == 0);
+        else if (_tcscmp(pstrName, _T("showbutton1")) == 0) SetShowButton1(_tcscmp(pstrValue, _T("TRUE")) == 0);
+        else if (_tcscmp(pstrName, _T("showbutton2")) == 0) SetShowButton2(_tcscmp(pstrValue, _T("TRUE")) == 0);
         else CControlUI::SetAttribute(pstrName, pstrValue);
     }
 
-    bool CScrollUI::DoPaint(HDC hDC, const RECT & rcPaint, CControlUI * pStopControl)
+    BOOL CScrollUI::DoPaint(HDC hDC, const RECT & rcPaint, CControlUI * pStopControl)
     {
         PaintBkColor(hDC);
         PaintBkImage(hDC);
@@ -891,7 +891,7 @@ namespace DUILIB
         PaintThumb(hDC);
         PaintRail(hDC);
         PaintBorder(hDC);
-        return true;
+        return TRUE;
     }
 
     void CScrollUI::PaintBk(HDC hDC)

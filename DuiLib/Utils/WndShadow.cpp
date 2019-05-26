@@ -36,7 +36,7 @@
 // walk around the for iterator scope bug of VC++6.0
 #ifdef _MSC_VER
 #if _MSC_VER == 1200
-#define for if(false);else for
+#define for if(FALSE);else for
 #endif
 #endif
 
@@ -80,7 +80,7 @@ namespace DUILIB
         , m_Color(RGB(0, 0, 0))
         , m_pImageInfo(NULL)
         , m_WndSize(0)
-        , m_bUpdate(false)
+        , m_bUpdate(FALSE)
     {
         ::ZeroMemory(&m_rcCorner, sizeof(m_rcCorner));
     }
@@ -94,11 +94,11 @@ namespace DUILIB
         }
     }
 
-    bool CWndShadow::Initialize(HINSTANCE hInstance)
+    BOOL CWndShadow::Initialize(HINSTANCE hInstance)
     {
         // Should not initiate more than once
         if (NULL != s_UpdateLayeredWindow)
-            return false;
+            return FALSE;
 
         HMODULE hUser32 = GetModuleHandle(_T("USER32.DLL"));
         s_UpdateLayeredWindow =
@@ -107,7 +107,7 @@ namespace DUILIB
 
         // If the import did not succeed, make sure your app can handle it!
         if (NULL == s_UpdateLayeredWindow)
-            return false;
+            return FALSE;
 
         // Store the instance handle
         s_hInstance = hInstance;
@@ -132,7 +132,7 @@ namespace DUILIB
 
         RegisterClassEx(&wcex);
 
-        return true;
+        return TRUE;
     }
 
     HWND CWndShadow::GetHWND() const
@@ -228,7 +228,7 @@ namespace DUILIB
                         // the window region would never be updated until WM_PAINT was sent.
                         // So do not Update() until next WM_PAINT is received in this case
                         if (LOWORD(lParam) > LOWORD(pThis->m_WndSize) || HIWORD(lParam) > HIWORD(pThis->m_WndSize))
-                            pThis->m_bUpdate = true;
+                            pThis->m_bUpdate = TRUE;
                         else
                             pThis->Update(hwnd);
                         if (!(pThis->m_Status & SS_VISABLE)) {
@@ -244,7 +244,7 @@ namespace DUILIB
             {
                 if (pThis->m_bUpdate) {
                     pThis->Update(hwnd);
-                    pThis->m_bUpdate = false;
+                    pThis->m_bUpdate = FALSE;
                 }
                 //return hr;
                 break;
@@ -266,7 +266,7 @@ namespace DUILIB
                         pThis->m_Status &= ~(SS_VISABLE | SS_PARENTVISIBLE);
                     } else if (!(pThis->m_Status & SS_PARENTVISIBLE)) {
                         //pThis->Update(hwnd);
-                        pThis->m_bUpdate = true;
+                        pThis->m_bUpdate = TRUE;
                         ::ShowWindow(pThis->m_hWnd, SW_SHOWNA);
                         pThis->m_Status |= SS_VISABLE | SS_PARENTVISIBLE;
                     }
@@ -349,7 +349,7 @@ namespace DUILIB
             RECT rcBmpPart = {0, 0, m_pImageInfo->nX, m_pImageInfo->nY};
             RECT rcCorner = {m_rcCorner.left + m_rcHoleOffset.left, m_rcCorner.top + m_rcHoleOffset.top,
                 m_rcCorner.right + m_rcHoleOffset.right, m_rcCorner.bottom + m_rcHoleOffset.bottom};
-            CRenderUI::DrawImage(hMemDC, m_pImageInfo->hBitmap, rc, rc, rcBmpPart, rcCorner, true, 255, true);
+            CRenderUI::DrawImage(hMemDC, m_pImageInfo->hBitmap, rc, rc, rcBmpPart, rcCorner, TRUE, 255, TRUE);
         } else {
             MakeShadow((UINT32*)pvBits, hParent, &WndRect);
             hOriBmp = (HBITMAP)SelectObject(hMemDC, hbitmap);
@@ -564,10 +564,10 @@ namespace DUILIB
         DeleteObject(hParentRgn);
     }
 
-    bool CWndShadow::SetImage(LPCTSTR image, RECT rcCorner, RECT rcHoleOffset)
+    BOOL CWndShadow::SetImage(LPCTSTR image, RECT rcCorner, RECT rcHoleOffset)
     {
         TIMAGEINFO_UI* pImageInfo = CRenderUI::LoadImage(image);
-        if (pImageInfo == NULL) return false;
+        if (pImageInfo == NULL) return FALSE;
 
         if (m_pImageInfo) CRenderUI::FreeImage(m_pImageInfo);
         m_pImageInfo = pImageInfo;
@@ -576,61 +576,61 @@ namespace DUILIB
 
         if (SS_VISABLE & m_Status)
             Update(GetParent(m_hWnd));
-        return true;
+        return TRUE;
     }
 
-    bool CWndShadow::SetSize(int NewSize)
+    BOOL CWndShadow::SetSize(int NewSize)
     {
         //if(NewSize > 20 || NewSize < -20)
-        //	return false;
+        //	return FALSE;
 
         m_nSize = (signed char)NewSize;
         if (SS_VISABLE & m_Status)
             Update(GetParent(m_hWnd));
-        return true;
+        return TRUE;
     }
 
-    bool CWndShadow::SetSharpness(unsigned int NewSharpness)
+    BOOL CWndShadow::SetSharpness(unsigned int NewSharpness)
     {
         if (NewSharpness > 20)
-            return false;
+            return FALSE;
 
         m_nSharpness = (unsigned char)NewSharpness;
         if (SS_VISABLE & m_Status)
             Update(GetParent(m_hWnd));
-        return true;
+        return TRUE;
     }
 
-    bool CWndShadow::SetDarkness(unsigned int NewDarkness)
+    BOOL CWndShadow::SetDarkness(unsigned int NewDarkness)
     {
         if (NewDarkness > 255)
-            return false;
+            return FALSE;
 
         m_nDarkness = (unsigned char)NewDarkness;
         if (SS_VISABLE & m_Status)
             Update(GetParent(m_hWnd));
-        return true;
+        return TRUE;
     }
 
-    bool CWndShadow::SetPosition(int NewXOffset, int NewYOffset)
+    BOOL CWndShadow::SetPosition(int NewXOffset, int NewYOffset)
     {
         if (NewXOffset > 20 || NewXOffset < -20 ||
             NewYOffset > 20 || NewYOffset < -20)
-            return false;
+            return FALSE;
 
         m_nxOffset = (signed char)NewXOffset;
         m_nyOffset = (signed char)NewYOffset;
         if (SS_VISABLE & m_Status)
             Update(GetParent(m_hWnd));
-        return true;
+        return TRUE;
     }
 
-    bool CWndShadow::SetColor(COLORREF NewColor)
+    BOOL CWndShadow::SetColor(COLORREF NewColor)
     {
         m_Color = NewColor;
         if (SS_VISABLE & m_Status)
             Update(GetParent(m_hWnd));
-        return true;
+        return TRUE;
     }
 }
 

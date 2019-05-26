@@ -20,12 +20,12 @@ namespace DUILIB
 
     }
 
-    bool CDelegateBase::Equals(const CDelegateBase& rhs) const
+    BOOL CDelegateBase::Equals(const CDelegateBase& rhs) const
     {
         return m_pObject == rhs.m_pObject && m_pFn == rhs.m_pFn;
     }
 
-    bool CDelegateBase::operator() (void* param)
+    BOOL CDelegateBase::operator() (void* param)
     {
         return Invoke(param);
     }
@@ -48,7 +48,7 @@ namespace DUILIB
         }
     }
 
-    CEventSource::operator bool()
+    CEventSource::operator BOOL()
     {
         return m_aDelegates.GetSize() > 0;
     }
@@ -84,13 +84,13 @@ namespace DUILIB
         (*this) -= MakeDelegate(pFn);
     }
 
-    bool CEventSource::operator() (void* param)
+    BOOL CEventSource::operator() (void* param)
     {
         for (int i = 0; i < m_aDelegates.GetSize(); i++) {
             CDelegateBase* pObject = static_cast<CDelegateBase*>(m_aDelegates[i]);
-            if (pObject && !(*pObject)(param)) return false;
+            if (pObject && !(*pObject)(param)) return FALSE;
         }
-        return true;
+        return TRUE;
     }
 
 } // namespace DUILIB

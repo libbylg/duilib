@@ -4,7 +4,7 @@
 namespace DUILIB
 {
 	CTileLayoutUI::CTileLayoutUI() : m_nColumns(1), m_nRows(0), m_nColumnsFixed(0), m_iChildVPadding(0),
-		m_bIgnoreItemPadding(true)
+		m_bIgnoreItemPadding(TRUE)
 	{
 		m_szItem.cx = m_szItem.cy = 80;
 	}
@@ -81,7 +81,7 @@ namespace DUILIB
 		else CContainerUI::SetAttribute(pstrName, pstrValue);
 	}
 
-	void CTileLayoutUI::SetPos(RECT rc, bool bNeedInvalidate)
+	void CTileLayoutUI::SetPos(RECT rc, BOOL bNeedInvalidate)
 	{
 		CControlUI::SetPos(rc, bNeedInvalidate);
 		rc = m_rcItem;
@@ -192,43 +192,43 @@ namespace DUILIB
 			if (iChildAlign == DT_CENTER) {
 				if (iChildVAlign == DT_VCENTER) {
 					RECT rcCtrl = { iPosX + (m_szItem.cx-sz.cx)/2+rcPadding.left, iPosY + (m_szItem.cy-sz.cy)/2+rcPadding.top, iPosX + (m_szItem.cx-sz.cx)/2 + sz.cx-rcPadding.right, iPosY + (m_szItem.cy-sz.cy)/2 + sz.cy-rcPadding.bottom };
-					pControl->SetPos(rcCtrl, false);
+					pControl->SetPos(rcCtrl, FALSE);
 				}
 				else if (iChildVAlign == DT_BOTTOM) {
 					RECT rcCtrl = { iPosX + (m_szItem.cx-sz.cx)/2+rcPadding.left, iPosY + m_szItem.cy - sz.cy+rcPadding.top, iPosX + (m_szItem.cx-sz.cx)/2 + sz.cx-rcPadding.right, iPosY + m_szItem.cy-rcPadding.bottom };
-					pControl->SetPos(rcCtrl, false);
+					pControl->SetPos(rcCtrl, FALSE);
 				}
 				else {
 					RECT rcCtrl = { iPosX + (m_szItem.cx-sz.cx)/2+rcPadding.left, iPosY+rcPadding.top, iPosX + (m_szItem.cx-sz.cx)/2 + sz.cx-rcPadding.right, iPosY + sz.cy-rcPadding.bottom };
-					pControl->SetPos(rcCtrl, false);
+					pControl->SetPos(rcCtrl, FALSE);
 				}
 			}
 			else if (iChildAlign == DT_RIGHT) {
 				if (iChildVAlign == DT_VCENTER) {
 					RECT rcCtrl = { iPosX + m_szItem.cx - sz.cx+rcPadding.left, iPosY + (m_szItem.cy-sz.cy)/2+rcPadding.top, iPosX + m_szItem.cx-rcPadding.right, iPosY + (m_szItem.cy-sz.cy)/2 + sz.cy-rcPadding.bottom };
-					pControl->SetPos(rcCtrl, false);
+					pControl->SetPos(rcCtrl, FALSE);
 				}
 				else if (iChildVAlign == DT_BOTTOM) {
 					RECT rcCtrl = { iPosX + m_szItem.cx - sz.cx+rcPadding.left, iPosY + m_szItem.cy - sz.cy+rcPadding.top, iPosX + m_szItem.cx-rcPadding.right, iPosY + m_szItem.cy-rcPadding.bottom };
-					pControl->SetPos(rcCtrl, false);
+					pControl->SetPos(rcCtrl, FALSE);
 				}
 				else {
 					RECT rcCtrl = { iPosX + m_szItem.cx - sz.cx+rcPadding.left, iPosY+rcPadding.top, iPosX + m_szItem.cx-rcPadding.right, iPosY + sz.cy-rcPadding.bottom };
-					pControl->SetPos(rcCtrl, false);
+					pControl->SetPos(rcCtrl, FALSE);
 				}
 			}
 			else {
 				if (iChildVAlign == DT_VCENTER) {
 					RECT rcCtrl = { iPosX+rcPadding.left, iPosY + (m_szItem.cy-sz.cy)/2+rcPadding.top, iPosX + sz.cx-rcPadding.right, iPosY + (m_szItem.cy-sz.cy)/2 + sz.cy-rcPadding.bottom };
-					pControl->SetPos(rcCtrl, false);
+					pControl->SetPos(rcCtrl, FALSE);
 				}
 				else if (iChildVAlign == DT_BOTTOM) {
 					RECT rcCtrl = { iPosX+rcPadding.left, iPosY + m_szItem.cy - sz.cy+rcPadding.top, iPosX + sz.cx-rcPadding.right, iPosY + m_szItem.cy-rcPadding.bottom };
-					pControl->SetPos(rcCtrl, false);
+					pControl->SetPos(rcCtrl, FALSE);
 				}
 				else {
 					RECT rcCtrl = { iPosX+rcPadding.left, iPosY+rcPadding.top, iPosX + sz.cx-rcPadding.right, iPosY + sz.cy-rcPadding.bottom };
-					pControl->SetPos(rcCtrl, false);
+					pControl->SetPos(rcCtrl, FALSE);
 				}
 			}
 		}
@@ -321,7 +321,7 @@ namespace DUILIB
 	//		if( szTile.cy > pControl->GetMaxHeight() ) szTile.cy = pControl->GetMaxHeight();
 	//		RECT rcPos = {(rcTile.left + rcTile.right - szTile.cx) / 2, (rcTile.top + rcTile.bottom - szTile.cy) / 2,
 	//			(rcTile.left + rcTile.right - szTile.cx) / 2 + szTile.cx, (rcTile.top + rcTile.bottom - szTile.cy) / 2 + szTile.cy};
-	//		pControl->SetPos(rcPos, false);
+	//		pControl->SetPos(rcPos, FALSE);
 
 	//		if( (++iCount % m_nColumns) == 0 ) {
 	//			ptTile.x = iPosX;

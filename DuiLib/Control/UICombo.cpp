@@ -13,7 +13,7 @@ namespace DUILIB
     {
     public:
         CComboBodyUI::CComboBodyUI(CComboUI* pOwner);
-        bool DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
+        BOOL DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
 
     protected:
         CComboUI* m_pOwner;
@@ -25,10 +25,10 @@ namespace DUILIB
         ASSERT(m_pOwner);
     }
 
-    bool CComboBodyUI::DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl)
+    BOOL CComboBodyUI::DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl)
     {
         RECT rcTemp = {0};
-        if (!::IntersectRect(&rcTemp, &rcPaint, &m_rcItem)) return true;
+        if (!::IntersectRect(&rcTemp, &rcPaint, &m_rcItem)) return TRUE;
 
         TListInfoUI* pListInfo = NULL;
         if (m_pOwner) pListInfo = m_pOwner->GetListInfo();
@@ -49,12 +49,12 @@ namespace DUILIB
             if (!::IntersectRect(&rcTemp, &rcPaint, &rc)) {
                 for (int it = 0; it < m_items.GetSize(); it++) {
                     CControlUI* pControl = static_cast<CControlUI*>(m_items[it]);
-                    if (pControl == pStopControl) return false;
+                    if (pControl == pStopControl) return FALSE;
                     if (!pControl->IsVisible()) continue;
                     if (!::IntersectRect(&rcTemp, &rcPaint, &pControl->GetPos())) continue;
                     if (pControl->IsFloat()) {
                         if (!::IntersectRect(&rcTemp, &m_rcItem, &pControl->GetPos())) continue;
-                        if (!pControl->Paint(hDC, rcPaint, pStopControl)) return false;
+                        if (!pControl->Paint(hDC, rcPaint, pStopControl)) return FALSE;
                     }
                 }
             } else {
@@ -63,7 +63,7 @@ namespace DUILIB
                 CRenderClip::GenerateClip(hDC, rcTemp, childClip);
                 for (int it = 0; it < m_items.GetSize(); it++) {
                     CControlUI* pControl = static_cast<CControlUI*>(m_items[it]);
-                    if (pControl == pStopControl) return false;
+                    if (pControl == pStopControl) return FALSE;
                     if (!pControl->IsVisible()) continue;
                     if (!pControl->IsFloat()) {
                         IListItemUI* pListItem = static_cast<IListItemUI*>(pControl->GetInterface(DUI_CTR_ILISTITEM));
@@ -87,34 +87,34 @@ namespace DUILIB
                     if (pControl->IsFloat()) {
                         if (!::IntersectRect(&rcTemp, &m_rcItem, &pControl->GetPos())) continue;
                         CRenderClip::UseOldClipBegin(hDC, childClip);
-                        if (!pControl->Paint(hDC, rcPaint, pStopControl)) return false;
+                        if (!pControl->Paint(hDC, rcPaint, pStopControl)) return FALSE;
                         CRenderClip::UseOldClipEnd(hDC, childClip);
                     } else {
                         if (!::IntersectRect(&rcTemp, &rc, &pControl->GetPos())) continue;
-                        if (!pControl->Paint(hDC, rcPaint, pStopControl)) return false;
+                        if (!pControl->Paint(hDC, rcPaint, pStopControl)) return FALSE;
                     }
                 }
             }
         }
 
         if (m_pVerticalScrollBar != NULL) {
-            if (m_pVerticalScrollBar == pStopControl) return false;
+            if (m_pVerticalScrollBar == pStopControl) return FALSE;
             if (m_pVerticalScrollBar->IsVisible()) {
                 if (::IntersectRect(&rcTemp, &rcPaint, &m_pVerticalScrollBar->GetPos())) {
-                    if (!m_pVerticalScrollBar->Paint(hDC, rcPaint, pStopControl)) return false;
+                    if (!m_pVerticalScrollBar->Paint(hDC, rcPaint, pStopControl)) return FALSE;
                 }
             }
         }
 
         if (m_pHorizontalScrollBar != NULL) {
-            if (m_pHorizontalScrollBar == pStopControl) return false;
+            if (m_pHorizontalScrollBar == pStopControl) return FALSE;
             if (m_pHorizontalScrollBar->IsVisible()) {
                 if (::IntersectRect(&rcTemp, &rcPaint, &m_pHorizontalScrollBar->GetPos())) {
-                    if (!m_pHorizontalScrollBar->Paint(hDC, rcPaint, pStopControl)) return false;
+                    if (!m_pHorizontalScrollBar->Paint(hDC, rcPaint, pStopControl)) return FALSE;
                 }
             }
         }
-        return true;
+        return TRUE;
     }
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -142,7 +142,7 @@ namespace DUILIB
         CComboUI* m_pOwner;
         CVerticalLayoutUI* m_pLayout;
         int m_iOldSel;
-        bool m_bScrollbarClicked;
+        BOOL m_bScrollbarClicked;
     };
 
 
@@ -151,7 +151,7 @@ void CComboWnd::Init(CComboUI* pOwner)
     m_pOwner = pOwner;
     m_pLayout = NULL;
     m_iOldSel = m_pOwner->GetCurSel();
-    m_bScrollbarClicked = false;
+    m_bScrollbarClicked = FALSE;
 
     // Position the popup window in absolute space
     SIZE szDrop = m_pOwner->GetDropBoxSize();
@@ -211,13 +211,13 @@ void CComboWnd::OnFinalMessage(HWND hWnd)
 LRESULT CComboWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     if( uMsg == WM_CREATE ) {
-		m_pm.SetForceUseSharedRes(true);
+		m_pm.SetForceUseSharedRes(TRUE);
         m_pm.Init(m_hWnd);
         // The trick is to add the items to the new container. Their owner gets
         // reassigned by this operation - which is why it is important to reassign
         // the items back to the righfull owner/manager when the window closes.
         m_pLayout = new CComboBodyUI(m_pOwner);
-        m_pLayout->SetManager(&m_pm, NULL, true);
+        m_pLayout->SetManager(&m_pm, NULL, TRUE);
         LPCTSTR pDefaultAttributes = m_pOwner->GetManager()->GetDefaultAttributeList(_T("VerticalLayout"));
         if( pDefaultAttributes ) {
             m_pLayout->SetAttributeList(pDefaultAttributes);
@@ -226,7 +226,7 @@ LRESULT CComboWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
         m_pLayout->SetBkColor(0xFFFFFFFF);
         m_pLayout->SetBorderColor(0xFFC6C7D2);
         m_pLayout->SetBorderSize(1);
-        m_pLayout->SetAutoDestroy(false);
+        m_pLayout->SetAutoDestroy(FALSE);
         m_pLayout->EnableScrollBar();
         m_pLayout->SetAttributeList(m_pOwner->GetDropBoxAttributeList());
         for( int i = 0; i < m_pOwner->GetCount(); i++ ) {
@@ -237,9 +237,9 @@ LRESULT CComboWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
         return 0;
     }
     else if( uMsg == WM_CLOSE ) {
-        m_pOwner->SetManager(m_pOwner->GetManager(), m_pOwner->GetParent(), false);
-		if( !m_pOwner->IsFloat() ) m_pOwner->SetPos(m_pOwner->GetPos(), false);
-		else m_pOwner->SetPos(m_pOwner->GetRelativePos(), false);
+        m_pOwner->SetManager(m_pOwner->GetManager(), m_pOwner->GetParent(), FALSE);
+		if( !m_pOwner->IsFloat() ) m_pOwner->SetPos(m_pOwner->GetPos(), FALSE);
+		else m_pOwner->SetPos(m_pOwner->GetRelativePos(), FALSE);
         m_pOwner->SetFocus();
     }
     else if( uMsg == WM_LBUTTONDOWN || uMsg == WM_LBUTTONDBLCLK ) {
@@ -248,12 +248,12 @@ LRESULT CComboWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
         ::ScreenToClient(m_pm.GetPaintWindow(), &pt);
         CControlUI* pControl = m_pm.FindControl(pt);
         if( pControl && _tcscmp(pControl->GetClass(), DUI_CTR_SCROLLBAR) == 0 ) {
-            m_bScrollbarClicked = true;
+            m_bScrollbarClicked = TRUE;
         }
     }
     else if( uMsg == WM_LBUTTONUP ) {
         if (m_bScrollbarClicked) {
-            m_bScrollbarClicked = false;
+            m_bScrollbarClicked = FALSE;
         }
         else {
             POINT pt = { 0 };
@@ -266,7 +266,7 @@ LRESULT CComboWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
     else if( uMsg == WM_KEYDOWN ) {
         switch( wParam ) {
         case VK_ESCAPE:
-            m_pOwner->SelectItem(m_iOldSel, true);
+            m_pOwner->SelectItem(m_iOldSel, TRUE);
             EnsureVisible(m_iOldSel);
             // FALL THROUGH...
         case VK_RETURN:
@@ -296,10 +296,10 @@ LRESULT CComboWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
         if( m_hWnd != (HWND) wParam ) {
             HWND hWnd = ::GetFocus();
             HWND hParentWnd = NULL;
-            bool bIsChildFocus = false;
+            BOOL bIsChildFocus = FALSE;
             while( hParentWnd = ::GetParent(hWnd) ) {
                 if( m_hWnd == hParentWnd ) {
-                    bIsChildFocus = true;
+                    bIsChildFocus = TRUE;
                     break;
                 }
                 hWnd = hParentWnd;
@@ -319,7 +319,7 @@ LRESULT CComboWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 void CComboWnd::EnsureVisible(int iIndex)
 {
     if( m_pOwner->GetCurSel() < 0 ) return;
-    m_pLayout->FindSelectable(m_pOwner->GetCurSel(), false);
+    m_pLayout->FindSelectable(m_pOwner->GetCurSel(), FALSE);
     RECT rcItem = m_pLayout->GetItemAt(iIndex)->GetPos();
     RECT rcList = m_pLayout->GetPos();
     CScrollUI* pHorizontalScrollBar = m_pLayout->GetHorizontalScrollBar();
@@ -359,7 +359,7 @@ CComboUI::CComboUI() : m_pWindow(NULL), m_iCurSel(-1), m_uButtonState(0)
     m_ListInfo.uTextStyle = DT_VCENTER | DT_SINGLELINE;
     m_ListInfo.dwTextColor = 0xFF000000;
     m_ListInfo.dwBkColor = 0;
-    m_ListInfo.bAlternateBk = false;
+    m_ListInfo.bAlternateBk = FALSE;
     m_ListInfo.dwSelectedTextColor = 0xFF000000;
     m_ListInfo.dwSelectedBkColor = 0xFFC1E3FF;
     m_ListInfo.dwHotTextColor = 0xFF000000;
@@ -370,11 +370,11 @@ CComboUI::CComboUI() : m_pWindow(NULL), m_iCurSel(-1), m_uButtonState(0)
     m_ListInfo.dwHLineColor = 0xFF3C3C3C;
     m_ListInfo.iVLineSize = 0;
     m_ListInfo.dwVLineColor = 0xFF3C3C3C;
-    m_ListInfo.bShowHtml = false;
-    m_ListInfo.bMultiExpandable = false;
+    m_ListInfo.bShowHtml = FALSE;
+    m_ListInfo.bMultiExpandable = FALSE;
 
-	m_bShowText = true;
-	m_bSelectCloseFlag = true;
+	m_bShowText = TRUE;
+	m_bSelectCloseFlag = TRUE;
     ::ZeroMemory(&m_ListInfo.rcTextPadding, sizeof(m_ListInfo.rcTextPadding));
     ::ZeroMemory(&m_ListInfo.rcColumn, sizeof(m_ListInfo.rcColumn));
 }
@@ -405,47 +405,47 @@ int CComboUI::GetCurSel() const
     return m_iCurSel;
 }
 
-bool CComboUI::GetSelectCloseFlag()
+BOOL CComboUI::GetSelectCloseFlag()
 {
 	return m_bSelectCloseFlag;
 }
 
-void CComboUI::SetSelectCloseFlag(bool flag)
+void CComboUI::SetSelectCloseFlag(BOOL flag)
 {
 	m_bSelectCloseFlag = flag;
 }
 
-bool CComboUI::SelectItem(int iIndex, bool bTakeFocus, bool bTriggerEvent)
+BOOL CComboUI::SelectItem(int iIndex, BOOL bTakeFocus, BOOL bTriggerEvent)
 {
     if( m_bSelectCloseFlag && m_pWindow != NULL ) m_pWindow->Close();
-    if( iIndex == m_iCurSel ) return true;
+    if( iIndex == m_iCurSel ) return TRUE;
     int iOldSel = m_iCurSel;
     if( m_iCurSel >= 0 ) {
         CControlUI* pControl = static_cast<CControlUI*>(m_items[m_iCurSel]);
-        if( !pControl ) return false;
+        if( !pControl ) return FALSE;
         IListItemUI* pListItem = static_cast<IListItemUI*>(pControl->GetInterface(DUI_CTR_ILISTITEM));
-        if( pListItem != NULL ) pListItem->Select(false, bTriggerEvent);
+        if( pListItem != NULL ) pListItem->Select(FALSE, bTriggerEvent);
         m_iCurSel = -1;
     }
-    if( iIndex < 0 ) return false;
-    if( m_items.GetSize() == 0 ) return false;
+    if( iIndex < 0 ) return FALSE;
+    if( m_items.GetSize() == 0 ) return FALSE;
     if( iIndex >= m_items.GetSize() ) iIndex = m_items.GetSize() - 1;
     CControlUI* pControl = static_cast<CControlUI*>(m_items[iIndex]);
-    if( !pControl || !pControl->IsVisible() || !pControl->IsEnabled() ) return false;
+    if( !pControl || !pControl->IsVisible() || !pControl->IsEnabled() ) return FALSE;
     IListItemUI* pListItem = static_cast<IListItemUI*>(pControl->GetInterface(DUI_CTR_ILISTITEM));
-    if( pListItem == NULL ) return false;
+    if( pListItem == NULL ) return FALSE;
     m_iCurSel = iIndex;
     if( m_pWindow != NULL || bTakeFocus ) pControl->SetFocus();
-    pListItem->Select(true, bTriggerEvent);
+    pListItem->Select(TRUE, bTriggerEvent);
     if( m_pManager != NULL && bTriggerEvent) m_pManager->SendNotify(this, DUI_MSGTYPE_ITEMSELECT, m_iCurSel, iOldSel);
     Invalidate();
 
-    return true;
+    return TRUE;
 }
 
-bool CComboUI::ExpandItem(int iIndex, bool bExpand)
+BOOL CComboUI::ExpandItem(int iIndex, BOOL bExpand)
 {
-    return false;
+    return FALSE;
 }
 
 int CComboUI::GetExpandedItem() const
@@ -453,16 +453,16 @@ int CComboUI::GetExpandedItem() const
     return -1;
 }
 
-bool CComboUI::SetItemIndex(CControlUI* pControl, int iNewIndex)
+BOOL CComboUI::SetItemIndex(CControlUI* pControl, int iNewIndex)
 {
     int iOrginIndex = GetItemIndex(pControl);
-    if( iOrginIndex == -1 ) return false;
-    if( iOrginIndex == iNewIndex ) return true;
+    if( iOrginIndex == -1 ) return FALSE;
+    if( iOrginIndex == iNewIndex ) return TRUE;
 
     IListItemUI* pSelectedListItem = NULL;
     if( m_iCurSel >= 0 ) pSelectedListItem = 
         static_cast<IListItemUI*>(GetItemAt(m_iCurSel)->GetInterface(DUI_CTR_ILISTITEM));
-    if( !CContainerUI::SetItemIndex(pControl, iNewIndex) ) return false;
+    if( !CContainerUI::SetItemIndex(pControl, iNewIndex) ) return FALSE;
     int iMinIndex = min(iOrginIndex, iNewIndex);
     int iMaxIndex = max(iOrginIndex, iNewIndex);
     for(int i = iMinIndex; i < iMaxIndex + 1; ++i) {
@@ -473,21 +473,21 @@ bool CComboUI::SetItemIndex(CControlUI* pControl, int iNewIndex)
         }
     }
     if( m_iCurSel >= 0 && pSelectedListItem != NULL ) m_iCurSel = pSelectedListItem->GetIndex();
-    return true;
+    return TRUE;
 }
 
-bool CComboUI::SetMultiItemIndex(CControlUI* pStartControl, int iCount, int iNewStartIndex)
+BOOL CComboUI::SetMultiItemIndex(CControlUI* pStartControl, int iCount, int iNewStartIndex)
 {
-    if (pStartControl == NULL || iCount < 0 || iNewStartIndex < 0) return false;
+    if (pStartControl == NULL || iCount < 0 || iNewStartIndex < 0) return FALSE;
     int iStartIndex = GetItemIndex(pStartControl);
-    if (iStartIndex == iNewStartIndex) return true;
-    if (iStartIndex + iCount > GetCount()) return false;
-    if (iNewStartIndex + iCount > GetCount()) return false;
+    if (iStartIndex == iNewStartIndex) return TRUE;
+    if (iStartIndex + iCount > GetCount()) return FALSE;
+    if (iNewStartIndex + iCount > GetCount()) return FALSE;
 
     IListItemUI* pSelectedListItem = NULL;
     if( m_iCurSel >= 0 ) pSelectedListItem = 
         static_cast<IListItemUI*>(GetItemAt(m_iCurSel)->GetInterface(DUI_CTR_ILISTITEM));
-    if( !CContainerUI::SetMultiItemIndex(pStartControl, iCount, iNewStartIndex) ) return false;
+    if( !CContainerUI::SetMultiItemIndex(pStartControl, iCount, iNewStartIndex) ) return FALSE;
     int iMinIndex = min(iStartIndex, iNewStartIndex);
     int iMaxIndex = max(iStartIndex + iCount, iNewStartIndex + iCount);
     for(int i = iMinIndex; i < iMaxIndex + 1; ++i) {
@@ -498,10 +498,10 @@ bool CComboUI::SetMultiItemIndex(CControlUI* pStartControl, int iCount, int iNew
         }
     }
     if( m_iCurSel >= 0 && pSelectedListItem != NULL ) m_iCurSel = pSelectedListItem->GetIndex();
-    return true;
+    return TRUE;
 }
 
-bool CComboUI::Add(CControlUI* pControl)
+BOOL CComboUI::Add(CControlUI* pControl)
 {
     IListItemUI* pListItem = static_cast<IListItemUI*>(pControl->GetInterface(DUI_CTR_ILISTITEM));
     if( pListItem != NULL ) 
@@ -512,9 +512,9 @@ bool CComboUI::Add(CControlUI* pControl)
     return CContainerUI::Add(pControl);
 }
 
-bool CComboUI::AddAt(CControlUI* pControl, int iIndex)
+BOOL CComboUI::AddAt(CControlUI* pControl, int iIndex)
 {
-    if (!CContainerUI::AddAt(pControl, iIndex)) return false;
+    if (!CContainerUI::AddAt(pControl, iIndex)) return FALSE;
 
     // The list items should know about us
     IListItemUI* pListItem = static_cast<IListItemUI*>(pControl->GetInterface(DUI_CTR_ILISTITEM));
@@ -531,15 +531,15 @@ bool CComboUI::AddAt(CControlUI* pControl, int iIndex)
         }
     }
     if( m_iCurSel >= iIndex ) m_iCurSel += 1;
-    return true;
+    return TRUE;
 }
 
-bool CComboUI::Remove(CControlUI* pControl, bool bDoNotDestroy)
+BOOL CComboUI::Remove(CControlUI* pControl, BOOL bDoNotDestroy)
 {
     int iIndex = GetItemIndex(pControl);
-    if (iIndex == -1) return false;
+    if (iIndex == -1) return FALSE;
 
-    if (!CContainerUI::RemoveAt(iIndex, bDoNotDestroy)) return false;
+    if (!CContainerUI::RemoveAt(iIndex, bDoNotDestroy)) return FALSE;
 
     for(int i = iIndex; i < GetCount(); ++i) {
         CControlUI* p = GetItemAt(i);
@@ -552,15 +552,15 @@ bool CComboUI::Remove(CControlUI* pControl, bool bDoNotDestroy)
     if( iIndex == m_iCurSel && m_iCurSel >= 0 ) {
         int iSel = m_iCurSel;
         m_iCurSel = -1;
-        SelectItem(FindSelectable(iSel, false));
+        SelectItem(FindSelectable(iSel, FALSE));
     }
     else if( iIndex < m_iCurSel ) m_iCurSel -= 1;
-    return true;
+    return TRUE;
 }
 
-bool CComboUI::RemoveAt(int iIndex, bool bDoNotDestroy)
+BOOL CComboUI::RemoveAt(int iIndex, BOOL bDoNotDestroy)
 {
-    if (!CContainerUI::RemoveAt(iIndex, bDoNotDestroy)) return false;
+    if (!CContainerUI::RemoveAt(iIndex, bDoNotDestroy)) return FALSE;
 
     for(int i = iIndex; i < GetCount(); ++i) {
         CControlUI* p = GetItemAt(i);
@@ -571,10 +571,10 @@ bool CComboUI::RemoveAt(int iIndex, bool bDoNotDestroy)
     if( iIndex == m_iCurSel && m_iCurSel >= 0 ) {
         int iSel = m_iCurSel;
         m_iCurSel = -1;
-        SelectItem(FindSelectable(iSel, false));
+        SelectItem(FindSelectable(iSel, FALSE));
     }
     else if( iIndex < m_iCurSel ) m_iCurSel -= 1;
-    return true;
+    return TRUE;
 }
 
 void CComboUI::RemoveAll()
@@ -626,29 +626,29 @@ void CComboUI::DoEvent(TEVENT_UI& event)
             case VK_F4:
                 Activate();
             case VK_UP:
-                SetSelectCloseFlag(false);
-                SelectItem(FindSelectable(m_iCurSel - 1, false));
-                SetSelectCloseFlag(true);
+                SetSelectCloseFlag(FALSE);
+                SelectItem(FindSelectable(m_iCurSel - 1, FALSE));
+                SetSelectCloseFlag(TRUE);
             case VK_DOWN:
-                SetSelectCloseFlag(false);
-                SelectItem(FindSelectable(m_iCurSel + 1, true));
-                SetSelectCloseFlag(true);
+                SetSelectCloseFlag(FALSE);
+                SelectItem(FindSelectable(m_iCurSel + 1, TRUE));
+                SetSelectCloseFlag(TRUE);
             case VK_PRIOR:
-                SetSelectCloseFlag(false);
-                SelectItem(FindSelectable(m_iCurSel - 1, false));
-                SetSelectCloseFlag(true);
+                SetSelectCloseFlag(FALSE);
+                SelectItem(FindSelectable(m_iCurSel - 1, FALSE));
+                SetSelectCloseFlag(TRUE);
             case VK_NEXT:
-                SetSelectCloseFlag(false);
-                SelectItem(FindSelectable(m_iCurSel + 1, true));
-                SetSelectCloseFlag(true);
+                SetSelectCloseFlag(FALSE);
+                SelectItem(FindSelectable(m_iCurSel + 1, TRUE));
+                SetSelectCloseFlag(TRUE);
             case VK_HOME:
-                SetSelectCloseFlag(false);
-                SelectItem(FindSelectable(0, false));
-                SetSelectCloseFlag(true);
+                SetSelectCloseFlag(FALSE);
+                SelectItem(FindSelectable(0, FALSE));
+                SetSelectCloseFlag(TRUE);
             case VK_END:
-                SetSelectCloseFlag(false);
-                SelectItem(FindSelectable(GetCount() - 1, true));
-                SetSelectCloseFlag(true);
+                SetSelectCloseFlag(FALSE);
+                SelectItem(FindSelectable(GetCount() - 1, TRUE));
+                SetSelectCloseFlag(TRUE);
             }
             return;
         }
@@ -656,10 +656,10 @@ void CComboUI::DoEvent(TEVENT_UI& event)
     if( event.Type == UIEVENT_SCROLLWHEEL )
     {
         if (IsEnabled()) {
-            bool bDownward = LOWORD(event.wParam) == SB_LINEDOWN;
-            SetSelectCloseFlag(false);
+            BOOL bDownward = LOWORD(event.wParam) == SB_LINEDOWN;
+            SetSelectCloseFlag(FALSE);
             SelectItem(FindSelectable(m_iCurSel + (bDownward ? 1 : -1), bDownward));
-            SetSelectCloseFlag(true);
+            SetSelectCloseFlag(TRUE);
             return;
         }
     }
@@ -703,16 +703,16 @@ SIZE CComboUI::EstimateSize(SIZE szAvailable)
     return CControlUI::EstimateSize(szAvailable);
 }
 
-bool CComboUI::Activate()
+BOOL CComboUI::Activate()
 {
-    if( !CControlUI::Activate() ) return false;
-    if( m_pWindow ) return true;
+    if( !CControlUI::Activate() ) return FALSE;
+    if( m_pWindow ) return TRUE;
     m_pWindow = new CComboWnd();
     ASSERT(m_pWindow);
     m_pWindow->Init(this);
     if( m_pManager != NULL ) m_pManager->SendNotify(this, DUI_MSGTYPE_DROPDOWN);
     Invalidate();
-    return true;
+    return TRUE;
 }
 
 CStringUI CComboUI::GetText() const
@@ -722,7 +722,7 @@ CStringUI CComboUI::GetText() const
     return pControl->GetText();
 }
 
-void CComboUI::SetEnabled(bool bEnable)
+void CComboUI::SetEnabled(BOOL bEnable)
 {
     CContainerUI::SetEnabled(bEnable);
     if( !IsEnabled() ) m_uButtonState = 0;
@@ -748,12 +748,12 @@ void CComboUI::SetDropBoxSize(SIZE szDropBox)
     m_szDropBox = szDropBox;
 }
 
-bool CComboUI::GetShowText() const
+BOOL CComboUI::GetShowText() const
 {
 	return m_bShowText;
 }
 
-void CComboUI::SetShowText(bool flag)
+void CComboUI::SetShowText(BOOL flag)
 {
 	m_bShowText = flag;
 	Invalidate();
@@ -917,12 +917,12 @@ LPCTSTR CComboUI::GetItemBkImage() const
 	return m_ListInfo.diBk.sDrawString;
 }
 
-bool CComboUI::IsAlternateBk() const
+BOOL CComboUI::IsAlternateBk() const
 {
     return m_ListInfo.bAlternateBk;
 }
 
-void CComboUI::SetAlternateBk(bool bAlternateBk)
+void CComboUI::SetAlternateBk(BOOL bAlternateBk)
 {
     m_ListInfo.bAlternateBk = bAlternateBk;
 }
@@ -1062,12 +1062,12 @@ void CComboUI::SetItemVLineColor(DWORD dwLineColor)
     m_ListInfo.dwVLineColor = dwLineColor;
 }
 
-bool CComboUI::IsItemShowHtml()
+BOOL CComboUI::IsItemShowHtml()
 {
     return m_ListInfo.bShowHtml;
 }
 
-void CComboUI::SetItemShowHtml(bool bShowHtml)
+void CComboUI::SetItemShowHtml(BOOL bShowHtml)
 {
     if( m_ListInfo.bShowHtml == bShowHtml ) return;
 
@@ -1075,16 +1075,16 @@ void CComboUI::SetItemShowHtml(bool bShowHtml)
     Invalidate();
 }
 
-void CComboUI::SetPos(RECT rc, bool bNeedInvalidate)
+void CComboUI::SetPos(RECT rc, BOOL bNeedInvalidate)
 {
     // Put all elements out of sight
     RECT rcNull = { 0 };
-    for( int i = 0; i < m_items.GetSize(); i++ ) static_cast<CControlUI*>(m_items[i])->SetPos(rcNull, false);
+    for( int i = 0; i < m_items.GetSize(); i++ ) static_cast<CControlUI*>(m_items[i])->SetPos(rcNull, FALSE);
     // Position this control
     CControlUI::SetPos(rc, bNeedInvalidate);
 }
 
-void CComboUI::Move(SIZE szOffset, bool bNeedInvalidate)
+void CComboUI::Move(SIZE szOffset, BOOL bNeedInvalidate)
 {
 	CControlUI::Move(szOffset, bNeedInvalidate);
 }
@@ -1100,7 +1100,7 @@ void CComboUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
         rcTextPadding.bottom = _tcstol(pstr + 1, &pstr, 10); ASSERT(pstr);    
         SetTextPadding(rcTextPadding);
     }
-	else if( _tcscmp(pstrName, _T("showtext")) == 0 ) SetShowText(_tcscmp(pstrValue, _T("true")) == 0);
+	else if( _tcscmp(pstrName, _T("showtext")) == 0 ) SetShowText(_tcscmp(pstrValue, _T("TRUE")) == 0);
     else if( _tcscmp(pstrName, _T("normalimage")) == 0 ) SetNormalImage(pstrValue);
     else if( _tcscmp(pstrName, _T("hotimage")) == 0 ) SetHotImage(pstrValue);
     else if( _tcscmp(pstrName, _T("pushedimage")) == 0 ) SetPushedImage(pstrValue);
@@ -1153,7 +1153,7 @@ void CComboUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
         SetItemBkColor(clrColor);
     }
     else if( _tcscmp(pstrName, _T("itembkimage")) == 0 ) SetItemBkImage(pstrValue);
-    else if( _tcscmp(pstrName, _T("itemaltbk")) == 0 ) SetAlternateBk(_tcscmp(pstrValue, _T("true")) == 0);
+    else if( _tcscmp(pstrName, _T("itemaltbk")) == 0 ) SetAlternateBk(_tcscmp(pstrValue, _T("TRUE")) == 0);
     else if( _tcscmp(pstrName, _T("itemselectedtextcolor")) == 0 ) {
         if( *pstrValue == _T('#')) pstrValue = ::CharNext(pstrValue);
         LPTSTR pstr = NULL;
@@ -1211,11 +1211,11 @@ void CComboUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
         DWORD clrColor = _tcstoul(pstrValue, &pstr, 16);
         SetItemHLineColor(clrColor);
     }
-    else if( _tcscmp(pstrName, _T("itemshowhtml")) == 0 ) SetItemShowHtml(_tcscmp(pstrValue, _T("true")) == 0);
+    else if( _tcscmp(pstrName, _T("itemshowhtml")) == 0 ) SetItemShowHtml(_tcscmp(pstrValue, _T("TRUE")) == 0);
     else CContainerUI::SetAttribute(pstrName, pstrValue);
 }
 
-bool CComboUI::DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl)
+BOOL CComboUI::DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl)
 {
     return CControlUI::DoPaint(hDC, rcPaint, pStopControl);
 }
@@ -1261,9 +1261,9 @@ void CComboUI::PaintText(HDC hDC)
         }
         else {
             RECT rcOldPos = pControl->GetPos();
-            pControl->SetPos(rcText, false);
+            pControl->SetPos(rcText, FALSE);
             pControl->Paint(hDC, rcText, NULL);
-            pControl->SetPos(rcOldPos, false);
+            pControl->SetPos(rcOldPos, FALSE);
         }
     }
 }

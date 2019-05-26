@@ -29,10 +29,10 @@ namespace DUILIB
 	protected:
 		CDateTimeUI* m_pOwner;
 		HBRUSH m_hBkBrush;
-		bool m_bInit;
+		BOOL m_bInit;
 	};
 
-	CDateTimeWnd::CDateTimeWnd() : m_pOwner(NULL), m_hBkBrush(NULL), m_bInit(false)
+	CDateTimeWnd::CDateTimeWnd() : m_pOwner(NULL), m_hBkBrush(NULL), m_bInit(FALSE)
 	{
 	}
 
@@ -56,7 +56,7 @@ namespace DUILIB
 		::ShowWindow(m_hWnd, SW_SHOWNOACTIVATE);
 		::SetFocus(m_hWnd);
 
-		m_bInit = true;    
+		m_bInit = TRUE;    
 	}
 
 	RECT CDateTimeWnd::CalPos()
@@ -195,7 +195,7 @@ namespace DUILIB
 	CDateTimeUI::CDateTimeUI()
 	{
 		::GetLocalTime(&m_sysTime);
-		m_bReadOnly = false;
+		m_bReadOnly = FALSE;
 		m_pWindow = NULL;
 		m_nDTUpdateFlag=DT_UPDATE;
 		UpdateText();		// add by:daviyang35 初始化界面时显示时间
@@ -235,13 +235,13 @@ namespace DUILIB
 		Invalidate();
 	}
 
-	void CDateTimeUI::SetReadOnly(bool bReadOnly)
+	void CDateTimeUI::SetReadOnly(BOOL bReadOnly)
 	{
 		m_bReadOnly = bReadOnly;
 		Invalidate();
 	}
 
-	bool CDateTimeUI::IsReadOnly() const
+	BOOL CDateTimeUI::IsReadOnly() const
 	{
 		return m_bReadOnly;
 	}
@@ -259,7 +259,7 @@ namespace DUILIB
 		}
 	}
 
-    void CDateTimeUI::SetPos(RECT rc, bool bNeedInvalidate)
+    void CDateTimeUI::SetPos(RECT rc, BOOL bNeedInvalidate)
     {
         CControlUI::SetPos(rc, bNeedInvalidate);
         if( m_pWindow != NULL ) {
@@ -272,7 +272,7 @@ namespace DUILIB
         }
     }
 
-    void CDateTimeUI::Move(SIZE szOffset, bool bNeedInvalidate)
+    void CDateTimeUI::Move(SIZE szOffset, BOOL bNeedInvalidate)
     {
         CControlUI::Move(szOffset, bNeedInvalidate);
         if( m_pWindow != NULL ) {

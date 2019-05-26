@@ -88,7 +88,7 @@ namespace DUILIB
                     LPCTSTR pImageName = NULL;
                     LPCTSTR pImageResType = NULL;
                     DWORD mask = 0;
-                    bool shared = false;
+                    BOOL shared = FALSE;
                     for (int i = 0; i < nAttributes; i++) {
                         pstrName = node.GetAttributeName(i);
                         pstrValue = node.GetAttributeValue(i);
@@ -100,7 +100,7 @@ namespace DUILIB
                             if (*pstrValue == _T('#')) pstrValue = ::CharNext(pstrValue);
                             mask = _tcstoul(pstrValue, &pstr, 16);
                         } else if (_tcsicmp(pstrName, _T("shared")) == 0) {
-                            shared = (_tcsicmp(pstrValue, _T("true")) == 0);
+                            shared = (_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         }
                     }
                     if (pImageName) pManager->AddImage(pImageName, pImageResType, mask, shared);
@@ -109,11 +109,11 @@ namespace DUILIB
                     int id = -1;
                     LPCTSTR pFontName = NULL;
                     int size = 12;
-                    bool bold = false;
-                    bool underline = false;
-                    bool italic = false;
-                    bool defaultfont = false;
-                    bool shared = false;
+                    BOOL bold = FALSE;
+                    BOOL underline = FALSE;
+                    BOOL italic = FALSE;
+                    BOOL defaultfont = FALSE;
+                    BOOL shared = FALSE;
                     for (int i = 0; i < nAttributes; i++) {
                         pstrName = node.GetAttributeName(i);
                         pstrValue = node.GetAttributeValue(i);
@@ -124,15 +124,15 @@ namespace DUILIB
                         } else if (_tcsicmp(pstrName, _T("size")) == 0) {
                             size = _tcstol(pstrValue, &pstr, 10);
                         } else if (_tcsicmp(pstrName, _T("bold")) == 0) {
-                            bold = (_tcsicmp(pstrValue, _T("true")) == 0);
+                            bold = (_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         } else if (_tcsicmp(pstrName, _T("underline")) == 0) {
-                            underline = (_tcsicmp(pstrValue, _T("true")) == 0);
+                            underline = (_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         } else if (_tcsicmp(pstrName, _T("italic")) == 0) {
-                            italic = (_tcsicmp(pstrValue, _T("true")) == 0);
+                            italic = (_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         } else if (_tcsicmp(pstrName, _T("default")) == 0) {
-                            defaultfont = (_tcsicmp(pstrValue, _T("true")) == 0);
+                            defaultfont = (_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         } else if (_tcsicmp(pstrName, _T("shared")) == 0) {
-                            shared = (_tcsicmp(pstrValue, _T("true")) == 0);
+                            shared = (_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         }
                     }
                     if (id >= 0 && pFontName) {
@@ -143,7 +143,7 @@ namespace DUILIB
                     nAttributes = node.GetAttributeCount();
                     LPCTSTR pControlName = NULL;
                     LPCTSTR pControlValue = NULL;
-                    bool shared = false;
+                    BOOL shared = FALSE;
                     for (int i = 0; i < nAttributes; i++) {
                         pstrName = node.GetAttributeName(i);
                         pstrValue = node.GetAttributeValue(i);
@@ -152,7 +152,7 @@ namespace DUILIB
                         } else if (_tcsicmp(pstrName, _T("value")) == 0) {
                             pControlValue = pstrValue;
                         } else if (_tcsicmp(pstrName, _T("shared")) == 0) {
-                            shared = (_tcsicmp(pstrValue, _T("true")) == 0);
+                            shared = (_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         }
                     }
                     if (pControlName) {
@@ -254,7 +254,7 @@ namespace DUILIB
 
                 // 若有控件默认配置先初始化默认属性
                 if (pManager) {
-                    pNode->SetManager(pManager, NULL, false);
+                    pNode->SetManager(pManager, NULL, FALSE);
                     LPCTSTR pDefaultAttributes = pManager->GetDefaultAttributeList(pstrClass);
                     if (pDefaultAttributes) {
                         pNode->SetAttributeList(pDefaultAttributes);
@@ -397,7 +397,7 @@ namespace DUILIB
             // 因为某些属性和父窗口相关，比如selected，必须先Add到父窗口
             if (pParent != NULL) {
                 LPCTSTR lpValue = szValue;
-                if (node.GetAttributeValue(_T("cover"), szValue, cchLen) && _tcscmp(lpValue, _T("true")) == 0) {
+                if (node.GetAttributeValue(_T("cover"), szValue, cchLen) && _tcscmp(lpValue, _T("TRUE")) == 0) {
                     pParent->SetCover(pControl);
                 } else {
                     CTreeNodeUI* pContainerNode = static_cast<CTreeNodeUI*>(pParent->GetInterface(DUI_CTR_TREENODE));
@@ -416,7 +416,7 @@ namespace DUILIB
             }
             // Init default attributes
             if (pManager) {
-                pControl->SetManager(pManager, NULL, false);
+                pControl->SetManager(pManager, NULL, FALSE);
                 LPCTSTR pDefaultAttributes = pManager->GetDefaultAttributeList(pstrClass);
                 if (pDefaultAttributes) {
                     pControl->SetAttributeList(pDefaultAttributes);
@@ -431,7 +431,7 @@ namespace DUILIB
                 }
             }
             if (pManager) {
-                pControl->SetManager(NULL, NULL, false);
+                pControl->SetManager(NULL, NULL, FALSE);
             }
             // Return first item
             if (pReturn == NULL) pReturn = pControl;

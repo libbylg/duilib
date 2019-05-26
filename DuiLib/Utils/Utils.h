@@ -60,7 +60,7 @@ namespace DUILIB
 		int GetWidth() const;
 		int GetHeight() const;
 		void Empty();
-		bool IsNull() const;
+		BOOL IsNull() const;
 		void Join(const RECT& rc);
 		void ResetOffset();
 		void Normalize();
@@ -87,7 +87,7 @@ namespace DUILIB
 
         void Empty();
         int GetLength() const;
-        bool IsEmpty() const;
+        BOOL IsEmpty() const;
         TCHAR GetAt(int nIndex) const;
         void Append(LPCTSTR pstr);
         void Assign(LPCTSTR pstr, int nLength = -1);
@@ -113,12 +113,12 @@ namespace DUILIB
         const CStringUI& operator+=(LPCTSTR pstr);
         const CStringUI& operator+=(const TCHAR ch);
 
-        bool operator == (LPCTSTR str) const;
-        bool operator != (LPCTSTR str) const;
-        bool operator <= (LPCTSTR str) const;
-        bool operator <  (LPCTSTR str) const;
-        bool operator >= (LPCTSTR str) const;
-        bool operator >  (LPCTSTR str) const;
+        BOOL operator == (LPCTSTR str) const;
+        BOOL operator != (LPCTSTR str) const;
+        BOOL operator <= (LPCTSTR str) const;
+        BOOL operator <  (LPCTSTR str) const;
+        BOOL operator >= (LPCTSTR str) const;
+        BOOL operator >  (LPCTSTR str) const;
 
         int Compare(LPCTSTR pstr) const;
         int CompareNoCase(LPCTSTR pstr) const;
@@ -155,12 +155,12 @@ namespace DUILIB
 
 		void Empty();
 		void Resize(int iSize);
-		bool IsEmpty() const;
+		BOOL IsEmpty() const;
 		int Find(LPVOID iIndex) const;
-		bool Add(LPVOID pData);
-		bool SetAt(int iIndex, LPVOID pData);
-		bool InsertAt(int iIndex, LPVOID pData);
-		bool Remove(int iIndex, int iCount = 1);
+		BOOL Add(LPVOID pData);
+		BOOL SetAt(int iIndex, LPVOID pData);
+		BOOL InsertAt(int iIndex, LPVOID pData);
+		BOOL Remove(int iIndex, int iCount = 1);
 		int GetSize() const;
 		LPVOID* GetData();
 
@@ -184,9 +184,9 @@ namespace DUILIB
 		~CValArrayUI();
 
 		void Empty();
-		bool IsEmpty() const;
-		bool Add(LPCVOID pData);
-		bool Remove(int iIndex,  int iCount = 1);
+		BOOL IsEmpty() const;
+		BOOL Add(LPCVOID pData);
+		BOOL Remove(int iIndex,  int iCount = 1);
 		int GetSize() const;
 		LPVOID GetData();
 
@@ -211,10 +211,10 @@ namespace DUILIB
 		~CStringPtrMapUI();
 
 		void Resize(int nSize = 83);
-		LPVOID Find(LPCTSTR key, bool optimize = true) const;
-		bool Insert(LPCTSTR key, LPVOID pData);
+		LPVOID Find(LPCTSTR key, BOOL optimize = TRUE) const;
+		BOOL Insert(LPCTSTR key, LPVOID pData);
 		LPVOID Set(LPCTSTR key, LPVOID pData);
-		bool Remove(LPCTSTR key);
+		BOOL Remove(LPCTSTR key);
 		void RemoveAll();
 		int GetSize() const;
 		LPCTSTR GetAt(int iIndex) const;

@@ -24,7 +24,7 @@ namespace DUILIB
         UINT GetControlFlags() const;
 
         CStringUI GetText() const;
-        void SetEnabled(bool bEnable = true);
+        void SetEnabled(BOOL bEnable = TRUE);
 
         CStringUI GetDropBoxAttributeList();
         void SetDropBoxAttributeList(LPCTSTR pstrList);
@@ -32,24 +32,24 @@ namespace DUILIB
         void SetDropBoxSize(SIZE szDropBox);
 
         int GetCurSel() const;
-        bool GetSelectCloseFlag();
-        void SetSelectCloseFlag(bool flag);
-        bool SelectItem(int iIndex, bool bTakeFocus = false, bool bTriggerEvent = true);
-        bool ExpandItem(int iIndex, bool bExpand = true);
+        BOOL GetSelectCloseFlag();
+        void SetSelectCloseFlag(BOOL flag);
+        BOOL SelectItem(int iIndex, BOOL bTakeFocus = FALSE, BOOL bTriggerEvent = TRUE);
+        BOOL ExpandItem(int iIndex, BOOL bExpand = TRUE);
         int GetExpandedItem() const;
 
-        bool SetItemIndex(CControlUI* pControl, int iNewIndex);
-        bool SetMultiItemIndex(CControlUI* pStartControl, int iCount, int iNewStartIndex);
-        bool Add(CControlUI* pControl);
-        bool AddAt(CControlUI* pControl, int iIndex);
-        bool Remove(CControlUI* pControl, bool bDoNotDestroy = false);
-        bool RemoveAt(int iIndex, bool bDoNotDestroy = false);
+        BOOL SetItemIndex(CControlUI* pControl, int iNewIndex);
+        BOOL SetMultiItemIndex(CControlUI* pStartControl, int iCount, int iNewStartIndex);
+        BOOL Add(CControlUI* pControl);
+        BOOL AddAt(CControlUI* pControl, int iIndex);
+        BOOL Remove(CControlUI* pControl, BOOL bDoNotDestroy = FALSE);
+        BOOL RemoveAt(int iIndex, BOOL bDoNotDestroy = FALSE);
         void RemoveAll();
 
-        bool Activate();
+        BOOL Activate();
 
-        bool GetShowText() const;
-        void SetShowText(bool flag);
+        BOOL GetShowText() const;
+        void SetShowText(BOOL flag);
         RECT GetTextPadding() const;
         void SetTextPadding(RECT rc);
         LPCTSTR GetNormalImage() const;
@@ -78,8 +78,8 @@ namespace DUILIB
         void SetItemBkColor(DWORD dwBkColor);
         LPCTSTR GetItemBkImage() const;
         void SetItemBkImage(LPCTSTR pStrImage);
-        bool IsAlternateBk() const;
-        void SetAlternateBk(bool bAlternateBk);
+        BOOL IsAlternateBk() const;
+        void SetAlternateBk(BOOL bAlternateBk);
         DWORD GetSelectedItemTextColor() const;
         void SetSelectedItemTextColor(DWORD dwTextColor);
         DWORD GetSelectedItemBkColor() const;
@@ -106,16 +106,16 @@ namespace DUILIB
         void SetItemVLineSize(int iSize);
         DWORD GetItemVLineColor() const;
         void SetItemVLineColor(DWORD dwLineColor);
-        bool IsItemShowHtml();
-        void SetItemShowHtml(bool bShowHtml = true);
+        BOOL IsItemShowHtml();
+        void SetItemShowHtml(BOOL bShowHtml = TRUE);
 
         SIZE EstimateSize(SIZE szAvailable);
-        void SetPos(RECT rc, bool bNeedInvalidate = true);
-        void Move(SIZE szOffset, bool bNeedInvalidate = true);
+        void SetPos(RECT rc, BOOL bNeedInvalidate = TRUE);
+        void Move(SIZE szOffset, BOOL bNeedInvalidate = TRUE);
         void DoEvent(TEVENT_UI& event);
         void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
-        bool DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
+        BOOL DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
         void PaintText(HDC hDC);
         void PaintStatusImage(HDC hDC);
 
@@ -123,8 +123,8 @@ namespace DUILIB
         CComboWnd* m_pWindow;
 
         int m_iCurSel;
-        bool m_bShowText;
-        bool m_bSelectCloseFlag;
+        BOOL m_bShowText;
+        BOOL m_bSelectCloseFlag;
         RECT m_rcTextPadding;
         CStringUI m_sDropBoxAttributes;
         SIZE m_szDropBox;

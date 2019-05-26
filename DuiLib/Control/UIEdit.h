@@ -18,20 +18,20 @@ namespace DUILIB
 		UINT GetControlFlags() const;
 		HWND GetNativeWindow() const;
 
-		void SetEnabled(bool bEnable = true);
+		void SetEnabled(BOOL bEnable = TRUE);
 		void SetText(LPCTSTR pstrText);
 		void SetMaxChar(UINT uMax);
 		UINT GetMaxChar();
-		void SetReadOnly(bool bReadOnly);
-		bool IsReadOnly() const;
-		void SetPasswordMode(bool bPasswordMode);
-		bool IsPasswordMode() const;
+		void SetReadOnly(BOOL bReadOnly);
+		BOOL IsReadOnly() const;
+		void SetPasswordMode(BOOL bPasswordMode);
+		BOOL IsPasswordMode() const;
 		void SetPasswordChar(TCHAR cPasswordChar);
 		TCHAR GetPasswordChar() const;
-		bool IsAutoSelAll();
-		void SetAutoSelAll(bool bAutoSelAll);
-		void SetNumberOnly(bool bNumberOnly);
-		bool IsNumberOnly() const;
+		BOOL IsAutoSelAll();
+		void SetAutoSelAll(BOOL bAutoSelAll);
+		void SetNumberOnly(BOOL bNumberOnly);
+		BOOL IsNumberOnly() const;
 		int GetWindowStyls() const;
 		HWND GetNativeEditHWND() const;
 
@@ -50,10 +50,10 @@ namespace DUILIB
 		void SetSelAll();
 		void SetReplaceSel(LPCTSTR lpszReplace);
 
-		void SetPos(RECT rc, bool bNeedInvalidate = true);
-		void Move(SIZE szOffset, bool bNeedInvalidate = true);
-		void SetVisible(bool bVisible = true);
-		void SetInternVisible(bool bVisible = true);
+		void SetPos(RECT rc, BOOL bNeedInvalidate = TRUE);
+		void Move(SIZE szOffset, BOOL bNeedInvalidate = TRUE);
+		void SetVisible(BOOL bVisible = TRUE);
+		void SetInternVisible(BOOL bVisible = TRUE);
 		SIZE EstimateSize(SIZE szAvailable);
 		void DoEvent(TEVENT_UI& event);
 		void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
@@ -65,9 +65,9 @@ namespace DUILIB
 		CEditWnd* m_pWindow;
 
 		UINT m_uMaxChar;
-		bool m_bReadOnly;
-		bool m_bPasswordMode;
-		bool m_bAutoSelAll;
+		BOOL m_bReadOnly;
+		BOOL m_bPasswordMode;
+		BOOL m_bAutoSelAll;
 		TCHAR m_cPasswordChar;
 		UINT m_uButtonState;
 		DWORD m_dwEditbkColor;

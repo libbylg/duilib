@@ -149,14 +149,14 @@ namespace DUILIB
 		CLabelUI::DoEvent(event);
 	}
 
-	bool CButtonUI::Activate()
+	BOOL CButtonUI::Activate()
 	{
-		if( !CControlUI::Activate() ) return false;
+		if( !CControlUI::Activate() ) return FALSE;
 		if( m_pManager != NULL ) m_pManager->SendNotify(this, DUI_MSGTYPE_CLICK);
-		return true;
+		return TRUE;
 	}
 
-	void CButtonUI::SetEnabled(bool bEnable)
+	void CButtonUI::SetEnabled(BOOL bEnable)
 	{
 		CControlUI::SetEnabled(bEnable);
 		if( !IsEnabled() ) {

@@ -21,23 +21,23 @@ namespace DUILIB
 		CContainerUI* GetOwner() const;
 		void SetOwner(CContainerUI* pOwner);
 
-		void SetVisible(bool bVisible = true);
-		void SetEnabled(bool bEnable = true);
+		void SetVisible(BOOL bVisible = TRUE);
+		void SetEnabled(BOOL bEnable = TRUE);
 		void SetFocus();
 
-		bool IsHorizontal();
-		void SetHorizontal(bool bHorizontal = true);
+		BOOL IsHorizontal();
+		void SetHorizontal(BOOL bHorizontal = TRUE);
 		int GetScrollRange() const;
 		void SetScrollRange(int nRange);
 		int GetScrollPos() const;
-		void SetScrollPos(int nPos, bool bTriggerEvent=true);
+		void SetScrollPos(int nPos, BOOL bTriggerEvent=TRUE);
 		int GetLineSize() const;
 		void SetLineSize(int nSize);
         int GetScrollUnit() const;
         void SetScrollUnit(int iUnit);
 
-		bool GetShowButton1();
-		void SetShowButton1(bool bShow);
+		BOOL GetShowButton1();
+		void SetShowButton1(BOOL bShow);
 		DWORD GetButton1Color() const;
 		void SetButton1Color(DWORD dwColor);
 		LPCTSTR GetButton1NormalImage();
@@ -49,8 +49,8 @@ namespace DUILIB
 		LPCTSTR GetButton1DisabledImage();
 		void SetButton1DisabledImage(LPCTSTR pStrImage);
 
-		bool GetShowButton2();
-		void SetShowButton2(bool bShow);
+		BOOL GetShowButton2();
+		void SetShowButton2(BOOL bShow);
 		DWORD GetButton2Color() const;
 		void SetButton2Color(DWORD dwColor);
 		LPCTSTR GetButton2NormalImage();
@@ -91,11 +91,11 @@ namespace DUILIB
 		LPCTSTR GetBkDisabledImage();
 		void SetBkDisabledImage(LPCTSTR pStrImage);
 
-		void SetPos(RECT rc, bool bNeedInvalidate = true);
+		void SetPos(RECT rc, BOOL bNeedInvalidate = TRUE);
 		void DoEvent(struct TEVENT_UI& event);
 		void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
-		bool DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
+		BOOL DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
 
 		void PaintBk(HDC hDC);
 		void PaintButton1(HDC hDC);
@@ -111,7 +111,7 @@ namespace DUILIB
 			DEFAULT_TIMERID = 10,
 		};
 
-		bool m_bHorizontal;
+		BOOL m_bHorizontal;
 		int m_nRange;
 		int m_nScrollPos;
 		int m_nLineSize;
@@ -127,7 +127,7 @@ namespace DUILIB
 		struct TDRAWINFO_UI m_diBkPushed;
 		struct TDRAWINFO_UI m_diBkDisabled;
 
-		bool m_bShowButton1;
+		BOOL m_bShowButton1;
 		RECT m_rcButton1;
 		UINT m_uButton1State;
 		DWORD m_dwButton1Color;
@@ -136,7 +136,7 @@ namespace DUILIB
 		struct TDRAWINFO_UI m_diButton1Pushed;
 		struct TDRAWINFO_UI m_diButton1Disabled;
 
-		bool m_bShowButton2;
+		BOOL m_bShowButton2;
 		RECT m_rcButton2;
 		UINT m_uButton2State;
 		DWORD m_dwButton2Color;

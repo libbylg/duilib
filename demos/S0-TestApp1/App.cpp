@@ -321,42 +321,42 @@ public:
 
     void Init() { }
 
-    bool OnHChanged(void* param) {
+    BOOL OnHChanged(void* param) {
         TNOTIFY_UI* pMsg = (TNOTIFY_UI*)param;
         if( pMsg->sType == _T("valuechanged") ) {
             short H, S, L;
             CManagerUI::GetHSL(&H, &S, &L);
-            CManagerUI::SetHSL(true, (static_cast<CSliderUI*>(pMsg->pSender))->GetValue(), S, L);
+            CManagerUI::SetHSL(TRUE, (static_cast<CSliderUI*>(pMsg->pSender))->GetValue(), S, L);
         }
-        return true;
+        return TRUE;
     }
 
-    bool OnSChanged(void* param) {
+    BOOL OnSChanged(void* param) {
         TNOTIFY_UI* pMsg = (TNOTIFY_UI*)param;
         if( pMsg->sType == _T("valuechanged") ) {
             short H, S, L;
             CManagerUI::GetHSL(&H, &S, &L);
-            CManagerUI::SetHSL(true, H, (static_cast<CSliderUI*>(pMsg->pSender))->GetValue(), L);
+            CManagerUI::SetHSL(TRUE, H, (static_cast<CSliderUI*>(pMsg->pSender))->GetValue(), L);
         }
-        return true;
+        return TRUE;
     }
 
-    bool OnLChanged(void* param) {
+    BOOL OnLChanged(void* param) {
         TNOTIFY_UI* pMsg = (TNOTIFY_UI*)param;
         if( pMsg->sType == _T("valuechanged") ) {
             short H, S, L;
             CManagerUI::GetHSL(&H, &S, &L);
-            CManagerUI::SetHSL(true, H, S, (static_cast<CSliderUI*>(pMsg->pSender))->GetValue());
+            CManagerUI::SetHSL(TRUE, H, S, (static_cast<CSliderUI*>(pMsg->pSender))->GetValue());
         }
-        return true;
+        return TRUE;
     }
 
-    bool OnAlphaChanged(void* param) {
+    BOOL OnAlphaChanged(void* param) {
         TNOTIFY_UI* pMsg = (TNOTIFY_UI*)param;
         if( pMsg->sType == _T("valuechanged") ) {
             m_pm.SetOpacity((static_cast<CSliderUI*>(pMsg->pSender))->GetValue());
         }
-        return true;
+        return TRUE;
     }
 
     void OnPrepare() 
@@ -412,7 +412,7 @@ public:
 
             //DWM_BLURBEHIND bb = {0};
             //bb.dwFlags = DWM_BB_ENABLE;
-            //bb.fEnable = true;
+            //bb.fEnable = TRUE;
             //bb.hRgnBlur = NULL;
             //EnableBlurBehindWindow(m_hWnd, bb);
 
@@ -453,7 +453,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
     if( pFrame == NULL ) return 0;
     pFrame->Create(NULL, _T("这是一个最简单的测试用exe，修改test1.xml就可以看到效果"), UI_WNDSTYLE_FRAME|WS_CLIPCHILDREN, WS_EX_WINDOWEDGE);
     pFrame->CenterWindow();
-    pFrame->ShowWindow(true);
+    pFrame->ShowWindow(TRUE);
     CManagerUI::MessageLoop();
 
     ::CoUninitialize();

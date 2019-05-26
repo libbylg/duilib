@@ -13,8 +13,8 @@ namespace DUILIB
 		LPCTSTR GetClass() const;
 		LPVOID GetInterface(LPCTSTR pstrName);
 
-		bool IsHorizontal();
-		void SetHorizontal(bool bHorizontal = true);
+		BOOL IsHorizontal();
+		void SetHorizontal(BOOL bHorizontal = TRUE);
 		int GetMinValue() const;
 		void SetMinValue(int nMin);
 		int GetMaxValue() const;
@@ -28,7 +28,7 @@ namespace DUILIB
 		void PaintStatusImage(HDC hDC);
 
 	protected:
-		bool m_bHorizontal;
+		BOOL m_bHorizontal;
 		int m_nMax;
 		int m_nMin;
 		int m_nValue;

@@ -13,15 +13,15 @@ namespace DUILIB
 		LPCTSTR GetClass() const;
 		LPVOID GetInterface(LPCTSTR pstrName);
 
-		bool Add(CControlUI* pControl);
-		bool AddAt(CControlUI* pControl, int iIndex);
-		bool Remove(CControlUI* pControl, bool bDoNotDestroy=false);
+		BOOL Add(CControlUI* pControl);
+		BOOL AddAt(CControlUI* pControl, int iIndex);
+		BOOL Remove(CControlUI* pControl, BOOL bDoNotDestroy=FALSE);
 		void RemoveAll();
 		int GetCurSel() const;
-		bool SelectItem(int iIndex, bool bTriggerEvent=true);
-		bool SelectItem(CControlUI* pControl,  bool bTriggerEvent=true);
+		BOOL SelectItem(int iIndex, BOOL bTriggerEvent=TRUE);
+		BOOL SelectItem(CControlUI* pControl,  BOOL bTriggerEvent=TRUE);
 
-		void SetPos(RECT rc, bool bNeedInvalidate = true);
+		void SetPos(RECT rc, BOOL bNeedInvalidate = TRUE);
 
 		void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 

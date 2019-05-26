@@ -196,15 +196,15 @@ public:
 		if( ::IsZoomed(*this) != bZoomed ) {
 			if( !bZoomed ) {
 				CControlUI* pControl = static_cast<CControlUI*>(m_pm.FindControl(_T("maxbtn")));
-				if( pControl ) pControl->SetVisible(false);
+				if( pControl ) pControl->SetVisible(FALSE);
 				pControl = static_cast<CControlUI*>(m_pm.FindControl(_T("restorebtn")));
-				if( pControl ) pControl->SetVisible(true);
+				if( pControl ) pControl->SetVisible(TRUE);
 			}
 			else {
 				CControlUI* pControl = static_cast<CControlUI*>(m_pm.FindControl(_T("maxbtn")));
-				if( pControl ) pControl->SetVisible(true);
+				if( pControl ) pControl->SetVisible(TRUE);
 				pControl = static_cast<CControlUI*>(m_pm.FindControl(_T("restorebtn")));
-				if( pControl ) pControl->SetVisible(false);
+				if( pControl ) pControl->SetVisible(FALSE);
 			}
 		}
 		return lRes;

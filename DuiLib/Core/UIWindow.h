@@ -49,10 +49,10 @@ namespace DUILIB
     class DUILIB_API CNotifyPump
     {
     public:
-        bool AddVirtualWnd(CStringUI strName, CNotifyPump* pObject);
-        bool RemoveVirtualWnd(CStringUI strName);
+        BOOL AddVirtualWnd(CStringUI strName, CNotifyPump* pObject);
+        BOOL RemoveVirtualWnd(CStringUI strName);
         void NotifyPump(struct TNOTIFY_UI& msg);
-        bool LoopDispatch(struct TNOTIFY_UI& msg);
+        BOOL LoopDispatch(struct TNOTIFY_UI& msg);
         DUI_DECLARE_MESSAGE_MAP()
     private:
         CStringPtrMapUI m_VirtualWndMap;
@@ -66,15 +66,15 @@ namespace DUILIB
         HWND GetHWND() const;
         operator HWND() const;
 
-        bool RegisterWindowClass();
-        bool RegisterSuperclass();
+        BOOL RegisterWindowClass();
+        BOOL RegisterSuperclass();
 
         HWND Create(HWND hwndParent, LPCTSTR pstrWindowName, DWORD dwStyle, DWORD dwExStyle, const RECT rc, HMENU hMenu = NULL);
         HWND Create(HWND hwndParent, LPCTSTR pstrWindowName, DWORD dwStyle, DWORD dwExStyle, int x = CW_USEDEFAULT, int y = CW_USEDEFAULT, int cx = CW_USEDEFAULT, int cy = CW_USEDEFAULT, HMENU hMenu = NULL);
         HWND CreateDuiWindow(HWND hwndParent, LPCTSTR pstrWindowName, DWORD dwStyle = 0, DWORD dwExStyle = 0);
         HWND Subclass(HWND hWnd);
         void Unsubclass();
-        void ShowWindow(bool bShow = true, bool bTakeFocus = true);
+        void ShowWindow(BOOL bShow = TRUE, BOOL bTakeFocus = TRUE);
         UINT ShowModal();
         void Close(UINT nRet = IDOK);
         void CenterWindow();	// 居中，支持扩展屏幕
@@ -82,15 +82,15 @@ namespace DUILIB
 
         LRESULT SendMessage(UINT uMsg, WPARAM wParam = 0, LPARAM lParam = 0L);
         LRESULT PostMessage(UINT uMsg, WPARAM wParam = 0, LPARAM lParam = 0L);
-        void ResizeClient(int cx = -1, int cy = -1);
+        void    ResizeClient(int cx = -1, int cy = -1);
 
     protected:
         virtual LPCTSTR GetWindowClassName() const = 0;
         virtual LPCTSTR GetSuperClassName() const;
-        virtual UINT GetClassStyle() const;
+        virtual UINT    GetClassStyle() const;
 
         virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
-        virtual void OnFinalMessage(HWND hWnd);
+        virtual void    OnFinalMessage(HWND hWnd);
 
         static LRESULT CALLBACK __WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
         static LRESULT CALLBACK __ControlProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -98,7 +98,7 @@ namespace DUILIB
     protected:
         HWND m_hWnd;
         WNDPROC m_OldWndProc;
-        bool m_bSubclassed;
+        BOOL m_bSubclassed;
     };
 
 } // namespace DUILIB

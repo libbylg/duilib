@@ -13,15 +13,29 @@
 #include <tchar.h>
 
 #include "Core/UIWindow.h"
+#include "Control/UIButton.h"
 using namespace DUILIB;
 
 
 class CMyFramework : public CWindowUI
 {
+    CButtonUI* m_pButton;
 public:
     virtual LPCTSTR GetWindowClassName() const
     {
         return _T("CMyFramework");
+    }
+
+    virtual LRESULT OnCreated(UINT uMsg, WPARAM wParam, LPARAM lParam)
+    {
+        m_pButton = new CButtonUI();
+    }
+
+    virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+    {
+        switch (uMsg) {
+            case WM_CREATE: return OnCreated(uMsg, wParam, lParam);
+        }
     }
 };
 

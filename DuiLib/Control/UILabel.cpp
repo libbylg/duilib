@@ -14,19 +14,19 @@ namespace DUILIB
 		m_dwTextColor(0), 
 		m_dwDisabledTextColor(0),
 		m_iFont(-1),
-		m_bShowHtml(false),
-        m_bNeedEstimateSize(true),
-		m_EnableEffect(false),
-		m_bEnableLuminous(false),
+		m_bShowHtml(FALSE),
+        m_bNeedEstimateSize(TRUE),
+		m_EnableEffect(FALSE),
+		m_bEnableLuminous(FALSE),
 		m_fLuminousFuzzy(3),
 		m_gdiplusToken(0),
 		m_dwTextColor1(-1),
 		m_dwTextShadowColorA(0xff000000),
 		m_dwTextShadowColorB(-1),
 		m_GradientAngle(0),
-		m_EnabledStroke(false),
+		m_EnabledStroke(FALSE),
 		m_dwStrokeColor(0),
-		m_EnabledShadow(false),
+		m_EnabledShadow(FALSE),
 		m_GradientLength(0)
 	{
 		m_ShadowOffset.X		= 0.0f;
@@ -69,20 +69,20 @@ namespace DUILIB
 
     void CLabelUI::SetFixedWidth(int cx)
     {
-        m_bNeedEstimateSize = true;
+        m_bNeedEstimateSize = TRUE;
         CControlUI::SetFixedWidth(cx);
     }
 
     void CLabelUI::SetFixedHeight(int cy)
     {
-        m_bNeedEstimateSize = true;
+        m_bNeedEstimateSize = TRUE;
         CControlUI::SetFixedHeight(cy);
     }
 
 	void CLabelUI::SetText(LPCTSTR pstrText)
 	{
 		CControlUI::SetText(pstrText);
-        m_bNeedEstimateSize = true;
+        m_bNeedEstimateSize = TRUE;
 		if( m_EnableEffect) {
 #ifdef _UNICODE
 			m_pWideText = (LPWSTR)m_sText.GetData();
@@ -99,7 +99,7 @@ namespace DUILIB
 	void CLabelUI::SetTextStyle(UINT uStyle)
 	{
 		m_uTextStyle = uStyle;
-        m_bNeedEstimateSize = true;
+        m_bNeedEstimateSize = TRUE;
 		Invalidate();
 	}
 
@@ -108,19 +108,19 @@ namespace DUILIB
 		return m_uTextStyle;
 	}
 
-	bool CLabelUI::IsMultiLine()
+	BOOL CLabelUI::IsMultiLine()
 	{
 		return (m_uTextStyle & DT_SINGLELINE) == 0;
 	}
 
-	void CLabelUI::SetMultiLine(bool bMultiLine)
+	void CLabelUI::SetMultiLine(BOOL bMultiLine)
 	{
 		if (bMultiLine)	{
             m_uTextStyle  &= ~DT_SINGLELINE;
             m_uTextStyle |= DT_WORDBREAK;
         }
 		else m_uTextStyle |= DT_SINGLELINE;
-        m_bNeedEstimateSize = true;
+        m_bNeedEstimateSize = TRUE;
 	}
 
 	void CLabelUI::SetTextColor(DWORD dwTextColor)
@@ -148,7 +148,7 @@ namespace DUILIB
 	void CLabelUI::SetFont(int index)
 	{
 		m_iFont = index;
-        m_bNeedEstimateSize = true;
+        m_bNeedEstimateSize = TRUE;
 		Invalidate();
 	}
 
@@ -165,21 +165,21 @@ namespace DUILIB
 	void CLabelUI::SetTextPadding(RECT rc)
 	{
 		m_rcTextPadding = rc;
-        m_bNeedEstimateSize = true;
+        m_bNeedEstimateSize = TRUE;
 		Invalidate();
 	}
 
-	bool CLabelUI::IsShowHtml()
+	BOOL CLabelUI::IsShowHtml()
 	{
 		return m_bShowHtml;
 	}
 
-	void CLabelUI::SetShowHtml(bool bShowHtml)
+	void CLabelUI::SetShowHtml(BOOL bShowHtml)
 	{
 		if( m_bShowHtml == bShowHtml ) return;
 
 		m_bShowHtml = bShowHtml;
-        m_bNeedEstimateSize = true;
+        m_bNeedEstimateSize = TRUE;
 		Invalidate();
 	}
 
@@ -189,11 +189,11 @@ namespace DUILIB
 
         if ((m_uTextStyle & DT_SINGLELINE) == 0 && 
             (szAvailable.cx != m_szAvailableLast.cx || szAvailable.cy != m_szAvailableLast.cy)) {
-            m_bNeedEstimateSize = true;
+            m_bNeedEstimateSize = TRUE;
         }
 
         if (m_bNeedEstimateSize) {
-            m_bNeedEstimateSize = false;
+            m_bNeedEstimateSize = FALSE;
             m_szAvailableLast = szAvailable;
             m_cxyFixedLast = m_cxyFixed;
             if ((m_uTextStyle & DT_SINGLELINE) != 0) {
@@ -237,12 +237,12 @@ namespace DUILIB
 	{
 		if( event.Type == UIEVENT_SETFOCUS ) 
 		{
-			m_bFocused = true;
+			m_bFocused = TRUE;
 			return;
 		}
 		if( event.Type == UIEVENT_KILLFOCUS ) 
 		{
-			m_bFocused = false;
+			m_bFocused = FALSE;
 			return;
 		}
 		CControlUI::DoEvent(event);
@@ -280,7 +280,7 @@ namespace DUILIB
 		    }
 		}
 		else if( _tcscmp(pstrName, _T("endellipsis")) == 0 ) {
-			if( _tcscmp(pstrValue, _T("true")) == 0 ) m_uTextStyle |= DT_END_ELLIPSIS;
+			if( _tcscmp(pstrValue, _T("TRUE")) == 0 ) m_uTextStyle |= DT_END_ELLIPSIS;
 			else m_uTextStyle &= ~DT_END_ELLIPSIS;
 		}    
 		else if( _tcscmp(pstrName, _T("font")) == 0 ) SetFont(_ttoi(pstrValue));
@@ -305,14 +305,14 @@ namespace DUILIB
 			rcTextPadding.bottom = _tcstol(pstr + 1, &pstr, 10); ASSERT(pstr);    
 			SetTextPadding(rcTextPadding);
 		}
-		else if( _tcscmp(pstrName, _T("multiline")) == 0 ) SetMultiLine(_tcscmp(pstrValue, _T("true")) == 0);
-		else if( _tcscmp(pstrName, _T("showhtml")) == 0 ) SetShowHtml(_tcscmp(pstrValue, _T("true")) == 0);
-		else if( _tcscmp(pstrName, _T("enabledeffect")) == 0 ) SetEnabledEffect(_tcscmp(pstrValue, _T("true")) == 0);
-		else if( _tcscmp(pstrName, _T("enabledluminous")) == 0 ) SetEnabledLuminous(_tcscmp(pstrValue, _T("true")) == 0);
+		else if( _tcscmp(pstrName, _T("multiline")) == 0 ) SetMultiLine(_tcscmp(pstrValue, _T("TRUE")) == 0);
+		else if( _tcscmp(pstrName, _T("showhtml")) == 0 ) SetShowHtml(_tcscmp(pstrValue, _T("TRUE")) == 0);
+		else if( _tcscmp(pstrName, _T("enabledeffect")) == 0 ) SetEnabledEffect(_tcscmp(pstrValue, _T("TRUE")) == 0);
+		else if( _tcscmp(pstrName, _T("enabledluminous")) == 0 ) SetEnabledLuminous(_tcscmp(pstrValue, _T("TRUE")) == 0);
 		else if( _tcscmp(pstrName, _T("luminousfuzzy")) == 0 ) SetLuminousFuzzy((float)_tstof(pstrValue));
 		else if( _tcscmp(pstrName, _T("gradientangle")) == 0 ) SetGradientAngle(_ttoi(pstrValue));
-		else if( _tcscmp(pstrName, _T("enabledstroke")) == 0 ) SetEnabledStroke(_tcscmp(pstrValue, _T("true")) == 0);
-		else if( _tcscmp(pstrName, _T("enabledshadow")) == 0 ) SetEnabledShadow(_tcscmp(pstrValue, _T("true")) == 0);
+		else if( _tcscmp(pstrName, _T("enabledstroke")) == 0 ) SetEnabledStroke(_tcscmp(pstrValue, _T("TRUE")) == 0);
+		else if( _tcscmp(pstrName, _T("enabledshadow")) == 0 ) SetEnabledShadow(_tcscmp(pstrValue, _T("TRUE")) == 0);
 		else if( _tcscmp(pstrName, _T("gradientlength")) == 0 ) SetGradientLength(_ttoi(pstrValue));
 		else if( _tcscmp(pstrName, _T("shadowoffset")) == 0 ){
 			LPTSTR pstr = NULL;
@@ -504,7 +504,7 @@ namespace DUILIB
 		return m_ShadowOffset;
 	}
 
-	void CLabelUI::SetEnabledEffect( bool _EnabledEffect )
+	void CLabelUI::SetEnabledEffect( BOOL _EnabledEffect )
 	{
 		m_EnableEffect = _EnabledEffect;
 		if (m_EnableEffect) {
@@ -521,18 +521,18 @@ namespace DUILIB
 		Invalidate();
 	}
 
-	bool CLabelUI::GetEnabledEffect()
+	BOOL CLabelUI::GetEnabledEffect()
 	{
 		return m_EnableEffect;
 	}
 
-	void CLabelUI::SetEnabledLuminous(bool bEnableLuminous)
+	void CLabelUI::SetEnabledLuminous(BOOL bEnableLuminous)
 	{
 		m_bEnableLuminous = bEnableLuminous;
 		Invalidate();
 	}
 
-	bool CLabelUI::GetEnabledLuminous()
+	BOOL CLabelUI::GetEnabledLuminous()
 	{
 		return m_bEnableLuminous;
 	}
@@ -593,13 +593,13 @@ namespace DUILIB
 		return m_GradientAngle;
 	}
 
-	void CLabelUI::SetEnabledStroke( bool _EnabledStroke )
+	void CLabelUI::SetEnabledStroke( BOOL _EnabledStroke )
 	{
 		m_EnabledStroke = _EnabledStroke;
 		Invalidate();
 	}
 
-	bool CLabelUI::GetEnabledStroke()
+	BOOL CLabelUI::GetEnabledStroke()
 	{
 		return m_EnabledStroke;
 	}
@@ -615,13 +615,13 @@ namespace DUILIB
 		return m_dwStrokeColor;
 	}
 
-	void CLabelUI::SetEnabledShadow( bool _EnabledShadowe )
+	void CLabelUI::SetEnabledShadow( BOOL _EnabledShadowe )
 	{
 		m_EnabledShadow = _EnabledShadowe;
 		Invalidate();
 	}
 
-	bool CLabelUI::GetEnabledShadow()
+	BOOL CLabelUI::GetEnabledShadow()
 	{
 		return m_EnabledShadow;
 	}

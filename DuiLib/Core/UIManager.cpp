@@ -34,14 +34,14 @@ namespace DUILIB
     {
         CControlUI* pFocus;
         CControlUI* pLast;
-        bool bForward;
-        bool bNextIsIt;
+        BOOL bForward;
+        BOOL bNextIsIt;
     };
 
     struct TFINDSHORTCUT_UI
     {
         TCHAR ch;
-        bool bPickNext;
+        BOOL bPickNext;
     };
 
     struct TIMERINFO_UI
@@ -50,7 +50,7 @@ namespace DUILIB
         UINT nLocalID;
         HWND hWnd;
         UINT uWinTimer;
-        bool bKilled;
+        BOOL bKilled;
     };
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -66,10 +66,10 @@ namespace DUILIB
     CStringUI CManagerUI::m_pStrResourcePath;
     CStringUI CManagerUI::m_pStrResourceZip;
     HANDLE CManagerUI::m_hResourceZip = NULL;
-    bool CManagerUI::m_bCachedResourceZip = true;
+    BOOL CManagerUI::m_bCachedResourceZip = TRUE;
     TRESINFO_UI CManagerUI::m_SharedResInfo;
     HINSTANCE CManagerUI::m_hInstance = NULL;
-    bool CManagerUI::m_bUseHSL = false;
+    BOOL CManagerUI::m_bUseHSL = FALSE;
     short CManagerUI::m_H = 180;
     short CManagerUI::m_S = 100;
     short CManagerUI::m_L = 100;
@@ -89,8 +89,8 @@ namespace DUILIB
         m_iLastTooltipWidth(-1),
         m_hwndTooltip(NULL),
         m_iHoverTime(1000),
-        m_bNoActivate(false),
-        m_bShowUpdateRect(false),
+        m_bNoActivate(FALSE),
+        m_bShowUpdateRect(FALSE),
         m_uTimerID(0x1000),
         m_pRoot(NULL),
         m_pFocus(NULL),
@@ -98,19 +98,19 @@ namespace DUILIB
         m_pEventClick(NULL),
         m_pEventKey(NULL),
         m_pLastToolTip(NULL),
-        m_bFirstLayout(true),
-        m_bFocusNeeded(false),
-        m_bUpdateNeeded(false),
-        m_bMouseTracking(false),
-        m_bMouseCapture(false),
-        m_bIsPainting(false),
-        m_bOffscreenPaint(true),
-        m_bUsedVirtualWnd(false),
-        m_bAsyncNotifyPosted(false),
-        m_bForceUseSharedRes(false),
+        m_bFirstLayout(TRUE),
+        m_bFocusNeeded(FALSE),
+        m_bUpdateNeeded(FALSE),
+        m_bMouseTracking(FALSE),
+        m_bMouseCapture(FALSE),
+        m_bIsPainting(FALSE),
+        m_bOffscreenPaint(TRUE),
+        m_bUsedVirtualWnd(FALSE),
+        m_bAsyncNotifyPosted(FALSE),
+        m_bForceUseSharedRes(FALSE),
         m_nOpacity(0xFF),
-        m_bLayered(false),
-        m_bLayeredChanged(false)
+        m_bLayered(FALSE),
+        m_bLayeredChanged(FALSE)
     {
         if (m_SharedResInfo.m_DefaultFontInfo.sFontName.IsEmpty()) {
             m_SharedResInfo.m_dwDefaultDisabledColor = 0xFFA7A6AA;
@@ -251,7 +251,7 @@ namespace DUILIB
         return m_pStrResourceZip;
     }
 
-    bool CManagerUI::IsCachedResourceZip()
+    BOOL CManagerUI::IsCachedResourceZip()
     {
         return m_bCachedResourceZip;
     }
@@ -296,7 +296,7 @@ namespace DUILIB
             m_hResourceZip = (HANDLE)OpenZip(pVoid, len, 3);
     }
 
-    void CManagerUI::SetResourceZip(LPCTSTR pStrPath, bool bCachedResourceZip)
+    void CManagerUI::SetResourceZip(LPCTSTR pStrPath, BOOL bCachedResourceZip)
     {
         if( m_pStrResourceZip == pStrPath && m_bCachedResourceZip == bCachedResourceZip ) return;
         if( m_bCachedResourceZip && m_hResourceZip != NULL ) {
@@ -312,7 +312,7 @@ namespace DUILIB
         }
     }
 
-    bool CManagerUI::GetHSL(short* H, short* S, short* L)
+    BOOL CManagerUI::GetHSL(short* H, short* S, short* L)
     {
         *H = m_H;
         *S = m_S;
@@ -320,7 +320,7 @@ namespace DUILIB
 	    return m_bUseHSL;
     }
 
-    void CManagerUI::SetHSL(bool bUseHSL, short H, short S, short L)
+    void CManagerUI::SetHSL(BOOL bUseHSL, short H, short S, short L)
     {
 	    if( m_bUseHSL || m_bUseHSL != bUseHSL ) {
 		    m_bUseHSL = bUseHSL;
@@ -345,7 +345,7 @@ namespace DUILIB
         }
     }
 
-    CManagerUI* CManagerUI::GetPaintManager(LPCTSTR pstrName)
+    CManagerUI* CManagerUI::GetManager(LPCTSTR pstrName)
     {
 	    if( pstrName == NULL ) return NULL;
 	    CStringUI sName = pstrName;
@@ -362,20 +362,20 @@ namespace DUILIB
 	    return &m_aPreMessages;
     }
 
-    bool CManagerUI::LoadPlugin(LPCTSTR pstrModuleName)
+    BOOL CManagerUI::LoadPlugin(LPCTSTR pstrModuleName)
     {
         ASSERT( !::IsBadStringPtr(pstrModuleName,-1) || pstrModuleName == NULL );
-        if( pstrModuleName == NULL ) return false;
+        if( pstrModuleName == NULL ) return FALSE;
         HMODULE hModule = ::LoadLibrary(pstrModuleName);
         if( hModule != NULL ) {
             LPCREATECONTROL lpCreateControl = (LPCREATECONTROL)::GetProcAddress(hModule, "CreateControl");
             if( lpCreateControl != NULL ) {
-                if( m_aPlugins.Find(lpCreateControl) >= 0 ) return true;
+                if( m_aPlugins.Find(lpCreateControl) >= 0 ) return TRUE;
                 m_aPlugins.Add(lpCreateControl);
-                return true;
+                return TRUE;
             }
         }
-        return false;
+        return FALSE;
     }
 
     CPtrArrayUI* CManagerUI::GetPlugins()
@@ -514,22 +514,22 @@ namespace DUILIB
         m_szMaxWindow.cy = cy;
     }
 
-    bool CManagerUI::IsShowUpdateRect() const
+    BOOL CManagerUI::IsShowUpdateRect() const
     {
 	    return m_bShowUpdateRect;
     }
 
-    void CManagerUI::SetShowUpdateRect(bool show)
+    void CManagerUI::SetShowUpdateRect(BOOL show)
     {
         m_bShowUpdateRect = show;
     }
 
-    bool CManagerUI::IsNoActivate()
+    BOOL CManagerUI::IsNoActivate()
     {
         return m_bNoActivate;
     }
 
-    void CManagerUI::SetNoActivate(bool bNoActivate)
+    void CManagerUI::SetNoActivate(BOOL bNoActivate)
     {
         m_bNoActivate = bNoActivate;
     }
@@ -561,17 +561,17 @@ namespace DUILIB
 		    if(dwStyle != dwNewStyle) ::SetWindowLong(m_hWndPaint, GWL_EXSTYLE, dwNewStyle);
 		    fSetLayeredWindowAttributes(m_hWndPaint, 0, nOpacity, LWA_ALPHA);
 
-		    m_bLayered = false;
+		    m_bLayered = FALSE;
 		    Invalidate();
 	    }
     }
 
-    bool CManagerUI::IsLayered()
+    BOOL CManagerUI::IsLayered()
     {
 	    return m_bLayered;
     }
 
-    void CManagerUI::SetLayered(bool bLayered)
+    void CManagerUI::SetLayered(BOOL bLayered)
     {
 	    if( m_hWndPaint != NULL && bLayered != m_bLayered ) {
 		    UINT uStyle = GetWindowStyle(m_hWndPaint);
@@ -610,7 +610,7 @@ namespace DUILIB
     void CManagerUI::SetLayeredInset(RECT& rcLayeredInset)
     {
 	    m_rcLayeredInset = rcLayeredInset;
-	    m_bLayeredChanged = true;
+	    m_bLayeredChanged = TRUE;
 	    Invalidate();
     }
 
@@ -622,7 +622,7 @@ namespace DUILIB
     void CManagerUI::SetLayeredOpacity(BYTE nOpacity)
     {
 	    m_nOpacity = nOpacity;
-	    m_bLayeredChanged = true;
+	    m_bLayeredChanged = TRUE;
 	    Invalidate();
     }
 
@@ -638,14 +638,14 @@ namespace DUILIB
 	    CRenderUI::DrawImage(NULL, this, rcNull, rcNull, m_diLayered);
     }
 
-    bool CManagerUI::PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& /*lRes*/)
+    BOOL CManagerUI::PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& /*lRes*/)
     {
         for( int i = 0; i < m_aPreMessageFilters.GetSize(); i++ ) 
         {
-            bool bHandled = false;
+            BOOL bHandled = FALSE;
             LRESULT lResult = static_cast<IMessageFilterUI*>(m_aPreMessageFilters[i])->MessageHandler(uMsg, wParam, lParam, bHandled);
             if( bHandled ) {
-                return true;
+                return TRUE;
             }
         }
         switch( uMsg ) {
@@ -655,16 +655,16 @@ namespace DUILIB
                if( wParam == VK_TAB ) {
                    //TODO:lg: 这里不应该依赖于 CRichEditUI
                    //if( m_pFocus && m_pFocus->IsVisible() && m_pFocus->IsEnabled() && _tcsstr(m_pFocus->GetClass(), DUI_CTR_RICHEDIT) != NULL ) {
-                   //    if( static_cast<CRichEditUI*>(m_pFocus)->IsWantTab() ) return false;
+                   //    if( static_cast<CRichEditUI*>(m_pFocus)->IsWantTab() ) return FALSE;
                    //}
                    SetNextTabControl(::GetKeyState(VK_SHIFT) >= 0);
-                   return true;
+                   return TRUE;
                }
             }
             break;
         case WM_SYSCHAR:
             {
-		       if( m_pRoot == NULL ) return false;
+		       if( m_pRoot == NULL ) return FALSE;
                // Handle ALT-shortcut key-combinations
                struct TFINDSHORTCUT_UI fs = { 0 };
                fs.ch = toupper((int)wParam);
@@ -672,7 +672,7 @@ namespace DUILIB
                if( pControl != NULL ) {
                    pControl->SetFocus();
                    pControl->Activate();
-                   return true;
+                   return TRUE;
                }
             }
             break;
@@ -691,10 +691,10 @@ namespace DUILIB
             }
             break;
         }
-        return false;
+        return FALSE;
     }
 
-    bool CManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lRes)
+    BOOL CManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lRes)
     {
     //#ifdef _DEBUG
     //    switch( uMsg ) {
@@ -707,12 +707,12 @@ namespace DUILIB
     //    }
     //#endif
         // Not ready yet?
-        if( m_hWndPaint == NULL ) return false;
+        if( m_hWndPaint == NULL ) return FALSE;
     
         // Cycle through listeners
         for( int i = 0; i < m_aMessageFilters.GetSize(); i++ ) 
         {
-            bool bHandled = false;
+            BOOL bHandled = FALSE;
             LRESULT lResult = static_cast<IMessageFilterUI*>(m_aMessageFilters[i])->MessageHandler(uMsg, wParam, lParam, bHandled);
             if( bHandled ) {
                 lRes = lResult;
@@ -735,7 +735,7 @@ namespace DUILIB
 				    }
 				    break;
 			    }
-                return true;
+                return TRUE;
             }
         }
 
@@ -744,13 +744,13 @@ namespace DUILIB
 		    case WM_NCACTIVATE:
 			    if( !::IsIconic(m_hWndPaint) ) {
 				    lRes = (wParam == 0) ? TRUE : FALSE;
-				    return true;
+				    return TRUE;
 			    }
 			    break;
 		    case WM_NCCALCSIZE:
 		    case WM_NCPAINT:
 			    lRes = 0;
-			    return true;
+			    return TRUE;
 		    }
 	    }
 
@@ -758,7 +758,7 @@ namespace DUILIB
         switch( uMsg ) {
         case WM_APP + 1:
             {
-			    m_bAsyncNotifyPosted = false;
+			    m_bAsyncNotifyPosted = FALSE;
 
 			    struct TNOTIFY_UI* pMsg = NULL;
 			    while( pMsg = static_cast<struct TNOTIFY_UI*>(m_aAsyncNotify.GetAt(0)) ) {
@@ -813,7 +813,7 @@ namespace DUILIB
                 // We'll do the painting here...
                 lRes = 1;
             }
-            return true;
+            return TRUE;
         case WM_PAINT:
             {
                 if( m_pRoot == NULL ) {
@@ -821,7 +821,7 @@ namespace DUILIB
                     ::BeginPaint(m_hWndPaint, &ps);
 				    CRenderUI::DrawColor(m_hDcPaint, ps.rcPaint, 0xFF000000);
                     ::EndPaint(m_hWndPaint, &ps);
-                    return true;
+                    return TRUE;
                 }
 
 			    RECT rcClient = { 0 };
@@ -829,20 +829,20 @@ namespace DUILIB
 
 			    RECT rcPaint = { 0 };
 			    if( m_bLayered ) {
-				    m_bOffscreenPaint = true;
+				    m_bOffscreenPaint = TRUE;
 				    rcPaint = m_rcLayeredUpdate;
 				    if( ::IsRectEmpty(&m_rcLayeredUpdate) ) {
 					    PAINTSTRUCT ps = { 0 };
 					    ::BeginPaint(m_hWndPaint, &ps);
 					    ::EndPaint(m_hWndPaint, &ps);
-					    return true;
+					    return TRUE;
 				    }
 				    if( rcPaint.right > rcClient.right ) rcPaint.right = rcClient.right;
 				    if( rcPaint.bottom > rcClient.bottom ) rcPaint.bottom = rcClient.bottom;
 				    ::ZeroMemory(&m_rcLayeredUpdate, sizeof(m_rcLayeredUpdate));
 			    }
 			    else {
-				    if( !::GetUpdateRect(m_hWndPaint, &rcPaint, FALSE) ) return true;
+				    if( !::GetUpdateRect(m_hWndPaint, &rcPaint, FALSE) ) return TRUE;
 			    }
 			
                 // Set focus to first control?
@@ -850,9 +850,9 @@ namespace DUILIB
                     SetNextTabControl();
                 }
 
-			    SetPainting(true);
+			    SetPainting(TRUE);
                 if( m_bUpdateNeeded ) {
-                    m_bUpdateNeeded = false;
+                    m_bUpdateNeeded = FALSE;
                     if( !::IsRectEmpty(&rcClient) ) {
                         if( m_pRoot->IsUpdateNeeded() ) {
 						    RECT rcRoot = rcClient;
@@ -870,7 +870,7 @@ namespace DUILIB
 							    rcRoot.right -= m_rcLayeredInset.right;
 							    rcRoot.bottom -= m_rcLayeredInset.bottom;
 						    }
-						    m_pRoot->SetPos(rcRoot, true);
+						    m_pRoot->SetPos(rcRoot, TRUE);
                         }
                         else {
 						    CControlUI* pControl = NULL;
@@ -878,20 +878,20 @@ namespace DUILIB
 						    m_pRoot->FindControl(__FindControlsFromUpdate, NULL, UIFIND_VISIBLE | UIFIND_ME_FIRST | UIFIND_UPDATETEST);
 						    for( int it = 0; it < m_aFoundControls.GetSize(); it++ ) {
 							    pControl = static_cast<CControlUI*>(m_aFoundControls[it]);
-							    if( !pControl->IsFloat() ) pControl->SetPos(pControl->GetPos(), true);
-							    else pControl->SetPos(pControl->GetRelativePos(), true);
+							    if( !pControl->IsFloat() ) pControl->SetPos(pControl->GetPos(), TRUE);
+							    else pControl->SetPos(pControl->GetRelativePos(), TRUE);
 						    }
                         }
                         // We'll want to notify the window when it is first initialized
                         // with the correct layout. The window form would take the time
                         // to submit swipes/animations.
 					    if( m_bFirstLayout ) {
-						    m_bFirstLayout = false;
-						    SendNotify(m_pRoot, DUI_MSGTYPE_WINDOWINIT,  0, 0, false);
+						    m_bFirstLayout = FALSE;
+						    SendNotify(m_pRoot, DUI_MSGTYPE_WINDOWINIT,  0, 0, FALSE);
 						    if( m_bLayered && m_bLayeredChanged ) {
 							    Invalidate();
-							    SetPainting(false);
-							    return true;
+							    SetPainting(FALSE);
+							    return TRUE;
 						    }
 					    }
                     }
@@ -904,7 +904,7 @@ namespace DUILIB
 				    rcRoot.top += m_rcLayeredInset.top;
 				    rcRoot.right -= m_rcLayeredInset.right;
 				    rcRoot.bottom -= m_rcLayeredInset.bottom;
-				    m_pRoot->SetPos(rcRoot, true);
+				    m_pRoot->SetPos(rcRoot, TRUE);
 			    }
                 //
                 // Render screen
@@ -1053,11 +1053,11 @@ namespace DUILIB
                 // All Done!
                 ::EndPaint(m_hWndPaint, &ps);
 
-			    SetPainting(false);
-			    m_bLayeredChanged = false;
+			    SetPainting(FALSE);
+			    m_bLayeredChanged = FALSE;
 			    if( m_bUpdateNeeded ) Invalidate();
             }
-            return true;
+            return TRUE;
         case WM_PRINTCLIENT:
             {
                 if( m_pRoot == NULL ) break;
@@ -1111,7 +1111,7 @@ namespace DUILIB
                 if( m_pRoot != NULL ) m_pRoot->NeedUpdate();
 			    if( m_bLayered ) Invalidate();
             }
-            return true;
+            return TRUE;
         case WM_TIMER:
             {
 			    if( LOWORD(wParam) == LAYEREDUPDATE_TIMERID ) {
@@ -1123,7 +1123,7 @@ namespace DUILIB
 			    }
                 for( int i = 0; i < m_aTimers.GetSize(); i++ ) {
                     const struct TIMERINFO_UI* pTimer = static_cast<struct TIMERINFO_UI*>(m_aTimers[i]);
-                    if( pTimer->hWnd == m_hWndPaint && pTimer->uWinTimer == LOWORD(wParam) && pTimer->bKilled == false) {
+                    if( pTimer->hWnd == m_hWndPaint && pTimer->uWinTimer == LOWORD(wParam) && pTimer->bKilled == FALSE) {
                         struct TEVENT_UI event = { 0 };
                         event.Type = UIEVENT_TIMER;
                         event.pSender = pTimer->pSender;
@@ -1142,14 +1142,14 @@ namespace DUILIB
             {
                 if (m_bNoActivate) {
                     lRes = MA_NOACTIVATE;
-                    return true;
+                    return TRUE;
                 }
             }
             break;
         case WM_MOUSEHOVER:
             {
                 if (m_pRoot == NULL) break;
-                m_bMouseTracking = false;
+                m_bMouseTracking = FALSE;
                 POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
                 CControlUI* pHover = FindControl(pt);
                 if (pHover == NULL) break;
@@ -1167,7 +1167,7 @@ namespace DUILIB
                 }
                 // Create tooltip information
                 CStringUI sToolTip = pHover->GetToolTip();
-                if (sToolTip.IsEmpty()) return true;
+                if (sToolTip.IsEmpty()) return TRUE;
                 ProcessMultiLanguageTokens(sToolTip);
                 ::ZeroMemory(&m_ToolTip, sizeof(TOOLINFO));
                 m_ToolTip.cbSize = sizeof(TOOLINFO);
@@ -1208,7 +1208,7 @@ namespace DUILIB
                 //修改在CListElementUI 有提示 子项无提示下无法跟随移动！（按理说不应该移动的）
                 ::SendMessage(m_hwndTooltip, TTM_TRACKPOSITION, 0, (LPARAM)(DWORD)MAKELONG(pt.x, pt.y));
         }
-            return true;
+            return TRUE;
         case WM_MOUSELEAVE:
             {
                 if( m_pRoot == NULL ) break;
@@ -1229,7 +1229,7 @@ namespace DUILIB
                     else 
                         ::SendMessage(m_hWndPaint, WM_MOUSEMOVE, 0, (LPARAM)-1);
                 }
-                m_bMouseTracking = false;
+                m_bMouseTracking = FALSE;
             }
             break;
         case WM_MOUSEMOVE:
@@ -1243,7 +1243,7 @@ namespace DUILIB
                     tme.hwndTrack = m_hWndPaint;
                     tme.dwHoverTime = m_hwndTooltip == NULL ? m_iHoverTime : (DWORD) ::SendMessage(m_hwndTooltip, TTM_GETDELAYTIME, TTDT_INITIAL, 0L);
                     _TrackMouseEvent(&tme);
-                    m_bMouseTracking = true;
+                    m_bMouseTracking = TRUE;
                 }
                 // Generate the appropriate mouse messages
                 POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
@@ -1482,7 +1482,7 @@ namespace DUILIB
             {
                 if( m_pRoot == NULL ) break;
                 if( LOWORD(lParam) != HTCLIENT ) break;
-                if( m_bMouseCapture ) return true;
+                if( m_bMouseCapture ) return TRUE;
 
                 POINT pt = { 0 };
                 ::GetCursorPos(&pt);
@@ -1500,7 +1500,7 @@ namespace DUILIB
                 event.dwTimestamp = ::GetTickCount();
                 pControl->Event(event);
             }
-            return true;
+            return TRUE;
 	    case WM_KILLFOCUS:
 		    {
 			    if( wParam != NULL ) {
@@ -1511,7 +1511,7 @@ namespace DUILIB
 						    for( int i = 0; i < m_aNativeWindow.GetSize(); i++ ) {
 							    if( static_cast<HWND>(m_aNativeWindow[i]) == hWnd ) {
 								    if( static_cast<CControlUI*>(m_aNativeWindowControl[i]) != m_pFocus ) {
-									    SetFocus(static_cast<CControlUI*>(m_aNativeWindowControl[i]), false);
+									    SetFocus(static_cast<CControlUI*>(m_aNativeWindowControl[i]), FALSE);
 								    }
 								    break;
 							    }
@@ -1527,7 +1527,7 @@ namespace DUILIB
             {
                 LPNMHDR lpNMHDR = (LPNMHDR) lParam;
                 if( lpNMHDR != NULL ) lRes = ::SendMessage(lpNMHDR->hwndFrom, OCM__BASE + uMsg, wParam, lParam);
-                return true;
+                return TRUE;
             }
             break;
         case WM_COMMAND:
@@ -1535,7 +1535,7 @@ namespace DUILIB
                 if( lParam == 0 ) break;
                 HWND hWndChild = (HWND) lParam;
                 lRes = ::SendMessage(hWndChild, OCM__BASE + uMsg, wParam, lParam);
-                return true;
+                return TRUE;
             }
             break;
         case WM_CTLCOLOREDIT:
@@ -1546,24 +1546,24 @@ namespace DUILIB
                 if( lParam == 0 ) break;
                 HWND hWndChild = (HWND) lParam;
                 lRes = ::SendMessage(hWndChild, OCM__BASE + uMsg, wParam, lParam);
-                return true;
+                return TRUE;
             }
             break;
         default:
             break;
         }
 
-        return false;
+        return FALSE;
     }
 
-    bool CManagerUI::IsUpdateNeeded() const
+    BOOL CManagerUI::IsUpdateNeeded() const
     {
 	    return m_bUpdateNeeded;
     }
 
     void CManagerUI::NeedUpdate()
     {
-        m_bUpdateNeeded = true;
+        m_bUpdateNeeded = TRUE;
     }
 
     void CManagerUI::Invalidate()
@@ -1586,7 +1586,7 @@ namespace DUILIB
 	    else ::UnionRect(&m_rcLayeredUpdate, &m_rcLayeredUpdate, &rcItem);
     }
 
-    bool CManagerUI::AttachDialog(CControlUI* pControl)
+    BOOL CManagerUI::AttachDialog(CControlUI* pControl)
     {
         ASSERT(::IsWindow(m_hWndPaint));
         // Reset any previous attachment
@@ -1611,30 +1611,30 @@ namespace DUILIB
         // Set the dialog root element
         m_pRoot = pControl;
         // Go ahead...
-        m_bUpdateNeeded = true;
-        m_bFirstLayout = true;
-        m_bFocusNeeded = true;
+        m_bUpdateNeeded = TRUE;
+        m_bFirstLayout = TRUE;
+        m_bFocusNeeded = TRUE;
         // Initiate all control
         return InitControls(pControl);
     }
 
-    bool CManagerUI::InitControls(CControlUI* pControl, CControlUI* pParent /*= NULL*/)
+    BOOL CManagerUI::InitControls(CControlUI* pControl, CControlUI* pParent /*= NULL*/)
     {
         ASSERT(pControl);
-        if( pControl == NULL ) return false;
-        pControl->SetManager(this, pParent != NULL ? pParent : pControl->GetParent(), true);
+        if( pControl == NULL ) return FALSE;
+        pControl->SetManager(this, pParent != NULL ? pParent : pControl->GetParent(), TRUE);
         pControl->FindControl(__FindControlFromNameHash, this, UIFIND_ALL);
-        return true;
+        return TRUE;
     }
 
-    bool CManagerUI::RenameControl(CControlUI* pControl, LPCTSTR pstrName)
+    BOOL CManagerUI::RenameControl(CControlUI* pControl, LPCTSTR pstrName)
     {
 	    ASSERT(pControl);
-	    if( pControl == NULL || pControl->GetManager() != this || pstrName == NULL || *pstrName == _T('\0')) return false;
-	    if (pControl->GetName() == pstrName) return true;
-	    if (NULL != FindControl(pstrName)) return false;
+	    if( pControl == NULL || pControl->GetManager() != this || pstrName == NULL || *pstrName == _T('\0')) return FALSE;
+	    if (pControl->GetName() == pstrName) return TRUE;
+	    if (NULL != FindControl(pstrName)) return FALSE;
 	    m_mNameHash.Remove(pControl->GetName());
-	    bool bResult = m_mNameHash.Insert(pstrName, pControl);
+	    BOOL bResult = m_mNameHash.Insert(pstrName, pControl);
 	    if (bResult) pControl->SetName(pstrName);
 	    return bResult;
     }
@@ -1657,16 +1657,16 @@ namespace DUILIB
         }    
     }
 
-    bool CManagerUI::AddOptionGroup(LPCTSTR pStrGroupName, CControlUI* pControl)
+    BOOL CManagerUI::AddOptionGroup(LPCTSTR pStrGroupName, CControlUI* pControl)
     {
-        if (pControl == NULL || pStrGroupName == NULL) return false;
+        if (pControl == NULL || pStrGroupName == NULL) return FALSE;
 
         LPVOID lp = m_mOptionGroup.Find(pStrGroupName);
         if( lp ) {
             CPtrArrayUI* aOptionGroup = static_cast<CPtrArrayUI*>(lp);
             for( int i = 0; i < aOptionGroup->GetSize(); i++ ) {
                 if( static_cast<CControlUI*>(aOptionGroup->GetAt(i)) == pControl ) {
-                    return false;
+                    return FALSE;
                 }
             }
             aOptionGroup->Add(pControl);
@@ -1676,7 +1676,7 @@ namespace DUILIB
             aOptionGroup->Add(pControl);
             m_mOptionGroup.Insert(pStrGroupName, aOptionGroup);
         }
-        return true;
+        return TRUE;
     }
 
     CPtrArrayUI* CManagerUI::GetOptionGroup(LPCTSTR pStrGroupName)
@@ -1749,7 +1749,7 @@ namespace DUILIB
         return m_pFocus;
     }
 
-    void CManagerUI::SetFocus(CControlUI* pControl, bool bFocusWnd)
+    void CManagerUI::SetFocus(CControlUI* pControl, BOOL bFocusWnd)
     {
         // Paint manager window has focus?
         HWND hFocusWnd = ::GetFocus();
@@ -1799,13 +1799,13 @@ namespace DUILIB
         }
         struct TFINDTABINFO_UI info = { 0 };
         info.pFocus = pControl;
-        info.bForward = false;
+        info.bForward = FALSE;
         m_pFocus = m_pRoot->FindControl(__FindControlFromTab, &info, UIFIND_VISIBLE | UIFIND_ENABLED | UIFIND_ME_FIRST);
-        m_bFocusNeeded = true;
+        m_bFocusNeeded = TRUE;
         if( m_pRoot != NULL ) m_pRoot->NeedUpdate();
     }
 
-    bool CManagerUI::SetTimer(CControlUI* pControl, UINT nTimerID, UINT uElapse)
+    BOOL CManagerUI::SetTimer(CControlUI* pControl, UINT nTimerID, UINT uElapse)
     {
         ASSERT(pControl!=NULL);
         ASSERT(uElapse>0);
@@ -1814,14 +1814,14 @@ namespace DUILIB
             if( pTimer->pSender == pControl
                 && pTimer->hWnd == m_hWndPaint
                 && pTimer->nLocalID == nTimerID ) {
-                if( pTimer->bKilled == true ) {
+                if( pTimer->bKilled == TRUE ) {
                     if( ::SetTimer(m_hWndPaint, pTimer->uWinTimer, uElapse, NULL) ) {
-                        pTimer->bKilled = false;
-                        return true;
+                        pTimer->bKilled = FALSE;
+                        return TRUE;
                     }
-                    return false;
+                    return FALSE;
                 }
-                return false;
+                return FALSE;
             }
         }
 
@@ -1833,11 +1833,11 @@ namespace DUILIB
         pTimer->pSender = pControl;
         pTimer->nLocalID = nTimerID;
         pTimer->uWinTimer = m_uTimerID;
-        pTimer->bKilled = false;
+        pTimer->bKilled = FALSE;
         return m_aTimers.Add(pTimer);
     }
 
-    bool CManagerUI::KillTimer(CControlUI* pControl, UINT nTimerID)
+    BOOL CManagerUI::KillTimer(CControlUI* pControl, UINT nTimerID)
     {
         ASSERT(pControl!=NULL);
         for( int i = 0; i< m_aTimers.GetSize(); i++ ) {
@@ -1846,14 +1846,14 @@ namespace DUILIB
                 && pTimer->hWnd == m_hWndPaint
                 && pTimer->nLocalID == nTimerID )
             {
-                if( pTimer->bKilled == false ) {
+                if( pTimer->bKilled == FALSE ) {
                     if( ::IsWindow(m_hWndPaint) ) ::KillTimer(pTimer->hWnd, pTimer->uWinTimer);
-                    pTimer->bKilled = true;
-                    return true;
+                    pTimer->bKilled = TRUE;
+                    return TRUE;
                 }
             }
         }
-        return false;
+        return FALSE;
     }
 
     void CManagerUI::KillTimer(CControlUI* pControl)
@@ -1863,7 +1863,7 @@ namespace DUILIB
         for( int i = 0, j = 0; i < count; i++ ) {
             struct TIMERINFO_UI* pTimer = static_cast<struct TIMERINFO_UI*>(m_aTimers[i - j]);
             if( pTimer->pSender == pControl && pTimer->hWnd == m_hWndPaint ) {
-                if( pTimer->bKilled == false ) ::KillTimer(pTimer->hWnd, pTimer->uWinTimer);
+                if( pTimer->bKilled == FALSE ) ::KillTimer(pTimer->hWnd, pTimer->uWinTimer);
                 delete pTimer;
                 m_aTimers.Remove(i - j);
                 j++;
@@ -1876,7 +1876,7 @@ namespace DUILIB
         for( int i = 0; i < m_aTimers.GetSize(); i++ ) {
             struct TIMERINFO_UI* pTimer = static_cast<struct TIMERINFO_UI*>(m_aTimers[i]);
             if( pTimer->hWnd == m_hWndPaint ) {
-                if( pTimer->bKilled == false ) {
+                if( pTimer->bKilled == FALSE ) {
                     if( ::IsWindow(m_hWndPaint) ) ::KillTimer(m_hWndPaint, pTimer->uWinTimer);
                 }
                 delete pTimer;
@@ -1889,39 +1889,39 @@ namespace DUILIB
     void CManagerUI::SetCapture()
     {
         ::SetCapture(m_hWndPaint);
-        m_bMouseCapture = true;
+        m_bMouseCapture = TRUE;
     }
 
     void CManagerUI::ReleaseCapture()
     {
         ::ReleaseCapture();
-        m_bMouseCapture = false;
+        m_bMouseCapture = FALSE;
     }
 
-    bool CManagerUI::IsCaptured()
+    BOOL CManagerUI::IsCaptured()
     {
         return m_bMouseCapture;
     }
 
 
-    bool CManagerUI::IsPainting()
+    BOOL CManagerUI::IsPainting()
     {
 	    return m_bIsPainting;
     }
 
-    void CManagerUI::SetPainting(bool bIsPainting)
+    void CManagerUI::SetPainting(BOOL bIsPainting)
     {
 	    m_bIsPainting = bIsPainting;
     }
 
-    bool CManagerUI::SetNextTabControl(bool bForward)
+    BOOL CManagerUI::SetNextTabControl(BOOL bForward)
     {
         // If we're in the process of restructuring the layout we can delay the
         // focus calulation until the next repaint.
         if( m_bUpdateNeeded && bForward ) {
-            m_bFocusNeeded = true;
+            m_bFocusNeeded = TRUE;
             ::InvalidateRect(m_hWndPaint, NULL, FALSE);
-            return true;
+            return TRUE;
         }
         // Find next/previous tabbable control
         struct TFINDTABINFO_UI info1 = { 0 };
@@ -1941,62 +1941,62 @@ namespace DUILIB
             }
         }
         if( pControl != NULL ) SetFocus(pControl);
-        m_bFocusNeeded = false;
-        return true;
+        m_bFocusNeeded = FALSE;
+        return TRUE;
     }
 
-    bool CManagerUI::AddNotifier(INotifyUI* pNotifier)
+    BOOL CManagerUI::AddNotifier(INotifyUI* pNotifier)
     {
-        if (pNotifier == NULL) return false;
+        if (pNotifier == NULL) return FALSE;
 
         ASSERT(m_aNotifiers.Find(pNotifier)<0);
         return m_aNotifiers.Add(pNotifier);
     }
 
-    bool CManagerUI::RemoveNotifier(INotifyUI* pNotifier)
+    BOOL CManagerUI::RemoveNotifier(INotifyUI* pNotifier)
     {
         for( int i = 0; i < m_aNotifiers.GetSize(); i++ ) {
             if( static_cast<INotifyUI*>(m_aNotifiers[i]) == pNotifier ) {
                 return m_aNotifiers.Remove(i);
             }
         }
-        return false;
+        return FALSE;
     }
 
-    bool CManagerUI::AddPreMessageFilter(IMessageFilterUI* pFilter)
+    BOOL CManagerUI::AddPreMessageFilter(IMessageFilterUI* pFilter)
     {
-        if (pFilter == NULL) return false;
+        if (pFilter == NULL) return FALSE;
 
         ASSERT(m_aPreMessageFilters.Find(pFilter)<0);
         return m_aPreMessageFilters.Add(pFilter);
     }
 
-    bool CManagerUI::RemovePreMessageFilter(IMessageFilterUI* pFilter)
+    BOOL CManagerUI::RemovePreMessageFilter(IMessageFilterUI* pFilter)
     {
         for( int i = 0; i < m_aPreMessageFilters.GetSize(); i++ ) {
             if( static_cast<IMessageFilterUI*>(m_aPreMessageFilters[i]) == pFilter ) {
                 return m_aPreMessageFilters.Remove(i);
             }
         }
-        return false;
+        return FALSE;
     }
 
-    bool CManagerUI::AddMessageFilter(IMessageFilterUI* pFilter)
+    BOOL CManagerUI::AddMessageFilter(IMessageFilterUI* pFilter)
     {
-        if (pFilter == NULL) return false;
+        if (pFilter == NULL) return FALSE;
 
         ASSERT(m_aMessageFilters.Find(pFilter)<0);
         return m_aMessageFilters.Add(pFilter);
     }
 
-    bool CManagerUI::RemoveMessageFilter(IMessageFilterUI* pFilter)
+    BOOL CManagerUI::RemoveMessageFilter(IMessageFilterUI* pFilter)
     {
         for( int i = 0; i < m_aMessageFilters.GetSize(); i++ ) {
             if( static_cast<IMessageFilterUI*>(m_aMessageFilters[i]) == pFilter ) {
                 return m_aMessageFilters.Remove(i);
             }
         }
-        return false;
+        return FALSE;
     }
 
     int CManagerUI::GetPostPaintCount() const
@@ -2004,27 +2004,27 @@ namespace DUILIB
         return m_aPostPaintControls.GetSize();
     }
 
-    bool CManagerUI::AddPostPaint(CControlUI* pControl)
+    BOOL CManagerUI::AddPostPaint(CControlUI* pControl)
     {
-        if (pControl == NULL) return false;
+        if (pControl == NULL) return FALSE;
 
         ASSERT(m_aPostPaintControls.Find(pControl) < 0);
         return m_aPostPaintControls.Add(pControl);
     }
 
-    bool CManagerUI::RemovePostPaint(CControlUI* pControl)
+    BOOL CManagerUI::RemovePostPaint(CControlUI* pControl)
     {
         for( int i = 0; i < m_aPostPaintControls.GetSize(); i++ ) {
             if( static_cast<CControlUI*>(m_aPostPaintControls[i]) == pControl ) {
                 return m_aPostPaintControls.Remove(i);
             }
         }
-        return false;
+        return FALSE;
     }
 
-    bool CManagerUI::SetPostPaintIndex(CControlUI* pControl, int iIndex)
+    BOOL CManagerUI::SetPostPaintIndex(CControlUI* pControl, int iIndex)
     {
-        if (pControl == NULL) return false;
+        if (pControl == NULL) return FALSE;
 
         RemovePostPaint(pControl);
         return m_aPostPaintControls.InsertAt(iIndex, pControl);
@@ -2044,39 +2044,39 @@ namespace DUILIB
 	    return rcChildWnd;
     }
 
-    bool CManagerUI::AddNativeWindow(CControlUI* pControl, HWND hChildWnd)
+    BOOL CManagerUI::AddNativeWindow(CControlUI* pControl, HWND hChildWnd)
     {
-        if (pControl == NULL || hChildWnd == NULL) return false;
+        if (pControl == NULL || hChildWnd == NULL) return FALSE;
 
 	    RECT rcChildWnd = GetNativeWindowRect(hChildWnd);
 	    Invalidate(rcChildWnd);
 
-	    if (m_aNativeWindow.Find(hChildWnd) >= 0) return false;
+	    if (m_aNativeWindow.Find(hChildWnd) >= 0) return FALSE;
 	    if (m_aNativeWindow.Add(hChildWnd)) {
 		    m_aNativeWindowControl.Add(pControl);
-		    return true;
+		    return TRUE;
 	    }
-	    return false;
+	    return FALSE;
     }
 
-    bool CManagerUI::RemoveNativeWindow(HWND hChildWnd)
+    BOOL CManagerUI::RemoveNativeWindow(HWND hChildWnd)
     {
 	    for( int i = 0; i < m_aNativeWindow.GetSize(); i++ ) {
 		    if( static_cast<HWND>(m_aNativeWindow[i]) == hChildWnd ) {
 			    if( m_aNativeWindow.Remove(i) ) {
 				    m_aNativeWindowControl.Remove(i);
-				    return true;
+				    return TRUE;
 			    }
-			    return false;
+			    return FALSE;
 		    }
 	    }
-	    return false;
+	    return FALSE;
     }
 
     void CManagerUI::AddDelayedCleanup(CControlUI* pControl)
     {
         if (pControl == NULL) return;
-        pControl->SetManager(this, NULL, false);
+        pControl->SetManager(this, NULL, FALSE);
         m_aDelayedCleanup.Add(pControl);
 	    PostAsyncNotify();
     }
@@ -2092,18 +2092,18 @@ namespace DUILIB
         m_aNeedMouseLeaveNeeded.Add(pControl);
     }
 
-    bool CManagerUI::RemoveMouseLeaveNeeded(CControlUI* pControl)
+    BOOL CManagerUI::RemoveMouseLeaveNeeded(CControlUI* pControl)
     {
-        if (pControl == NULL) return false;
+        if (pControl == NULL) return FALSE;
         for( int i = 0; i < m_aNeedMouseLeaveNeeded.GetSize(); i++ ) {
             if( static_cast<CControlUI*>(m_aNeedMouseLeaveNeeded[i]) == pControl ) {
                 return m_aNeedMouseLeaveNeeded.Remove(i);
             }
         }
-        return false;
+        return FALSE;
     }
 
-    void CManagerUI::SendNotify(CControlUI* pControl, LPCTSTR pstrMessage, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/, bool bAsync /*= false*/, bool bEnableRepeat /*= true*/)
+    void CManagerUI::SendNotify(CControlUI* pControl, LPCTSTR pstrMessage, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/, BOOL bAsync /*= FALSE*/, BOOL bEnableRepeat /*= TRUE*/)
     {
         struct TNOTIFY_UI Msg;
         Msg.pSender = pControl;
@@ -2113,7 +2113,7 @@ namespace DUILIB
         SendNotify(Msg, bAsync, bEnableRepeat);
     }
 
-    void CManagerUI::SendNotify(struct TNOTIFY_UI& Msg, bool bAsync /*= false*/, bool bEnableRepeat /*= true*/)
+    void CManagerUI::SendNotify(struct TNOTIFY_UI& Msg, BOOL bAsync /*= FALSE*/, BOOL bEnableRepeat /*= TRUE*/)
     {
         Msg.ptMouse = m_ptLastMousePos;
         Msg.dwTimestamp = ::GetTickCount();
@@ -2160,12 +2160,12 @@ namespace DUILIB
         }
     }
 
-    bool CManagerUI::IsForceUseSharedRes() const
+    BOOL CManagerUI::IsForceUseSharedRes() const
     {
 	    return m_bForceUseSharedRes;
     }
 
-    void CManagerUI::SetForceUseSharedRes(bool bForce)
+    void CManagerUI::SetForceUseSharedRes(BOOL bForce)
     {
 	    m_bForceUseSharedRes = bForce;
     }
@@ -2175,7 +2175,7 @@ namespace DUILIB
         return m_ResInfo.m_dwDefaultDisabledColor;
     }
 
-    void CManagerUI::SetDefaultDisabledColor(DWORD dwColor, bool bShared)
+    void CManagerUI::SetDefaultDisabledColor(DWORD dwColor, BOOL bShared)
     {
 	    if (bShared)
 	    {
@@ -2194,7 +2194,7 @@ namespace DUILIB
 	    return m_ResInfo.m_dwDefaultFontColor;
     }
 
-    void CManagerUI::SetDefaultFontColor(DWORD dwColor, bool bShared)
+    void CManagerUI::SetDefaultFontColor(DWORD dwColor, BOOL bShared)
     {
 	    if (bShared)
 	    {
@@ -2213,7 +2213,7 @@ namespace DUILIB
         return m_ResInfo.m_dwDefaultLinkFontColor;
     }
 
-    void CManagerUI::SetDefaultLinkFontColor(DWORD dwColor, bool bShared)
+    void CManagerUI::SetDefaultLinkFontColor(DWORD dwColor, BOOL bShared)
     {
 	    if (bShared)
 	    {
@@ -2232,7 +2232,7 @@ namespace DUILIB
         return m_ResInfo.m_dwDefaultLinkHoverFontColor;
     }
 
-    void CManagerUI::SetDefaultLinkHoverFontColor(DWORD dwColor, bool bShared)
+    void CManagerUI::SetDefaultLinkHoverFontColor(DWORD dwColor, BOOL bShared)
     {
 	    if (bShared)
 	    {
@@ -2251,7 +2251,7 @@ namespace DUILIB
         return m_ResInfo.m_dwDefaultSelectedBkColor;
     }
 
-    void CManagerUI::SetDefaultSelectedBkColor(DWORD dwColor, bool bShared)
+    void CManagerUI::SetDefaultSelectedBkColor(DWORD dwColor, BOOL bShared)
     {
 	    if (bShared)
 	    {
@@ -2289,7 +2289,7 @@ namespace DUILIB
 	    }
     }
 
-    void CManagerUI::SetDefaultFont(LPCTSTR pStrFontName, int nSize, bool bBold, bool bUnderline, bool bItalic, bool bShared)
+    void CManagerUI::SetDefaultFont(LPCTSTR pStrFontName, int nSize, BOOL bBold, BOOL bUnderline, BOOL bItalic, BOOL bShared)
     {
         LOGFONT lf = { 0 };
         ::GetObject(::GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &lf);
@@ -2336,7 +2336,7 @@ namespace DUILIB
 	    }
     }
 
-    DWORD CManagerUI::GetCustomFontCount(bool bShared) const
+    DWORD CManagerUI::GetCustomFontCount(BOOL bShared) const
     {
 	    if (bShared)
 		    return m_SharedResInfo.m_CustomFonts.GetSize();
@@ -2344,7 +2344,7 @@ namespace DUILIB
 		    return m_ResInfo.m_CustomFonts.GetSize();
     }
 
-    HFONT CManagerUI::AddFont(int id, LPCTSTR pStrFontName, int nSize, bool bBold, bool bUnderline, bool bItalic, bool bShared)
+    HFONT CManagerUI::AddFont(int id, LPCTSTR pStrFontName, int nSize, BOOL bBold, BOOL bUnderline, BOOL bItalic, BOOL bShared)
     {
         LOGFONT lf = { 0 };
         ::GetObject(::GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &lf);
@@ -2358,7 +2358,7 @@ namespace DUILIB
         if( hFont == NULL ) return NULL;
 
         TFONTINFO_UI* pFontInfo = new TFONTINFO_UI;
-        if( !pFontInfo ) return false;
+        if( !pFontInfo ) return FALSE;
         ::ZeroMemory(pFontInfo, sizeof(TFONTINFO_UI));
         pFontInfo->hFont = hFont;
         pFontInfo->sFontName = pStrFontName;
@@ -2425,7 +2425,7 @@ namespace DUILIB
 	    return pFontInfo->hFont;
     }
 
-    HFONT CManagerUI::GetFont(LPCTSTR pStrFontName, int nSize, bool bBold, bool bUnderline, bool bItalic)
+    HFONT CManagerUI::GetFont(LPCTSTR pStrFontName, int nSize, BOOL bBold, BOOL bUnderline, BOOL bItalic)
     {
         TFONTINFO_UI* pFontInfo = NULL;
 	    for( int i = 0; i< m_ResInfo.m_CustomFonts.GetSize(); i++ ) {
@@ -2448,7 +2448,7 @@ namespace DUILIB
 	    return NULL;
     }
 
-    int CManagerUI::GetFontIndex(HFONT hFont, bool bShared)
+    int CManagerUI::GetFontIndex(HFONT hFont, BOOL bShared)
     {
 	    TFONTINFO_UI* pFontInfo = NULL;
 	    if (bShared)
@@ -2473,7 +2473,7 @@ namespace DUILIB
 	    return -1;
     }
 
-    int CManagerUI::GetFontIndex(LPCTSTR pStrFontName, int nSize, bool bBold, bool bUnderline, bool bItalic, bool bShared)
+    int CManagerUI::GetFontIndex(LPCTSTR pStrFontName, int nSize, BOOL bBold, BOOL bUnderline, BOOL bItalic, BOOL bShared)
     {
 	    TFONTINFO_UI* pFontInfo = NULL;
 	    if (bShared)
@@ -2502,7 +2502,7 @@ namespace DUILIB
 	    return -1;
     }
 
-    void CManagerUI::RemoveFont(HFONT hFont, bool bShared)
+    void CManagerUI::RemoveFont(HFONT hFont, BOOL bShared)
     {
         TFONTINFO_UI* pFontInfo = NULL;
 	    if (bShared)
@@ -2541,7 +2541,7 @@ namespace DUILIB
 	    }
     }
 
-    void CManagerUI::RemoveFont(int id, bool bShared)
+    void CManagerUI::RemoveFont(int id, BOOL bShared)
     {
 	    TCHAR idBuffer[16];
 	    ::ZeroMemory(idBuffer, sizeof(idBuffer));
@@ -2570,14 +2570,14 @@ namespace DUILIB
 	    }
     }
 
-    void CManagerUI::RemoveAllFonts(bool bShared)
+    void CManagerUI::RemoveAllFonts(BOOL bShared)
     {
 	    TFONTINFO_UI* pFontInfo;
 	    if (bShared)
 	    {
 		    for( int i = 0; i< m_SharedResInfo.m_CustomFonts.GetSize(); i++ ) {
 			    if(LPCTSTR key = m_SharedResInfo.m_CustomFonts.GetAt(i)) {
-				    pFontInfo = static_cast<TFONTINFO_UI*>(m_SharedResInfo.m_CustomFonts.Find(key, false));
+				    pFontInfo = static_cast<TFONTINFO_UI*>(m_SharedResInfo.m_CustomFonts.Find(key, FALSE));
 				    if (pFontInfo) {
 					    ::DeleteObject(pFontInfo->hFont);
 					    delete pFontInfo;
@@ -2590,7 +2590,7 @@ namespace DUILIB
 	    {
 		    for( int i = 0; i< m_ResInfo.m_CustomFonts.GetSize(); i++ ) {
 			    if(LPCTSTR key = m_ResInfo.m_CustomFonts.GetAt(i)) {
-				    pFontInfo = static_cast<TFONTINFO_UI*>(m_ResInfo.m_CustomFonts.Find(key, false));
+				    pFontInfo = static_cast<TFONTINFO_UI*>(m_ResInfo.m_CustomFonts.Find(key, FALSE));
 				    if (pFontInfo) {
 					    ::DeleteObject(pFontInfo->hFont);
 					    delete pFontInfo;
@@ -2656,11 +2656,11 @@ namespace DUILIB
         return data;
     }
 
-    const TIMAGEINFO_UI* CManagerUI::GetImageEx(LPCTSTR bitmap, LPCTSTR type, DWORD mask, bool bUseHSL)
+    const TIMAGEINFO_UI* CManagerUI::GetImageEx(LPCTSTR bitmap, LPCTSTR type, DWORD mask, BOOL bUseHSL)
     {
         const TIMAGEINFO_UI* data = GetImage(bitmap);
         if( !data ) {
-            if( AddImage(bitmap, type, mask, bUseHSL, false) ) {
+            if( AddImage(bitmap, type, mask, bUseHSL, FALSE) ) {
 			    if (m_bForceUseSharedRes) data = static_cast<TIMAGEINFO_UI*>(m_SharedResInfo.m_ImageHash.Find(bitmap));
 			    else data = static_cast<TIMAGEINFO_UI*>(m_ResInfo.m_ImageHash.Find(bitmap)); 
             }
@@ -2669,7 +2669,7 @@ namespace DUILIB
         return data;
     }
 
-    const TIMAGEINFO_UI* CManagerUI::AddImage(LPCTSTR bitmap, LPCTSTR type, DWORD mask, bool bUseHSL, bool bShared)
+    const TIMAGEINFO_UI* CManagerUI::AddImage(LPCTSTR bitmap, LPCTSTR type, DWORD mask, BOOL bUseHSL, BOOL bShared)
     {
 	    if( bitmap == NULL || bitmap[0] == _T('\0') ) return NULL;
 
@@ -2697,7 +2697,7 @@ namespace DUILIB
 		    ::CopyMemory(data->pSrcBits, data->pBits, data->nX * data->nY * 4);
 	    }
 	    else data->pSrcBits = NULL;
-	    if( m_bUseHSL ) CRenderUI::AdjustImage(true, data, m_H, m_S, m_L);
+	    if( m_bUseHSL ) CRenderUI::AdjustImage(TRUE, data, m_H, m_S, m_L);
 	    if (data)
 	    {
 		    if (bShared || m_bForceUseSharedRes)
@@ -2733,7 +2733,7 @@ namespace DUILIB
         return data;
     }
 
-    const TIMAGEINFO_UI* CManagerUI::AddImage(LPCTSTR bitmap, HBITMAP hBitmap, int iWidth, int iHeight, bool bAlpha, bool bShared)
+    const TIMAGEINFO_UI* CManagerUI::AddImage(LPCTSTR bitmap, HBITMAP hBitmap, int iWidth, int iHeight, BOOL bAlpha, BOOL bShared)
     {
 	    // 因无法确定外部HBITMAP格式，不能使用hsl调整
 	    if( bitmap == NULL || bitmap[0] == _T('\0') ) return NULL;
@@ -2745,7 +2745,7 @@ namespace DUILIB
 	    data->nX = iWidth;
 	    data->nY = iHeight;
 	    data->bAlpha = bAlpha;
-	    data->bUseHSL = false;
+	    data->bUseHSL = FALSE;
 	    data->pSrcBits = NULL;
 	    //data->sResType = _T("");
 	    data->dwMask = 0;
@@ -2768,7 +2768,7 @@ namespace DUILIB
         return data;
     }
 
-    void CManagerUI::RemoveImage(LPCTSTR bitmap, bool bShared)
+    void CManagerUI::RemoveImage(LPCTSTR bitmap, BOOL bShared)
     {
 	    TIMAGEINFO_UI* data = NULL;
 	    if (bShared) 
@@ -2791,14 +2791,14 @@ namespace DUILIB
 	    }
     }
 
-    void CManagerUI::RemoveAllImages(bool bShared)
+    void CManagerUI::RemoveAllImages(BOOL bShared)
     {
 	    if (bShared)
 	    {
 		    TIMAGEINFO_UI* data;
 		    for( int i = 0; i< m_SharedResInfo.m_ImageHash.GetSize(); i++ ) {
 			    if(LPCTSTR key = m_SharedResInfo.m_ImageHash.GetAt(i)) {
-				    data = static_cast<TIMAGEINFO_UI*>(m_SharedResInfo.m_ImageHash.Find(key, false));
+				    data = static_cast<TIMAGEINFO_UI*>(m_SharedResInfo.m_ImageHash.Find(key, FALSE));
 				    if (data) {
 					    CRenderUI::FreeImage(data);
 				    }
@@ -2811,7 +2811,7 @@ namespace DUILIB
 		    TIMAGEINFO_UI* data;
 		    for( int i = 0; i< m_ResInfo.m_ImageHash.GetSize(); i++ ) {
 			    if(LPCTSTR key = m_ResInfo.m_ImageHash.GetAt(i)) {
-				    data = static_cast<TIMAGEINFO_UI*>(m_ResInfo.m_ImageHash.Find(key, false));
+				    data = static_cast<TIMAGEINFO_UI*>(m_ResInfo.m_ImageHash.Find(key, FALSE));
 				    if (data) {
 					    CRenderUI::FreeImage(data);
 				    }
@@ -2852,7 +2852,7 @@ namespace DUILIB
     {
 	    if (!m_bAsyncNotifyPosted) {
 		    ::PostMessage(m_hWndPaint, WM_APP + 1, 0, 0L);
-		    m_bAsyncNotifyPosted = true;
+		    m_bAsyncNotifyPosted = TRUE;
 	    }
     }
 
@@ -2879,7 +2879,7 @@ namespace DUILIB
 				    }
 				    if( pNewData == NULL ) continue;
 
-				    CRenderUI::FreeImage(data, false);
+				    CRenderUI::FreeImage(data, FALSE);
 				    data->hBitmap = pNewData->hBitmap;
 				    data->pBits = pNewData->pBits;
 				    data->nX = pNewData->nX;
@@ -2891,7 +2891,7 @@ namespace DUILIB
 					    ::CopyMemory(data->pSrcBits, data->pBits, data->nX * data->nY * 4);
 				    }
 				    else data->pSrcBits = NULL;
-				    if( m_bUseHSL ) CRenderUI::AdjustImage(true, data, m_H, m_S, m_L);
+				    if( m_bUseHSL ) CRenderUI::AdjustImage(TRUE, data, m_H, m_S, m_L);
 
 				    delete pNewData;
 			    }
@@ -2922,7 +2922,7 @@ namespace DUILIB
 				    }
 				    if( pNewData == NULL ) continue;
 
-				    CRenderUI::FreeImage(data, false);
+				    CRenderUI::FreeImage(data, FALSE);
 				    data->hBitmap = pNewData->hBitmap;
 				    data->pBits = pNewData->pBits;
 				    data->nX = pNewData->nX;
@@ -2934,7 +2934,7 @@ namespace DUILIB
 					    ::CopyMemory(data->pSrcBits, data->pBits, data->nX * data->nY * 4);
 				    }
 				    else data->pSrcBits = NULL;
-				    if( m_bUseHSL ) CRenderUI::AdjustImage(true, data, m_H, m_S, m_L);
+				    if( m_bUseHSL ) CRenderUI::AdjustImage(TRUE, data, m_H, m_S, m_L);
 
 				    delete pNewData;
 			    }
@@ -2943,7 +2943,7 @@ namespace DUILIB
         if( m_pRoot ) m_pRoot->Invalidate();
     }
 
-    void CManagerUI::AddDefaultAttributeList(LPCTSTR pStrControlName, LPCTSTR pStrControlAttrList, bool bShared)
+    void CManagerUI::AddDefaultAttributeList(LPCTSTR pStrControlName, LPCTSTR pStrControlAttrList, BOOL bShared)
     {
 	    if (bShared || m_bForceUseSharedRes)
 	    {
@@ -2973,12 +2973,12 @@ namespace DUILIB
 	    return NULL;
     }
 
-    bool CManagerUI::RemoveDefaultAttributeList(LPCTSTR pStrControlName, bool bShared)
+    BOOL CManagerUI::RemoveDefaultAttributeList(LPCTSTR pStrControlName, BOOL bShared)
     {
 	    if (bShared)
 	    {
 		    CStringUI* pDefaultAttr = static_cast<CStringUI*>(m_SharedResInfo.m_AttrHash.Find(pStrControlName));
-		    if( !pDefaultAttr ) return false;
+		    if( !pDefaultAttr ) return FALSE;
 
 		    delete pDefaultAttr;
 		    return m_SharedResInfo.m_AttrHash.Remove(pStrControlName);
@@ -2986,14 +2986,14 @@ namespace DUILIB
 	    else
 	    {
 		    CStringUI* pDefaultAttr = static_cast<CStringUI*>(m_ResInfo.m_AttrHash.Find(pStrControlName));
-		    if( !pDefaultAttr ) return false;
+		    if( !pDefaultAttr ) return FALSE;
 
 		    delete pDefaultAttr;
 		    return m_ResInfo.m_AttrHash.Remove(pStrControlName);
 	    }
     }
 
-    void CManagerUI::RemoveAllDefaultAttributeList(bool bShared)
+    void CManagerUI::RemoveAllDefaultAttributeList(BOOL bShared)
     {
 	    if (bShared)
 	    {
@@ -3039,11 +3039,11 @@ namespace DUILIB
 	    return NULL;
     }
 
-    bool CManagerUI::RemoveWindowCustomAttribute(LPCTSTR pstrName)
+    BOOL CManagerUI::RemoveWindowCustomAttribute(LPCTSTR pstrName)
     {
 	    if( pstrName == NULL || pstrName[0] == _T('\0') ) return NULL;
 	    CStringUI* pCostomAttr = static_cast<CStringUI*>(m_mWindowAttrHash.Find(pstrName));
-	    if( !pCostomAttr ) return false;
+	    if( !pCostomAttr ) return FALSE;
 
 	    delete pCostomAttr;
 	    return m_mWindowAttrHash.Remove(pstrName);
@@ -3111,10 +3111,10 @@ namespace DUILIB
             SetMaxInfo(cx, cy);
         }
         else if( _tcsicmp(pstrName, _T("showdirty")) == 0 ) {
-            SetShowUpdateRect(_tcsicmp(pstrValue, _T("true")) == 0);
+            SetShowUpdateRect(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         } 
         else if( _tcscmp(pstrName, _T("noactivate")) == 0 ) {
-            SetNoActivate(_tcsicmp(pstrValue, _T("true")) == 0);
+            SetNoActivate(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         }
         else if( _tcsicmp(pstrName, _T("opacity")) == 0 ) {
             SetOpacity(_ttoi(pstrValue));
@@ -3123,7 +3123,7 @@ namespace DUILIB
             SetLayeredOpacity(_ttoi(pstrValue));
         } 
         else if( _tcscmp(pstrName, _T("layeredimage")) == 0 ) {
-            SetLayered(true);
+            SetLayered(TRUE);
             SetLayeredImage(pstrValue);
         } 
         else if( _tcsicmp(pstrName, _T("disabledfontcolor")) == 0 ) {
@@ -3160,7 +3160,7 @@ namespace DUILIB
             AddWindowCustomAttribute(pstrName, pstrValue);
     }
 
-    CStringUI CManagerUI::GetWindowAttributeList(bool bIgnoreDefault)
+    CStringUI CManagerUI::GetWindowAttributeList(BOOL bIgnoreDefault)
     {
         return _T("");
     }
@@ -3195,9 +3195,9 @@ namespace DUILIB
         }
     }
 
-    bool CManagerUI::RemoveWindowAttribute(LPCTSTR pstrName)
+    BOOL CManagerUI::RemoveWindowAttribute(LPCTSTR pstrName)
     {
-        return false;
+        return FALSE;
     }
 
     CStringUI CManagerUI::GetWindowXML()
@@ -3212,7 +3212,7 @@ namespace DUILIB
         //for( int i = 0; i< m_SharedResInfo.m_CustomFonts.GetSize(); i++ ) {
         //    if(LPCTSTR key = m_SharedResInfo.m_CustomFonts.GetAt(i)) {
         //        pFontInfo = static_cast<CStringUI*>(m_SharedResInfo.m_CustomFonts.Find(key))->GetData();
-        //        sWindowXML.Append(_T("\n\t<Font shared=\"true\" id=\" "));
+        //        sWindowXML.Append(_T("\n\t<Font shared=\"TRUE\" id=\" "));
         //        sWindowXML.Append(key);
         //        sWindowXML.Append(_T("\" value=\" "));
         //        sWindowXML.Append(sDefaultAttr.GetData());
@@ -3241,7 +3241,7 @@ namespace DUILIB
             if(LPCTSTR key = m_SharedResInfo.m_AttrHash.GetAt(i)) {
                 sDefaultAttr = static_cast<CStringUI*>(m_SharedResInfo.m_AttrHash.Find(key))->GetData();
                 sDefaultAttr.Replace(_T("\""), _T("&quot;"));
-                sWindowXML.Append(_T("\n\t<Default shared=\"true\" name=\" "));
+                sWindowXML.Append(_T("\n\t<Default shared=\"TRUE\" name=\" "));
                 sWindowXML.Append(key);
                 sWindowXML.Append(_T("\" value=\" "));
                 sWindowXML.Append(sDefaultAttr.GetData());
@@ -3289,14 +3289,14 @@ namespace DUILIB
 	    return NULL;
     }
 
-    bool CManagerUI::RemoveMultiLanguageString(int id)
+    BOOL CManagerUI::RemoveMultiLanguageString(int id)
     {
 	    TCHAR idBuffer[16];
 	    ::ZeroMemory(idBuffer, sizeof(idBuffer));
 	    _itot(id, idBuffer, 10);
 
 	    CStringUI* pMultiLanguage = static_cast<CStringUI*>(m_SharedResInfo.m_MultiLanguageHash.Find(idBuffer));
-	    if( !pMultiLanguage ) return false;
+	    if( !pMultiLanguage ) return FALSE;
 
 	    delete pMultiLanguage;
 	    return m_SharedResInfo.m_MultiLanguageHash.Remove(idBuffer);
@@ -3413,7 +3413,7 @@ namespace DUILIB
     {
         struct TFINDTABINFO_UI* pInfo = static_cast<struct TFINDTABINFO_UI*>(pData);
         if( pInfo->pFocus == pThis ) {
-            if( pInfo->bForward ) pInfo->bNextIsIt = true;
+            if( pInfo->bForward ) pInfo->bNextIsIt = TRUE;
             return pInfo->bForward ? NULL : pInfo->pLast;
         }
         if( (pThis->GetControlFlags() & UIFLAG_TABSTOP) == 0 ) return NULL;
@@ -3427,7 +3427,7 @@ namespace DUILIB
     {
         if( !pThis->IsVisible() ) return NULL; 
         struct TFINDSHORTCUT_UI* pFS = static_cast<struct TFINDSHORTCUT_UI*>(pData);
-        if( pFS->ch == toupper(pThis->GetShortcut()) ) pFS->bPickNext = true;
+        if( pFS->ch == toupper(pThis->GetShortcut()) ) pFS->bPickNext = TRUE;
         if( _tcsstr(pThis->GetClass(), DUI_CTR_LABEL) != NULL ) return NULL;   // Labels never get focus!
         return pFS->bPickNext ? pThis : NULL;
     }
@@ -3472,17 +3472,17 @@ namespace DUILIB
 	    return NULL;
     }
 
-    bool CManagerUI::TranslateAccelerator(LPMSG pMsg)
+    BOOL CManagerUI::TranslateAccelerator(LPMSG pMsg)
     {
 	    for (int i = 0; i < m_aTranslateAccelerator.GetSize(); i++)
 	    {
 		    LRESULT lResult = static_cast<ITranslateAccelerator *>(m_aTranslateAccelerator[i])->TranslateAccelerator(pMsg);
-		    if( lResult == S_OK ) return true;
+		    if( lResult == S_OK ) return TRUE;
 	    }
-	    return false;
+	    return FALSE;
     }
 
-    bool CManagerUI::TranslateMessage(const LPMSG pMsg)
+    BOOL CManagerUI::TranslateMessage(const LPMSG pMsg)
     {
 	    // Pretranslate Message takes care of system-wide messages, such as
 	    // tabbing and shortcut key-combos. We'll look for all messages for
@@ -3505,13 +3505,13 @@ namespace DUILIB
 				    if(pMsg->hwnd == pT->GetPaintWindow() || hTempParent == pT->GetPaintWindow())
 				    {
 					    if (pT->TranslateAccelerator(pMsg))
-						    return true;
+						    return TRUE;
 
 					    pT->PreMessageHandler(pMsg->message, pMsg->wParam, pMsg->lParam, lRes);
 					    // 					if( pT->PreMessageHandler(pMsg->message, pMsg->wParam, pMsg->lParam, lRes) ) 
-					    // 						return true;
+					    // 						return TRUE;
 					    // 
-					    // 					return false;  
+					    // 					return FALSE;  
 				    }
 				    hTempParent = GetParent(hTempParent);
 			    }
@@ -3527,25 +3527,25 @@ namespace DUILIB
 			    if(pMsg->hwnd == pT->GetPaintWindow())
 			    {
 				    if (pT->TranslateAccelerator(pMsg))
-					    return true;
+					    return TRUE;
 
 				    if( pT->PreMessageHandler(pMsg->message, pMsg->wParam, pMsg->lParam, lRes) ) 
-					    return true;
+					    return TRUE;
 
-				    return false;
+				    return FALSE;
 			    }
 		    }
 	    }
-	    return false;
+	    return FALSE;
     }
 
-    bool CManagerUI::AddTranslateAccelerator(ITranslateAccelerator* pTranslateAccelerator)
+    BOOL CManagerUI::AddTranslateAccelerator(ITranslateAccelerator* pTranslateAccelerator)
     {
         ASSERT(m_aTranslateAccelerator.Find(pTranslateAccelerator) < 0);
         return m_aTranslateAccelerator.Add(pTranslateAccelerator);
     }
 
-    bool CManagerUI::RemoveTranslateAccelerator(ITranslateAccelerator *pTranslateAccelerator)
+    BOOL CManagerUI::RemoveTranslateAccelerator(ITranslateAccelerator *pTranslateAccelerator)
     {
 	    for (int i = 0; i < m_aTranslateAccelerator.GetSize(); i++)
 	    {
@@ -3554,10 +3554,10 @@ namespace DUILIB
 			    return m_aTranslateAccelerator.Remove(i);
 		    }
 	    }
-	    return false;
+	    return FALSE;
     }
 
-    void CManagerUI::UsedVirtualWnd(bool bUsed)
+    void CManagerUI::UsedVirtualWnd(BOOL bUsed)
     {
 	    m_bUsedVirtualWnd = bUsed;
     }
