@@ -37,7 +37,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     g_pFramework->Create(NULL, _T("111"), 0, 0);
 
     g_pManager->Init(g_pFramework->GetHWND());
-    g_pManager->AttachDialog(g_pFramework);
+    //g_pManager->AttachDialog(g_pFramework);
 
     g_pFramework->ShowWindow();
 

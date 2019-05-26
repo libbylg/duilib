@@ -14,12 +14,16 @@
 
 #include "Core/UIWindow.h"
 #include "Control/UIButton.h"
+#include "Core/UIManager.h"
 using namespace DUILIB;
 
 
-class CMyFramework : public CWindowUI
+class CMyFramework : public CWindowUI, public INotifyUI
 {
+public:
+    CManagerUI m_pm;
     CButtonUI* m_pButton;
+
 public:
     virtual LPCTSTR GetWindowClassName() const
     {
@@ -29,15 +33,54 @@ public:
     virtual LRESULT OnCreated(UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         m_pButton = new CButtonUI();
+        m_pm.Init(m_hWnd);
+        CControlUI* pButton = new CButtonUI;
+        pButton->SetName(_T("closebtn"));
+        pButton->SetBkColor(0xFFFF0000);
+        m_pm.AttachDialog(pButton);
+        m_pm.AddNotifier(this);
+        return 0;
     }
 
     virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         switch (uMsg) {
             case WM_CREATE: return OnCreated(uMsg, wParam, lParam);
+            case WM_DESTROY: ::PostQuitMessage(0);
+        }
+
+        LRESULT lRes = 0;
+        if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes)) {
+            return lRes;
+        }
+
+        return CWindowUI::HandleMessage(uMsg, wParam, lParam);
+    }
+
+    virtual void Notify(TNOTIFY_UI& msg)
+    {
+        if (msg.sType == _T("click")) {
+            if (msg.pSender->GetName() == _T("closebtn")) {
+                Close();
+            }
         }
     }
 };
 
+
+//if (uMsg == WM_CREATE) {
+//    m_pm.Init(m_hWnd);
+//    CControlUI* pButton = new CButtonUI;
+//    pButton->SetName(_T("closebtn"));
+//    pButton->SetBkColor(0xFFFF0000);
+//    m_pm.AttachDialog(pButton);
+//    m_pm.AddNotifier(this);
+//    return 0;
+//} else if (uMsg == WM_DESTROY) {
+//    ::PostQuitMessage(0);
+//}
+//LRESULT lRes = 0;
+//if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes)) return lRes;
+//return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
 
 #endif//__MYFRAMEWORK_H_
