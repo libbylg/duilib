@@ -210,20 +210,20 @@ namespace DUILIB
 		CStringPtrMapUI(int nSize = 83);
 		~CStringPtrMapUI();
 
-		void Resize(int nSize = 83);
-		LPVOID Find(LPCTSTR key, BOOL optimize = TRUE) const;
-		BOOL Insert(LPCTSTR key, LPVOID pData);
-		LPVOID Set(LPCTSTR key, LPVOID pData);
-		BOOL Remove(LPCTSTR key);
-		void RemoveAll();
-		int GetSize() const;
+		void    Resize(int nSize = 83);
+		LPVOID  Find(LPCTSTR key, BOOL optimize = TRUE) const;
+		BOOL    Insert(LPCTSTR key, LPVOID pData);
+		LPVOID  Set(LPCTSTR key, LPVOID pData);
+		BOOL    Remove(LPCTSTR key);
+		void    RemoveAll();
+		int     GetSize() const;
 		LPCTSTR GetAt(int iIndex) const;
 		LPCTSTR operator[] (int nIndex) const;
 
 	protected:
 		TITEM** m_aT;
-		int m_nBuckets;
-		int m_nCount;
+		int     m_nBuckets;
+		int     m_nCount;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////////////

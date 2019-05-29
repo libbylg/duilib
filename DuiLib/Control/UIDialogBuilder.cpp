@@ -1,4 +1,4 @@
-#include "Control/UIDlgBuilder.h"
+#include "Control/UIDialogBuilder.h"
 
 #include "Core/UIManager.h"
 #include "Core/UIContainer.h"
@@ -34,12 +34,12 @@
 namespace DUILIB
 {
 
-    CDialogBuilder::CDialogBuilder() : m_pCallback(NULL), m_pstrtype(NULL)
+    CDialogBuilderUI::CDialogBuilderUI() : m_pCallback(NULL), m_pstrtype(NULL)
     {
 
     }
 
-    CControlUI* CDialogBuilder::Create(STRINGorID xml, LPCTSTR type, IDialogBuilderCallback* pCallback,
+    CControlUI* CDialogBuilderUI::Create(STRINGorID xml, LPCTSTR type, IDialogBuilderCallback* pCallback,
         CManagerUI* pManager, CControlUI* pParent)
     {
         //资源ID为0-65535，两个字节；字符串指针为4个字节
@@ -69,7 +69,7 @@ namespace DUILIB
         return Create(pCallback, pManager, pParent);
     }
 
-    CControlUI* CDialogBuilder::Create(IDialogBuilderCallback* pCallback, CManagerUI* pManager, CControlUI* pParent)
+    CControlUI* CDialogBuilderUI::Create(IDialogBuilderCallback* pCallback, CManagerUI* pManager, CControlUI* pParent)
     {
         m_pCallback = pCallback;
         CMarkupNodeUI root = m_xml.GetRoot();
@@ -192,22 +192,22 @@ namespace DUILIB
         return _Parse(&root, pParent, pManager);
     }
 
-    CMarkupUI* CDialogBuilder::GetMarkup()
+    CMarkupUI* CDialogBuilderUI::GetMarkup()
     {
         return &m_xml;
     }
 
-    void CDialogBuilder::GetLastErrorMessage(LPTSTR pstrMessage, SIZE_T cchMax) const
+    void CDialogBuilderUI::GetLastErrorMessage(LPTSTR pstrMessage, SIZE_T cchMax) const
     {
         return m_xml.GetLastErrorMessage(pstrMessage, cchMax);
     }
 
-    void CDialogBuilder::GetLastErrorLocation(LPTSTR pstrSource, SIZE_T cchMax) const
+    void CDialogBuilderUI::GetLastErrorLocation(LPTSTR pstrSource, SIZE_T cchMax) const
     {
         return m_xml.GetLastErrorLocation(pstrSource, cchMax);
     }
 
-    CControlUI* CDialogBuilder::_Parse(CMarkupNodeUI * pRoot, CControlUI * pParent, CManagerUI * pManager)
+    CControlUI* CDialogBuilderUI::_Parse(CMarkupNodeUI * pRoot, CControlUI * pParent, CManagerUI * pManager)
     {
         IContainerUI* pContainer = NULL;
         CControlUI* pReturn = NULL;
@@ -228,7 +228,7 @@ namespace DUILIB
                     count = _tcstol(szValue, &pstr, 10);
                 cchLen = lengthof(szValue) - 1;
                 if (!node.GetAttributeValue(_T("source"), szValue, cchLen)) continue;
-                CDialogBuilder builder;
+                CDialogBuilderUI builder;
                 for (int i = 0; i < count; i++) {
                     if (!builder.GetMarkup()->IsValid()) {
                         if (m_pstrtype != NULL) { // 使用资源dll，从资源中读取

@@ -2,7 +2,7 @@
 #define __ComputerExamineUI_H_
 
 #include "Core/UIContainer.h"
-#include "Control/UIDlgBuilder.h"
+#include "Control/UIDialogBuilder.h"
 
 using namespace DUILIB;
 
@@ -11,7 +11,7 @@ class ComputerExamineUI : public CContainerUI
 public:
 	ComputerExamineUI()
 	{
-		CDialogBuilder builder;
+		CDialogBuilderUI builder;
 		CContainerUI* pComputerExamine = static_cast<CContainerUI*>(builder.Create(_T("ComputerExamine.xml"), (UINT)0));
 		if( pComputerExamine ) {
 			this->Add(pComputerExamine);

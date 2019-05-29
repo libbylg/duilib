@@ -69,9 +69,6 @@
     <ClCompile Include="Core\UIWindow.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Control\UIDlgBuilder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Control\UITreeView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -135,6 +132,9 @@
     <ClCompile Include="Core\UIDefine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Control\UIDialogBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\UIContainer.h">
@@ -168,9 +168,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utils\WndShadow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Control\UIDlgBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Control\UITreeView.h">
@@ -231,6 +228,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core\UIScroll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Control\UIDialogBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

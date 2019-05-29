@@ -33,8 +33,8 @@ namespace DUILIB
         TListInfoUI* pListInfo = NULL;
         if (m_pOwner) pListInfo = m_pOwner->GetListInfo();
 
-        CRenderClip clip;
-        CRenderClip::GenerateClip(hDC, rcTemp, clip);
+        CRenderClipUI clip;
+        CRenderClipUI::GenerateClip(hDC, rcTemp, clip);
         CControlUI::DoPaint(hDC, rcPaint, pStopControl);
 
         if (m_items.GetSize() > 0) {
@@ -59,8 +59,8 @@ namespace DUILIB
                 }
             } else {
                 int iDrawIndex = 0;
-                CRenderClip childClip;
-                CRenderClip::GenerateClip(hDC, rcTemp, childClip);
+                CRenderClipUI childClip;
+                CRenderClipUI::GenerateClip(hDC, rcTemp, childClip);
                 for (int it = 0; it < m_items.GetSize(); it++) {
                     CControlUI* pControl = static_cast<CControlUI*>(m_items[it]);
                     if (pControl == pStopControl) return FALSE;
@@ -86,9 +86,9 @@ namespace DUILIB
                     if (!::IntersectRect(&rcTemp, &rcPaint, &pControl->GetPos())) continue;
                     if (pControl->IsFloat()) {
                         if (!::IntersectRect(&rcTemp, &m_rcItem, &pControl->GetPos())) continue;
-                        CRenderClip::UseOldClipBegin(hDC, childClip);
+                        CRenderClipUI::UseOldClipBegin(hDC, childClip);
                         if (!pControl->Paint(hDC, rcPaint, pStopControl)) return FALSE;
-                        CRenderClip::UseOldClipEnd(hDC, childClip);
+                        CRenderClipUI::UseOldClipEnd(hDC, childClip);
                     } else {
                         if (!::IntersectRect(&rcTemp, &rc, &pControl->GetPos())) continue;
                         if (!pControl->Paint(hDC, rcPaint, pStopControl)) return FALSE;

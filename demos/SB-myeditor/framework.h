@@ -15,6 +15,8 @@
 #include "Core/UIWindow.h"
 #include "Control/UIButton.h"
 #include "Core/UIManager.h"
+#include "Control/UIDialogBuilder.h"
+#include "Utils/Utils.h"
 using namespace DUILIB;
 
 
@@ -32,12 +34,10 @@ public:
 
     virtual LRESULT OnCreated(UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
-        m_pButton = new CButtonUI();
         m_pm.Init(m_hWnd);
-        CControlUI* pButton = new CButtonUI;
-        pButton->SetName(_T("closebtn"));
-        pButton->SetBkColor(0xFFFF0000);
-        m_pm.AttachDialog(pButton);
+        CDialogBuilderUI builder;
+        CControlUI* pRoot = builder.Create(STRINGorID(_T("F:\\dev\\github.com\\libbylg\\duilib_v2\\demos\\SB-myeditor\\myeditor.xml")));
+        m_pm.AttachDialog(pRoot);
         m_pm.AddNotifier(this);
         return 0;
     }
@@ -60,7 +60,7 @@ public:
     virtual void Notify(TNOTIFY_UI& msg)
     {
         if (msg.sType == _T("click")) {
-            if (msg.pSender->GetName() == _T("closebtn")) {
+            if (msg.pSender->GetName() == _T("changeskinbtn")) {
                 Close();
             }
         }

@@ -84,7 +84,7 @@ void TDRAWINFO_UI::Clear()
 //
 //
 
-CRenderClip::~CRenderClip()
+CRenderClipUI::~CRenderClipUI()
 {
     ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
     ASSERT(::GetObjectType(hRgn)==OBJ_REGION);
@@ -94,7 +94,7 @@ CRenderClip::~CRenderClip()
     ::DeleteObject(hRgn);
 }
 
-void CRenderClip::GenerateClip(HDC hDC, RECT rc, CRenderClip& clip)
+void CRenderClipUI::GenerateClip(HDC hDC, RECT rc, CRenderClipUI& clip)
 {
     RECT rcClip = { 0 };
     ::GetClipBox(hDC, &rcClip);
@@ -105,7 +105,7 @@ void CRenderClip::GenerateClip(HDC hDC, RECT rc, CRenderClip& clip)
     clip.rcItem = rc;
 }
 
-void CRenderClip::GenerateRoundClip(HDC hDC, RECT rc, RECT rcItem, int width, int height, CRenderClip& clip)
+void CRenderClipUI::GenerateRoundClip(HDC hDC, RECT rc, RECT rcItem, int width, int height, CRenderClipUI& clip)
 {
     RECT rcClip = { 0 };
     ::GetClipBox(hDC, &rcClip);
@@ -119,12 +119,12 @@ void CRenderClip::GenerateRoundClip(HDC hDC, RECT rc, RECT rcItem, int width, in
     ::DeleteObject(hRgnItem);
 }
 
-void CRenderClip::UseOldClipBegin(HDC hDC, CRenderClip& clip)
+void CRenderClipUI::UseOldClipBegin(HDC hDC, CRenderClipUI& clip)
 {
     ::SelectClipRgn(hDC, clip.hOldRgn);
 }
 
-void CRenderClip::UseOldClipEnd(HDC hDC, CRenderClip& clip)
+void CRenderClipUI::UseOldClipEnd(HDC hDC, CRenderClipUI& clip)
 {
     ::SelectClipRgn(hDC, clip.hRgn);
 }

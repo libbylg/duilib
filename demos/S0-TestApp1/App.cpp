@@ -5,7 +5,7 @@
 #include "Core/UIWindow.h"
 #include "Core/UIManager.h"
 #include "Control/UISlider.h"
-#include "Control/UIDlgBuilder.h"
+#include "Control/UIDialogBuilder.h"
 #include "Utils/WndShadow.h"
 
 #ifndef _DWMAPI_H_
@@ -395,7 +395,7 @@ public:
     {
         if( uMsg == WM_CREATE ) {
             m_pm.Init(m_hWnd);
-            CDialogBuilder builder;
+            CDialogBuilderUI builder;
             CControlUI* pRoot = builder.Create(_T("test1.xml"), (UINT)0, NULL, &m_pm);
             ASSERT(pRoot && "Failed to parse XML");
             m_pm.AttachDialog(pRoot);

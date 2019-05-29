@@ -21,10 +21,10 @@ namespace DUILIB
 
 
 
-    class DUILIB_API CDialogBuilder
+    class DUILIB_API CDialogBuilderUI
     {
     public:
-        CDialogBuilder();
+        CDialogBuilderUI();
         CControlUI* Create(STRINGorID xml, LPCTSTR type = NULL, IDialogBuilderCallback* pCallback = NULL, CManagerUI* pManager = NULL, CControlUI* pParent = NULL);
         CControlUI* Create(IDialogBuilderCallback* pCallback = NULL, CManagerUI* pManager = NULL, CControlUI* pParent = NULL);
 

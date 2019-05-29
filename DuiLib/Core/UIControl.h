@@ -22,7 +22,7 @@ namespace DUILIB
     struct DUILIB_API TEVENT_UI
     {
         int             Type;
-        CControlUI*     pSender;
+        CControlUI* pSender;
         DWORD           dwTimestamp;
         POINT           ptMouse;
         TCHAR           chKey;

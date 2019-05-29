@@ -1,6 +1,6 @@
 #include "Layout/UIChildLayout.h"
 
-#include "Control/UIDlgBuilder.h"
+#include "Control/UIDialogBuilder.h"
 
 
 namespace DUILIB
@@ -14,7 +14,7 @@ namespace DUILIB
 	{
 		if (!m_pstrXMLFile.IsEmpty())
 		{
-			CDialogBuilder builder;
+			CDialogBuilderUI builder;
 			CContainerUI* pChildWindow = static_cast<CContainerUI*>(builder.Create(m_pstrXMLFile.GetData(), (UINT)0, NULL, m_pManager));
 			if (pChildWindow)
 			{

@@ -1001,14 +1001,14 @@ namespace DUILIB
 							    ASSERT(m_hbmpBackground);
 							    ::ZeroMemory(m_pBackgroundBits, dwWidth * dwHeight * 4);
 							    ::SelectObject(m_hDcBackground, m_hbmpBackground);
-							    CRenderClip clip;
-							    CRenderClip::GenerateClip(m_hDcBackground, rcLayeredClient, clip);
+							    CRenderClipUI clip;
+							    CRenderClipUI::GenerateClip(m_hDcBackground, rcLayeredClient, clip);
 							    CRenderUI::DrawImage(m_hDcBackground, this, rcLayeredClient, rcLayeredClient, m_diLayered);
 						    }
 						    else if( m_bLayeredChanged ) {
 							    ::ZeroMemory(m_pBackgroundBits, dwWidth * dwHeight * 4);
-							    CRenderClip clip;
-							    CRenderClip::GenerateClip(m_hDcBackground, rcLayeredClient, clip);
+							    CRenderClipUI clip;
+							    CRenderClipUI::GenerateClip(m_hDcBackground, rcLayeredClient, clip);
 							    CRenderUI::DrawImage(m_hDcBackground, this, rcLayeredClient, rcLayeredClient, m_diLayered);
 						    }
 						    if( m_diLayered.pImageInfo->bAlpha ) {

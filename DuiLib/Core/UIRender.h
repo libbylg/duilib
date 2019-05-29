@@ -78,19 +78,19 @@ namespace DUILIB
     class CManagerUI;
     class CControlUI;
 
-    class DUILIB_API CRenderClip
+    class DUILIB_API CRenderClipUI
     {
     public:
-        ~CRenderClip();
+        ~CRenderClipUI();
         RECT    rcItem;
         HDC     hDC;
         HRGN    hRgn;
         HRGN    hOldRgn;
 
-        static void GenerateClip(HDC hDC, RECT rc, CRenderClip& clip);
-        static void GenerateRoundClip(HDC hDC, RECT rc, RECT rcItem, int width, int height, CRenderClip& clip);
-        static void UseOldClipBegin(HDC hDC, CRenderClip& clip);
-        static void UseOldClipEnd(HDC hDC, CRenderClip& clip);
+        static void GenerateClip(HDC hDC, RECT rc, CRenderClipUI& clip);
+        static void GenerateRoundClip(HDC hDC, RECT rc, RECT rcItem, int width, int height, CRenderClipUI& clip);
+        static void UseOldClipBegin(HDC hDC, CRenderClipUI& clip);
+        static void UseOldClipEnd(HDC hDC, CRenderClipUI& clip);
     };
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -99,30 +99,25 @@ namespace DUILIB
     class DUILIB_API CRenderUI
     {
     public:
-        static DWORD AdjustColor(DWORD dwColor, short H, short S, short L);
-        static HBITMAP CreateARGB32Bitmap(HDC hDC, int cx, int cy, COLORREF** pBits);
-        static void AdjustImage(BOOL bUseHSL, struct TIMAGEINFO_UI* imageInfo, short H, short S, short L);
-        static struct TIMAGEINFO_UI* LoadImage(STRINGorID bitmap, LPCTSTR type = NULL, DWORD mask = 0);
-        static void FreeImage(TIMAGEINFO_UI* bitmap, BOOL bDelete = TRUE);
-        static void DrawImage(HDC hDC, HBITMAP hBitmap, const RECT& rc, const RECT& rcPaint, \
-            const RECT& rcBmpPart, const RECT& rcScale9, BOOL alphaChannel, BYTE uFade = 255,
-            BOOL hole = FALSE, BOOL xtiled = FALSE, BOOL ytiled = FALSE);
-        static BOOL DrawImage(HDC hDC, CManagerUI* pManager, const RECT& rcItem, const RECT& rcPaint,
-            struct TDRAWINFO_UI& drawInfo);
-        static void DrawColor(HDC hDC, const RECT& rc, DWORD color);
-        static void DrawGradient(HDC hDC, const RECT& rc, DWORD dwFirst, DWORD dwSecond, BOOL bVertical, int nSteps);
+        static DWORD                    AdjustColor(DWORD dwColor, short H, short S, short L);
+        static HBITMAP                  CreateARGB32Bitmap(HDC hDC, int cx, int cy, COLORREF** pBits);
+        static void                     AdjustImage(BOOL bUseHSL, struct TIMAGEINFO_UI* imageInfo, short H, short S, short L);
+        static struct TIMAGEINFO_UI*    LoadImage(STRINGorID bitmap, LPCTSTR type = NULL, DWORD mask = 0);
+        static void                     FreeImage(TIMAGEINFO_UI* bitmap, BOOL bDelete = TRUE);
+        static void                     DrawImage(HDC hDC, HBITMAP hBitmap, const RECT& rc, const RECT& rcPaint, const RECT& rcBmpPart, const RECT& rcScale9, BOOL alphaChannel, BYTE uFade = 255, BOOL hole = FALSE, BOOL xtiled = FALSE, BOOL ytiled = FALSE);
+        static BOOL                     DrawImage(HDC hDC, CManagerUI* pManager, const RECT& rcItem, const RECT& rcPaint, struct TDRAWINFO_UI& drawInfo);
+        static void                     DrawColor(HDC hDC, const RECT& rc, DWORD color);
+        static void                     DrawGradient(HDC hDC, const RECT& rc, DWORD dwFirst, DWORD dwSecond, BOOL bVertical, int nSteps);
 
         // 以下函数中的颜色参数alpha值无效
-        static void DrawLine(HDC hDC, const RECT& rc, int nSize, DWORD dwPenColor, int nStyle = PS_SOLID);
-        static void DrawRect(HDC hDC, const RECT& rc, int nSize, DWORD dwPenColor, int nStyle = PS_SOLID);
-        static void DrawRoundRect(HDC hDC, const RECT& rc, int width, int height, int nSize, DWORD dwPenColor, int nStyle = PS_SOLID);
-        static void DrawText(HDC hDC, CManagerUI* pManager, RECT& rc, LPCTSTR pstrText, \
-            DWORD dwTextColor, int iFont, UINT uStyle);
-        static void DrawHtmlText(HDC hDC, CManagerUI* pManager, RECT& rc, LPCTSTR pstrText,
-            DWORD dwTextColor, RECT* pLinks, CStringUI* sLinks, int& nLinkRects, int iDefaultFont, UINT uStyle);
-        static HBITMAP GenerateBitmap(CManagerUI* pManager, RECT rc, CControlUI* pStopControl = NULL, DWORD dwFilterColor = 0);
-        static HBITMAP GenerateBitmap(CManagerUI* pManager, CControlUI* pControl, RECT rc, DWORD dwFilterColor = 0);
-        static SIZE GetTextSize(HDC hDC, CManagerUI* pManager, LPCTSTR pstrText, int iFont, UINT uStyle);
+        static void     DrawLine(HDC hDC, const RECT& rc, int nSize, DWORD dwPenColor, int nStyle = PS_SOLID);
+        static void     DrawRect(HDC hDC, const RECT& rc, int nSize, DWORD dwPenColor, int nStyle = PS_SOLID);
+        static void     DrawRoundRect(HDC hDC, const RECT& rc, int width, int height, int nSize, DWORD dwPenColor, int nStyle = PS_SOLID);
+        static void     DrawText(HDC hDC, CManagerUI* pManager, RECT& rc, LPCTSTR pstrText, DWORD dwTextColor, int iFont, UINT uStyle);
+        static void     DrawHtmlText(HDC hDC, CManagerUI* pManager, RECT& rc, LPCTSTR pstrText, DWORD dwTextColor, RECT* pLinks, CStringUI* sLinks, int& nLinkRects, int iDefaultFont, UINT uStyle);
+        static HBITMAP  GenerateBitmap(CManagerUI* pManager, RECT rc, CControlUI* pStopControl = NULL, DWORD dwFilterColor = 0);
+        static HBITMAP  GenerateBitmap(CManagerUI* pManager, CControlUI* pControl, RECT rc, DWORD dwFilterColor = 0);
+        static SIZE     GetTextSize(HDC hDC, CManagerUI* pManager, LPCTSTR pstrText, int iFont, UINT uStyle);
     };
 
 } // namespace DUILIB
