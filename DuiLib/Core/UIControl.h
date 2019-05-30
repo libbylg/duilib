@@ -3,7 +3,7 @@
 
 #include "Core/UIDefine.h"
 #include "Core/UIRender.h"
-#include "Utils/UIDelegate.h"
+#include "Core/UIDelegate.h"
 
 namespace DUILIB
 {
@@ -153,18 +153,18 @@ namespace DUILIB
         virtual void SetFloat(BOOL bFloat = TRUE);
 
         // 自定义(未处理的)属性
-        void AddCustomAttribute(LPCTSTR pstrName, LPCTSTR pstrAttr);
+        void    AddCustomAttribute(LPCTSTR pstrName, LPCTSTR pstrAttr);
         LPCTSTR GetCustomAttribute(LPCTSTR pstrName) const;
-        BOOL RemoveCustomAttribute(LPCTSTR pstrName);
-        void RemoveAllCustomAttribute();
+        BOOL    RemoveCustomAttribute(LPCTSTR pstrName);
+        void    RemoveAllCustomAttribute();
 
         virtual CControlUI* FindControl(LPFINDCONTROLPROC_UI Proc, LPVOID pData, UINT uFlags);
 
-        void Invalidate();
-        BOOL IsUpdateNeeded() const;
-        void NeedUpdate();
-        void NeedParentUpdate();
-        DWORD GetAdjustColor(DWORD dwColor);
+        void    Invalidate();
+        BOOL    IsUpdateNeeded() const;
+        void    NeedUpdate();
+        void    NeedParentUpdate();
+        DWORD   GetAdjustColor(DWORD dwColor);
 
         virtual void Init();
         virtual void DoInit();
@@ -172,10 +172,10 @@ namespace DUILIB
         virtual void Event(struct TEVENT_UI& event);
         virtual void DoEvent(struct TEVENT_UI& event);
 
-        virtual CStringUI GetAttribute(LPCTSTR pstrName);
-        virtual void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
-        virtual CStringUI GetAttributeList(BOOL bIgnoreDefault = TRUE);
-        virtual void SetAttributeList(LPCTSTR pstrList);
+        virtual CStringUI   GetAttribute(LPCTSTR pstrName);
+        virtual void        SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+        virtual CStringUI   GetAttributeList(BOOL bIgnoreDefault = TRUE);
+        virtual void        SetAttributeList(LPCTSTR pstrList);
 
         virtual SIZE EstimateSize(SIZE szAvailable);
 

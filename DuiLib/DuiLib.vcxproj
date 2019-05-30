@@ -271,6 +271,7 @@
     <ClCompile Include="Control\UISlider.cpp" />
     <ClCompile Include="Control\UIText.cpp" />
     <ClCompile Include="Control\UITreeView.cpp" />
+    <ClCompile Include="Core\UIDelegate.cpp" />
     <ClCompile Include="Core\UIScroll.cpp" />
     <ClCompile Include="Core\UIDefine.cpp" />
     <ClCompile Include="Layout\UIChildLayout.cpp" />
@@ -279,7 +280,6 @@
     <ClCompile Include="Layout\UITileLayout.cpp" />
     <ClCompile Include="Layout\UIVerticalLayout.cpp" />
     <ClCompile Include="Utils\stb_image.c" />
-    <ClCompile Include="Utils\UIDelegate.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
     <ClCompile Include="Utils\WndShadow.cpp" />
     <ClCompile Include="Utils\XUnzip.cpp">
@@ -314,6 +314,7 @@
     <ClInclude Include="Control\UISlider.h" />
     <ClInclude Include="Control\UIText.h" />
     <ClInclude Include="Control\UITreeView.h" />
+    <ClInclude Include="Core\UIDelegate.h" />
     <ClInclude Include="Core\UIScroll.h" />
     <ClInclude Include="Core\UIWindow.h" />
     <ClInclude Include="Core\UIContainer.h" />
@@ -329,7 +330,6 @@
     <ClInclude Include="Layout\UITileLayout.h" />
     <ClInclude Include="Layout\UIVerticalLayout.h" />
     <ClInclude Include="Utils\stb_image.h" />
-    <ClInclude Include="Utils\UIDelegate.h" />
     <ClInclude Include="Utils\Utils.h" />
     <ClInclude Include="Utils\WndShadow.h" />
   </ItemGroup>

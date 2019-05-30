@@ -1059,13 +1059,25 @@ namespace DUILIB
 
     BOOL CControlUI::Paint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl)
     {
-        if (pStopControl == this) return FALSE;
-        if (!::IntersectRect(&m_rcPaint, &rcPaint, &m_rcItem)) return TRUE;
+        if (pStopControl == this) {
+            return FALSE;
+        }
+
+        if (!::IntersectRect(&m_rcPaint, &rcPaint, &m_rcItem)) {
+            return TRUE;
+        }
+        
         if (OnPaint) {
             if (!OnPaint(this)) return TRUE;
         }
-        if (!DoPaint(hDC, rcPaint, pStopControl)) return FALSE;
-        if (m_pCover != NULL) return m_pCover->Paint(hDC, rcPaint);
+        
+        if (!DoPaint(hDC, rcPaint, pStopControl)) {
+            return FALSE;
+        }
+
+        if (m_pCover != NULL) {
+            return m_pCover->Paint(hDC, rcPaint);
+        }
         return TRUE;
     }
 
