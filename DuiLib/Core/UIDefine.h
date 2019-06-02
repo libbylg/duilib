@@ -45,13 +45,13 @@ namespace DUILIB
 #define UISTRETCH_SIZE_Y     0x00000020
 
 // Flags used for controlling the paint
-#define UISTATE_FOCUSED      0x00000001
-#define UISTATE_SELECTED     0x00000002
-#define UISTATE_DISABLED     0x00000004
-#define UISTATE_HOT          0x00000008
-#define UISTATE_PUSHED       0x00000010
-#define UISTATE_READONLY     0x00000020
-#define UISTATE_CAPTURED     0x00000040
+#define UISTATE_FOCUSED      0x00000001 //  获得焦点状态
+#define UISTATE_SELECTED     0x00000002 //  被选中状态(比如片选)
+#define UISTATE_DISABLED     0x00000004 //  不可用状态
+#define UISTATE_HOT          0x00000008 //  
+#define UISTATE_PUSHED       0x00000010 //  被按下状态
+#define UISTATE_READONLY     0x00000020 //  只读状态
+#define UISTATE_CAPTURED     0x00000040 //  锁定鼠标状态
 
 
     enum SIG_UI
